@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EcommerceApp.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EcommerceApp.Web.Controllers
 {
@@ -23,6 +24,7 @@ namespace EcommerceApp.Web.Controllers
             return View();
         }
 
+        [Authorize("Admin")]
         public IActionResult Privacy()
         {
             return View();
