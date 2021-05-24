@@ -24,7 +24,6 @@ namespace EcommerceApp.Web.Controllers
             return View();
         }
 
-        [Authorize("Admin")]
         public IActionResult Privacy()
         {
             return View();
