@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using EcommerceApp.Domain.Models;
 
 namespace EcommerceApp.Infrastructure
 {
@@ -10,5 +11,6 @@ namespace EcommerceApp.Infrastructure
         {
 
         }
+        public DbSet<Employee> Employees{get; set; }
     }
 }
