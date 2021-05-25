@@ -43,8 +43,7 @@ namespace EcommerceApp.Infrastructure.Repositories
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
-            var employeeToUpdate = await _appDbContext.Employees.FindAsync(employee.Id);
-            _appDbContext.Update(employeeToUpdate);
+            _appDbContext.Update(employee);
             await _appDbContext.SaveChangesAsync();
         }
     }
