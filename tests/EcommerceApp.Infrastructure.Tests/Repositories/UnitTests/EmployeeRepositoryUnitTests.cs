@@ -17,7 +17,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
             //Arrange
             Employee employee = new Employee()
             {
-                ID = 123,
+                Id = 123,
                 FirstName = "Andrew",
                 LastName = "Golavsky",
                 Position = "Product Management Specialist"
@@ -33,7 +33,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
                 context.Database.EnsureCreated();
                 var employeeRepository = new EmployeeRepository(context);
                 await employeeRepository.AddEmployeeAsync(employee);
-                var employeeResult = await context.Employees.FindAsync(employee.ID);
+                var employeeResult = await context.Employees.FindAsync(employee.Id);
 
                 //Assert
                 Assert.Equal(employee,employeeResult);

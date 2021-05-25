@@ -21,9 +21,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteEmployeeAsync(int employeeID)
+        public async Task DeleteEmployeeAsync(int employeeId)
         {
-            var employee = await _appDbContext.Employees.FindAsync(employeeID);
+            var employee = await _appDbContext.Employees.FindAsync(employeeId);
             if(employee != null)
             {
                 _appDbContext.Remove(employee);
@@ -36,14 +36,14 @@ namespace EcommerceApp.Infrastructure.Repositories
             return (await _appDbContext.Employees.ToListAsync()).AsQueryable();
         }
 
-        public async Task<Employee> GetEmployeeAsync(int employeeID)
+        public async Task<Employee> GetEmployeeAsync(int employeeId)
         {
-            return await _appDbContext.Employees.FindAsync(employeeID);
+            return await _appDbContext.Employees.FindAsync(employeeId);
         }
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
-            var employeeToUpdate = await _appDbContext.Employees.FindAsync(employee.ID);
+            var employeeToUpdate = await _appDbContext.Employees.FindAsync(employee.Id);
             _appDbContext.Update(employeeToUpdate);
             await _appDbContext.SaveChangesAsync();
         }
