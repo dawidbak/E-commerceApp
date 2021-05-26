@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using EcommerceApp.Infrastructure;
+using EcommerceApp.Application;
 
 namespace EcommerceApp.Web
 {
@@ -35,6 +36,7 @@ namespace EcommerceApp.Web
             {
                 options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim("Admin","True"));
             });
+            services.AddApplication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
