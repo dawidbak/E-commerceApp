@@ -17,7 +17,7 @@ namespace EcommerceApp.Infrastructure.Repositories
 
         public async Task AddEmployeeAsync(Employee emploee)
         {
-            await _appDbContext.AddAsync(emploee);
+            await _appDbContext.Employees.AddAsync(emploee);
             await _appDbContext.SaveChangesAsync();
         }
 
@@ -26,7 +26,7 @@ namespace EcommerceApp.Infrastructure.Repositories
             var employee = await _appDbContext.Employees.FindAsync(employeeId);
             if(employee != null)
             {
-                _appDbContext.Remove(employee);
+                _appDbContext.Employees.Remove(employee);
                 await _appDbContext.SaveChangesAsync();
             }
         }
@@ -43,7 +43,7 @@ namespace EcommerceApp.Infrastructure.Repositories
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
-            _appDbContext.Update(employee);
+            _appDbContext.Employees.Update(employee);
             await _appDbContext.SaveChangesAsync();
         }
     }
