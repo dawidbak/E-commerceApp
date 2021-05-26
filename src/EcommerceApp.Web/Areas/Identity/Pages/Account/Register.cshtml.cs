@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using EcommerceApp.Domain.Models;
 
 
 namespace EcommerceApp.Web.Areas.Identity.Pages.Account

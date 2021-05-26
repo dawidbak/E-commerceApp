@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using EcommerceApp.Infrastructure;
 using EcommerceApp.Application;
+using EcommerceApp.Domain.Models;
 
 namespace EcommerceApp.Web
 {
