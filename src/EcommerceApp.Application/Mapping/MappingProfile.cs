@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace EcommerceApp.Application.Mapping
 {
-    public class MappingProfile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
