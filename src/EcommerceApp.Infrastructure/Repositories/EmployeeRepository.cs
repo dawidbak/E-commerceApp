@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Domain.Interfaces;
@@ -15,9 +16,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task AddEmployeeAsync(Employee emploee)
+        public async Task AddEmployeeAsync(Employee employee)
         {
-            await _appDbContext.Employees.AddAsync(emploee);
+            await _appDbContext.Employees.AddAsync(employee);
             await _appDbContext.SaveChangesAsync();
         }
 
