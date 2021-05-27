@@ -357,3 +357,9 @@ zTemp
 .vscode/settings.json
 .vscode/settings.json
 .vscode/*.json
+.vscode/solution-explorer/class.cs-template
+*.ts-template
+*.vb-template
+*.cs-template
+.vscode/solution-explorer/template-list.json
+.vscode/solution-explorer/template-parameters.js
