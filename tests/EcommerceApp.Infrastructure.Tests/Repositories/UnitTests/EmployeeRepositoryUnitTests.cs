@@ -7,6 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace EcommerceApp.Infrastructure.Repositories.UnitTests
 {
@@ -77,6 +78,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
             //Arrange
             Employee employee1 = new Employee(){Id = 1, FirstName = "unit", LastName = "test",Position="xunit"};
             Employee employee2 = new Employee(){Id = 2, FirstName = "test", LastName ="unit", Position = "xunit xunit"};
+            List<Employee> employees = new(){employee1,employee2};
 
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -86,15 +88,13 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
             {
                 //Act
                 context.Database.EnsureCreated();
-                await context.AddAsync(employee1);
-                await context.AddAsync(employee2);
+                await context.AddRangeAsync(employees);
                 await context.SaveChangesAsync();
                 var employeeRepository = new EmployeeRepository(context);
                 var getEmployees = await employeeRepository.GetAllEmployeesAsync();
 
                 //Assert
-                Assert.Equal(employee1, getEmployees.FirstOrDefault(x=>x.Id == employee1.Id));
-                Assert.Equal(employee2, getEmployees.FirstOrDefault(x=>x.Id == employee2.Id));
+                Assert.Equal(employees,getEmployees);
             }
         }
 
