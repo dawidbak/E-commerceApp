@@ -11,6 +11,6 @@ namespace EcommerceApp.Application.ViewModels
         public string LastName { get; set; }
         public string Position { get; set; }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Employee, EmployeeVM>();
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Employee, EmployeeVM>().ReverseMap();
     }
 }
