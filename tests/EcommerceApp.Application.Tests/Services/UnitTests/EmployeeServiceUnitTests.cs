@@ -81,7 +81,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             var mock = new Mock<IEmployeeRepository>();
 
-            mock.SetupAsync(m => m.GetAllEmployeesAsync()).Returns(employees);
+            mock.SetupAsync(m => m.GetAllEmployeesAsync()).Returns(employees.AsQueryable());
 
             var service = new EmployeeService(mapper, mock.Object);
             //Act
@@ -94,6 +94,59 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
                 Assert.Equal(employees[i].LastName,results[i].LastName);
                 Assert.Equal(employees[i].Position,results[i].Position);
             }
+        }
+        [Fact]
+        public async Task CheckEmployeeIfCorrectUpdates()
+        {
+            //Arrange
+            Employee employee = new Employee();
+            EmployeeVM employeeVM = new EmployeeVM() { FirstName = "unit", LastName = "test", Position = "xunit" };
+
+            var config = new MapperConfiguration(c => c.AddProfile(new MappingProfile()));
+            var mapper = config.CreateMapper();
+
+            var mock = new Mock<IEmployeeRepository>();
+
+            mock.SetupAsync(m => m.UpdateEmployeeAsync(It.IsAny<Employee>())).Callback<Employee>(c =>
+             {
+                 employee = c;
+             });
+            var service = new EmployeeService(mapper, mock.Object);
+
+            //Act
+            await service.UpdateEmployeeAsync(employeeVM);
+
+            //Assert
+            mock.Verify(x => x.UpdateEmployeeAsync(It.IsAny<Employee>()), Times.Once);
+            Assert.Equal(employee.FirstName, employeeVM.FirstName);
+            Assert.Equal(employee.LastName, employeeVM.LastName);
+            Assert.Equal(employee.Position, employeeVM.Position);
+        }
+
+        [Fact]
+        public async Task CheckIfEmployeeDeleteMethodPassesToRepository()
+        {
+            //Arrange
+            Employee employee1 = new Employee();
+            Employee employee2 = new Employee() {Id = 1, FirstName = "unit", LastName = "test", Position = "xunit" };
+
+            var config = new MapperConfiguration(c => c.AddProfile(new MappingProfile()));
+            var mapper = config.CreateMapper();
+
+            var mock = new Mock<IEmployeeRepository>();
+
+            mock.Setup(m => m.DeleteEmployeeAsync(It.IsAny<int>())).Callback<int>(c => 
+            {
+                employee1.Id = c;
+            });
+            var service = new EmployeeService(mapper, mock.Object);
+
+            //Act
+            await service.DeleteEmployeeAsync(employee2.Id);
+
+            //Assert
+            mock.Verify(x => x.DeleteEmployeeAsync(It.IsAny<int>()), Times.Once);
+            Assert.Equal(employee1.Id,employee2.Id);
         }
     }
 }
