@@ -1,0 +1,13 @@
+@using Microsoft.AspNetCore.Identity
+@using EcommerceApp.Domain.Models;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User) && User.HasClaim("Admin", "True"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
+        </li>
+    }
+</ul>
