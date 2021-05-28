@@ -38,6 +38,7 @@ namespace EcommerceApp.Web
                 options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim("Admin","True"));
             });
             services.AddApplication();
+            services.AddInfrastructure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
