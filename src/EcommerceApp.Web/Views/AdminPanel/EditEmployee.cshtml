@@ -1,45 +1,56 @@
 @model EcommerceApp.Application.ViewModels.EmployeeVM
-@{
-ViewData["Title"] = "AddEmployee";
-}
-<center>
-  <h2>Edit employee details</h2>
-</center>
-<hr />
-<span style="float:left">
-  <div>
-    <h4>Current data</h4>
-    <dl class="dl-horizontal">
-      <dt>First Name:</dt>
-      <dd>@Model.FirstName</dd>
-      <dt>Last Name:</dt>
-      <dd>@Model.LastName</dd>
-      <dt>Position:</dt>
-      <dd>@Model.Position</dd>
-    </dl>
-  </div>
-</span>
-<span style="float:center">
+  @{
+    ViewData["Title"] = "Edit Employee Details";
+  }
   <center>
-    <p>Fill in the fields and create a new employee</p>
-    <div class="col-md-4">
-      <table>
-        <form asp-action="EditEmployee">
-          <div class="form-group">
-            <label asp-for="@Model.FirstName">First Name: </label>
-            <input asp-for="@Model.FirstName" />
-          </div>
-          <div class="form-group">
-            <label asp-for="@Model.LastName">Last Name: </label>
-            <input asp-for="@Model.LastName" />
-          </div>
-          <div class="form-group">
-            <label asp-for="@Model.Position">Position: </label>
-            <input asp-for="@Model.Position" />
-          </div>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </form>
-      </table>
-    </div>
+    <h2>@ViewData["Title"]</h2>
   </center>
-</span>
+  <hr />
+  <span style="float:left">
+    <div>
+      <h4>Current data</h4>
+      <dl class="dl-horizontal">
+        <dt>Email:</dt>
+        <dd>@Model.Email</dd>
+        <dt>First Name:</dt>
+        <dd>@Model.FirstName</dd>
+        <dt>Last Name:</dt>
+        <dd>@Model.LastName</dd>
+        <dt>Position:</dt>
+        <dd>@Model.Position</dd>
+      </dl>
+    </div>
+  </span>
+  <span style="float:center">
+    <center>
+      <p>Fill in the fields and edit employee details</p>
+      <div class="col-md-4">
+        <table>
+          <form asp-action="EditEmployee">
+            <div class="form-group">
+              <label asp-for="@Model.Email">Email: </label>
+              <input asp-for="@Model.Email" />
+            </div>
+            <div class="form-group">
+              <label asp-for="@Model.Password">Password: </label>
+              <input asp-for="@Model.Password" />
+              <p>(Leave blank if you don't want to change)</p>
+            </div>
+            <div class="form-group">
+              <label asp-for="@Model.FirstName">First Name: </label>
+              <input asp-for="@Model.FirstName" />
+            </div>
+            <div class="form-group">
+              <label asp-for="@Model.LastName">Last Name: </label>
+              <input asp-for="@Model.LastName" />
+            </div>
+            <div class="form-group">
+              <label asp-for="@Model.Position">Position: </label>
+              <input asp-for="@Model.Position" />
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </form>
+        </table>
+      </div>
+    </center>
+  </span>
