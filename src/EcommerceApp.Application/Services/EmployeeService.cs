@@ -34,7 +34,7 @@ namespace EcommerceApp.Application.Services
         public async Task<EmployeeVM> GetEmployeeAsync(int id)
         {
             var employee = await _employeeRepository.GetEmployeeAsync(id);
-            return _mapper.Map<EmployeeVM>(employee);
+            return  _mapper.Map<EmployeeVM>(employee);
         }
         public async Task UpdateEmployeeAsync(EmployeeVM employeeVM)
         {
