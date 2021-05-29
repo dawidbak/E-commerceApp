@@ -68,7 +68,10 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
                 var getEmployee = await employeeRepository.GetEmployeeAsync(employee.Id);
 
                 //Assert
-                Assert.Equal(employee, getEmployee);
+                Assert.Equal(employee.Id, getEmployee.Id);
+                Assert.Equal(employee.FirstName, getEmployee.FirstName);
+                Assert.Equal(employee.LastName, getEmployee.LastName);
+                Assert.Equal(employee.Position, getEmployee.Position);
             }
         }
 
