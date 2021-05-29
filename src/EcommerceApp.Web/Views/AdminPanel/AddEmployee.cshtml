@@ -1,0 +1,27 @@
+@model EcommerceApp.Application.ViewModels.EmployeeVM
+@{
+ViewData["Title"] = "AddEmployee";
+}
+<center>
+    <h1>@ViewData["Title"]</h1>
+    <p>Fill in the fields and create a new employee</p>
+    <div class="col-md-4">
+        <table>
+            <form asp-action="AddEmployee">
+                <div class="form-group">
+                    <label asp-for="@Model.FirstName">First Name: </label>
+                    <input asp-for="@Model.FirstName" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.LastName">Last Name: </label>
+                    <input asp-for="@Model.LastName" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Position">Position: </label>
+                    <input asp-for="@Model.Position" />
+                </div>
+                <button type="submit" class="btn btn-primary">Add Employee</button>
+            </form>
+        </table>
+    </div>
+</center>
