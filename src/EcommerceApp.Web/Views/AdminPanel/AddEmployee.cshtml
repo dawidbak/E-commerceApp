@@ -8,6 +8,15 @@ ViewData["Title"] = "AddEmployee";
     <div class="col-md-4">
         <table>
             <form asp-action="AddEmployee">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.Email">Email: </label>
+                    <input asp-for="@Model.Email" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Password">Password: </label>
+                    <input asp-for="@Model.Password" />
+                </div>
                 <div class="form-group">
                     <label asp-for="@Model.FirstName">First Name: </label>
                     <input asp-for="@Model.FirstName" />
