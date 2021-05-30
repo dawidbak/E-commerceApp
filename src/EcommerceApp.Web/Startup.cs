@@ -36,6 +36,7 @@ namespace EcommerceApp.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim("Admin","True"));
+                options.AddPolicy("Employee", policyBuilder => policyBuilder.RequireClaim("isEmployee","True"));
             });
             services.AddApplication();
             services.AddInfrastructure();

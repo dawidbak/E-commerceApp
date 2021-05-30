@@ -11,6 +11,7 @@ using AutoMapper;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Application.Services;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace EcommerceApp.Application.Tests.Services.UnitTests
 {
@@ -42,6 +43,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
             //Assert
             _employeeRepository.Verify(x => x.AddEmployeeAsync(It.IsAny<Employee>()), Times.Once);
             _userManager.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(),It.IsAny<string>()), Times.Once);
+            _userManager.Verify(x => x.AddClaimAsync(It.IsAny<ApplicationUser>(), It.IsAny<Claim>()), Times.Once);
             Assert.Equal(employee.FirstName, employeeVM.FirstName);
             Assert.Equal(employee.LastName, employeeVM.LastName);
             Assert.Equal(employee.Position, employeeVM.Position);
