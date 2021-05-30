@@ -36,28 +36,44 @@ namespace EcommerceApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmployeeVM employeeVM)
         {
-            await _employeeService.AddEmployeeAsync(employeeVM);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await _employeeService.AddEmployeeAsync(employeeVM);
+                return RedirectToAction("Index");
+            }
+            return BadRequest();
         }
 
-        public async Task<IActionResult> DeleteEmployee(int Id)
+        public async Task<IActionResult> DeleteEmployee(int? id)
         {
-            await _employeeService.DeleteEmployeeAsync(Id);
+            if (!id.HasValue)
+            {
+                return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/DeleteEmployee/21");
+            }
+            await _employeeService.DeleteEmployeeAsync(id.Value);
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public async Task<IActionResult> EditEmployee(int id)
+        public async Task<IActionResult> EditEmployee(int? id)
         {
-            var model = await _employeeService.GetEmployeeAsync(id);
+            if (!id.HasValue)
+            {
+                return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/EditEmployee/21");
+            }
+            var model = await _employeeService.GetEmployeeAsync(id.Value);
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditEmployee(EmployeeVM employeeVM)
         {
-            await _employeeService.UpdateEmployeeAsync(employeeVM);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await _employeeService.UpdateEmployeeAsync(employeeVM);
+                return RedirectToAction("Index");
+            }
+            return BadRequest();
         }
-        
+
     }
 }

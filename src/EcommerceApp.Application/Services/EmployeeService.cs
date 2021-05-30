@@ -9,6 +9,7 @@ using EcommerceApp.Domain.Models;
 using AutoMapper.QueryableExtensions;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace EcommerceApp.Application.Services
 {
@@ -32,6 +33,9 @@ namespace EcommerceApp.Application.Services
             var result = await _userManager.CreateAsync(user, employeeVM.Password);
 
             await _employeeRepository.AddEmployeeAsync(employee);
+
+            var claim = new Claim("isEmployee","True");
+            await _userManager.AddClaimAsync(user,claim);
         }
         public async Task<List<EmployeeVM>> GetAllEmployeesAsync()
         {
@@ -69,8 +73,8 @@ namespace EcommerceApp.Application.Services
         {
             var employee = await _employeeRepository.GetEmployeeAsync(id);
             var user = await _userManager.FindByIdAsync(employee.AppUserId);
-            await _userManager.DeleteAsync(user);
             await _employeeRepository.DeleteEmployeeAsync(id);
+            await _userManager.DeleteAsync(user);
         }
 
     }
