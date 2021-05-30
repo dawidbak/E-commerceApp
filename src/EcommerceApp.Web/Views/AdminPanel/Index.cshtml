@@ -4,7 +4,7 @@
     }
     <center>
         <h1>@ViewData["Title"]</h1>
-        <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="AddEmployee">AddEmployee</a>
+        <a class="btn btn-success" asp-controller="AdminPanel" asp-action="AddEmployee">AddEmployee</a>
     </center>
     <form asp-action="Index" asp-controller="AdminPanel">
         <table class="table">
@@ -39,9 +39,9 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="EditEmployee"
                             asp-route-id="@item.Id">Edit</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="DeleteEmployee"
+
+
+                        <a class="btn btn-danger" asp-controller="AdminPanel" asp-action="DeleteEmployee"
                             asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
