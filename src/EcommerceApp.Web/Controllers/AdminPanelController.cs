@@ -17,9 +17,11 @@ namespace EcommerceApp.Web.Controllers
     public class AdminPanelController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        public AdminPanelController(IEmployeeService employeeService)
+        private readonly ILogger<AdminPanelController> _logger;
+        public AdminPanelController(IEmployeeService employeeService,ILogger<AdminPanelController> logger)
         {
             _employeeService = employeeService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
