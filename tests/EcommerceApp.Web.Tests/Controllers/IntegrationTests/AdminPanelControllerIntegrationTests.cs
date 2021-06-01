@@ -163,6 +163,7 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
 
             //Assert
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+            Assert.Equal("/AdminPanel", response.Headers.Location.OriginalString);
         }
 
         [Fact]
@@ -228,6 +229,7 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
 
             //Assert
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+            Assert.Equal("/AdminPanel", response.Headers.Location.OriginalString);
         }
 
         [Fact]
@@ -259,6 +261,7 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
 
             //Assert
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+            Assert.Equal("/AdminPanel", response.Headers.Location.OriginalString);
         }
 
         [Fact]
