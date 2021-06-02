@@ -12,11 +12,7 @@ namespace EcommerceApp.Infrastructure
 
         }
         public DbSet<Employee> Employees{get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            builder.Entity<ApplicationUser>().HasOne(p => p.Employee).WithOne(p => p.AppUser).HasForeignKey<Employee>(k => k.AppUserId);
-        }
+        public DbSet<Product> Products{get; set; }
+        public DbSet<Category> Categories{get; set; }
     }
 }
