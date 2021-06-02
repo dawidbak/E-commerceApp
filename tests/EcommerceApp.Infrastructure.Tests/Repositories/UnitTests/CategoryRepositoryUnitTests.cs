@@ -39,7 +39,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetCategoryAsync_GetEmployeeAndCheckIfEqualToModel()
+        public async Task GetCategoryAsync_GetCategoryAndCheckIfEqualToModel()
         {
             //Arrange
             var category = new Category(){CategoryId = 10, Name ="GoodCategory", Description = "test"};
@@ -61,7 +61,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllCategoriesAsync_GetListOfEmployeesAndCheckAreEqualLikeModels()
+        public async Task GetAllCategoriesAsync_GetListOfCategoriesAndCheckAreEqualLikeModels()
         {
             //Arrange
             var category1 = new Category(){CategoryId = 10, Name ="GoodCategory", Description = "test"};
@@ -113,7 +113,7 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task CheckEmployeeExistsAfterDelete()
+        public async Task DeleteCategoryAsync_CheckCategoryExistsAfterDelete()
         {
             //Assert
             var category1 = new Category(){CategoryId = 10, Name ="GoodCategory", Description = "test"};
