@@ -1,9 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace EcommerceApp.Domain.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        [InverseProperty("AppUser")]
         public Employee Employee { get; set; }
     }
 }

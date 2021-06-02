@@ -24,9 +24,12 @@ namespace EcommerceApp.Domain.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
         public string AppUserId { get; set; }
 
         [ForeignKey("AppUserId")]
+        [InverseProperty(nameof(ApplicationUser.Employee))]
         public ApplicationUser AppUser { get; set; }
     }
 }
