@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
-using EcommerceApp.Application.ViewModels;
+using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Domain.Models;
 using AutoMapper;
 using EcommerceApp.Domain.Interfaces;

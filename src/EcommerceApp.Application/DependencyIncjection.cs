@@ -2,7 +2,7 @@ using System.Reflection;
 using EcommerceApp.Application.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using EcommerceApp.Application.Services;
-using EcommerceApp.Application.ViewModels;
+using EcommerceApp.Application.ViewModels.AdminPanel;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 

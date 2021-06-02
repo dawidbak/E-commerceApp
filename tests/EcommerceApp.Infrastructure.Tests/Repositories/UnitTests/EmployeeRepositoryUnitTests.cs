@@ -22,7 +22,8 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
                 Id = 123,
                 FirstName = "Andrew",
                 LastName = "Golavsky",
-                Position = "Product Management Specialist"
+                Position = "Product Management Specialist",
+                Email="test@test.com"
             };
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -51,7 +52,8 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
                 Id = 22,
                 FirstName = "unit",
                 LastName = "test",
-                Position = "xunit"
+                Position = "xunit",
+                Email="test@test.com"
             };
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -79,8 +81,8 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         public async Task GetListOfEmployeesAndCheckAreEqualLikeModels()
         {
             //Arrange
-            Employee employee1 = new Employee(){Id = 1, FirstName = "unit", LastName = "test",Position="xunit"};
-            Employee employee2 = new Employee(){Id = 2, FirstName = "test", LastName ="unit", Position = "xunit xunit"};
+            Employee employee1 = new Employee(){Id = 1, FirstName = "unit", LastName = "test",Position="xunit",Email="test@test.com"};
+            Employee employee2 = new Employee(){Id = 2, FirstName = "test", LastName ="unit", Position = "xunit xunit",Email="test2@test.com"};
             List<Employee> employees = new(){employee1,employee2};
 
             var connection = new SqliteConnection("DataSource=:memory:");
@@ -105,8 +107,8 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         public async Task ShouldUpdateEmployeeFirstNameAndLastNameAndPosition()
         {
             //Arrange
-            Employee employee = new Employee(){Id = 1, FirstName = "first", LastName = "last",Position="empty"};
-            Employee updatedEmployee = new Employee(){Id = 1, FirstName = "Jan", LastName ="Kowalski", Position = "Junior"};
+            Employee employee = new Employee(){Id = 1, FirstName = "first", LastName = "last",Position="empty",Email="test@test.com"};
+            Employee updatedEmployee = new Employee(){Id = 1, FirstName = "Jan", LastName ="Kowalski", Position = "Junior",Email="test2@test.com"};
 
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -140,8 +142,8 @@ namespace EcommerceApp.Infrastructure.Repositories.UnitTests
         public async Task CheckEmployeeExistsAfterDelete()
         {
             //Assert
-            Employee employee1 = new Employee(){Id = 98, FirstName = "unit", LastName = "test",Position="xunit"};
-            Employee employee2 = new Employee(){Id = 99, FirstName = "test", LastName ="unit", Position = "xunit xunit"};
+            Employee employee1 = new Employee(){Id = 98, FirstName = "unit", LastName = "test",Position="xunit",Email="test@test.com"};
+            Employee employee2 = new Employee(){Id = 99, FirstName = "test", LastName ="unit", Position = "xunit xunit",Email="test2@test.com"};
 
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();

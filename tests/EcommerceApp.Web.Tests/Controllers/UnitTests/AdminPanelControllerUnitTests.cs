@@ -8,7 +8,7 @@ using Moq;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Web.Controllers;
 using Microsoft.Extensions.Logging;
-using EcommerceApp.Application.ViewModels;
+using EcommerceApp.Application.ViewModels.AdminPanel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Web.Tests.Controllers.UnitTests

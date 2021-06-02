@@ -4,7 +4,7 @@ using AutoMapper;
 using EcommerceApp.Application.Mapping;
 using FluentValidation;
 
-namespace EcommerceApp.Application.ViewModels
+namespace EcommerceApp.Application.ViewModels.AdminPanel
 {
     public class EmployeeVM : IMapFrom<Domain.Models.Employee>
     {
@@ -29,12 +29,9 @@ namespace EcommerceApp.Application.ViewModels
             public EmployeeValidator()
             {
                 RuleFor(x => x.Id).NotNull().WithMessage("You must provide a valid {Id}");
-                RuleFor(x => x.FirstName).NotEmpty().MinimumLength(2).MaximumLength(50)
-                .WithMessage("The {FirstName} must be at least {MinimumLength} and at max {MaximumLength} characters long.");
-                RuleFor(x => x.LastName).NotEmpty().MinimumLength(2).MaximumLength(50)
-                .WithMessage("The {LastName} must be at least {MinimumLength} and at max {MaximumLength} characters long.");
-                RuleFor(x => x.Position).NotEmpty().MinimumLength(2).MaximumLength(50)
-                .WithMessage("The {LastName} must be at least {MinimumLength} and at max {MaximumLength} characters long.");
+                RuleFor(x => x.FirstName).NotEmpty().MinimumLength(2).MaximumLength(50);
+                RuleFor(x => x.LastName).NotEmpty().MinimumLength(2).MaximumLength(50);
+                RuleFor(x => x.Position).NotEmpty().MinimumLength(2).MaximumLength(50);
                 RuleFor(x => x.Email).EmailAddress().NotEmpty();
                 
             }

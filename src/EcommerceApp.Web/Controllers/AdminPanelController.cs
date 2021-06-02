@@ -9,7 +9,7 @@ using EcommerceApp.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using EcommerceApp.Infrastructure.Repositories;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Application.ViewModels;
+using EcommerceApp.Application.ViewModels.AdminPanel;
 
 namespace EcommerceApp.Web.Controllers
 {
