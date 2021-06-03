@@ -10,6 +10,7 @@ namespace EcommerceApp.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+            services.AddScoped<ICategoryRepository,CategoryRepository>();
             
             return services;
         }
