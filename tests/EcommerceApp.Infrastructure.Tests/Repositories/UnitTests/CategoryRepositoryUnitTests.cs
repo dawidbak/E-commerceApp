@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using EcommerceApp.Domain.Models;
 using EcommerceApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore.InMemory;
+using EcommerceApp.Infrastructure.Repositories;
 
-namespace EcommerceApp.Infrastructure.Repositories.UnitTests
+namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
 {
     public class CategoryRepositoryUnitTests
     {
