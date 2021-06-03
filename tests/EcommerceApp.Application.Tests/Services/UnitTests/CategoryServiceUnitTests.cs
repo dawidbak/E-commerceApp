@@ -23,7 +23,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         }
 
         [Fact]
-        public async Task AddCategoryAsync_ShouldCategoryExistsAfterAdd()
+        public async Task AddCategoryAsync_ShouldCategoryAddMethodRunsOnce()
         {
             //Arrange
             var category = new Category() { CategoryId = 10, Name = "GoodCategory", Description = "test" };
@@ -36,9 +36,6 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             //Assert
             _categoryRepository.Verify(c => c.AddCategoryAsync(It.IsAny<Category>()), Times.Once);
-            Assert.Equal(category.CategoryId, categoryVM.CategoryId);
-            Assert.Equal(category.Name, categoryVM.Name);
-            Assert.Equal(category.Description, categoryVM.Description);
         }
 
         [Fact]
