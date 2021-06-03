@@ -26,7 +26,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 var sut = new ProductRepository(context);
                 await sut.AddProductAsync(product);
                 var result = await context.Products.FindAsync(product.ProductId);
@@ -45,7 +45,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.Products.AddAsync(product);
                 await context.SaveChangesAsync();
                 var sut = new ProductRepository(context);
@@ -67,7 +67,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.AddRangeAsync(products);
                 await context.SaveChangesAsync();
                 var sut = new ProductRepository(context);
@@ -88,14 +88,14 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.AddAsync(product1);
                 await context.SaveChangesAsync();
             }
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 var sut = new ProductRepository(context);
                 await sut.UpdateProductAsync(product2);
                 var result = await context.Products.FindAsync(product1.ProductId);
@@ -118,7 +118,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.Products.AddAsync(product);
                 await context.SaveChangesAsync();
                 var sut = new ProductRepository(context);

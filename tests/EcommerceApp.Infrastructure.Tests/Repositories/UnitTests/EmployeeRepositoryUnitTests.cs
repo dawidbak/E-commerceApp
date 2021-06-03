@@ -35,7 +35,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 var sut = new EmployeeRepository(context);
                 await sut.AddEmployeeAsync(employee);
                 var employeeResult = await context.Employees.FindAsync(employee.Id);
@@ -61,7 +61,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 context.Add(employee);
                 context.SaveChanges();
                 var sut = new EmployeeRepository(context);
@@ -86,6 +86,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
+                await context.Database.EnsureCreatedAsync();
                 await context.AddRangeAsync(employees);
                 await context.SaveChangesAsync();
                 var sut = new EmployeeRepository(context);
@@ -106,13 +107,14 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.AddAsync(employee);
                 await context.SaveChangesAsync();
             }
             using (var context = new AppDbContext(_options))
             {
                 //Act
+                await context.Database.EnsureCreatedAsync();
                 var sut = new EmployeeRepository(context);
                 await sut.UpdateEmployeeAsync(updatedEmployee);
                 var employeeAfterUpdate = await context.Employees.FindAsync(employee.Id);
@@ -135,7 +137,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
             using (var context = new AppDbContext(_options))
             {
                 //Act
-                context.Database.EnsureCreated();
+                await context.Database.EnsureCreatedAsync();
                 await context.AddAsync(employee1);
                 await context.AddAsync(employee2);
                 await context.SaveChangesAsync();
