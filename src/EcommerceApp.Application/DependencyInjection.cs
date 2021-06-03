@@ -9,16 +9,18 @@ using EcommerceApp.Application.ViewModels.EmployeePanel;
 
 namespace EcommerceApp.Application
 {
-    public static class DependencyIncjection
+    public static class DependencyInjection
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IEmployeeService,EmployeeService>();
             services.AddScoped<ICategoryService,CategoryService>();
+            services.AddScoped<IProductService,ProductService>();
             services.AddMvc().AddFluentValidation();
             services.AddTransient<IValidator<EmployeeVM>, EmployeeValidator>();
             services.AddTransient<IValidator<CategoryVM>, CategoryValidator>();
+            services.AddTransient<IValidator<ProductVM>, ProductValidator>();
             
             return services;
         }
