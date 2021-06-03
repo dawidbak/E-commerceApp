@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EcommerceApp.Application.Interfaces;
@@ -33,7 +34,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<List<CategoryVM>> GetAllCategoriesAsync()
         {
-            var categories =  (await _categoryRepository.GetAllCategoriesAsync()).ToListAsync();
+            var categories =  (await _categoryRepository.GetAllCategoriesAsync()).ToList();
             return _mapper.Map<List<CategoryVM>>(categories);
         }
 
