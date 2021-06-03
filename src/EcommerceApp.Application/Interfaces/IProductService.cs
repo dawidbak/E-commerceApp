@@ -8,9 +8,9 @@ namespace EcommerceApp.Application.Interfaces
     public interface IProductService
     {
         Task AddProductAsync(ProductVM productVM);
-        Task<ProductVM> GetProductAsync(int productVMId);
+        Task<ProductVM> GetProductAsync(int id);
         Task<List<ProductVM>> GetAllProductsAsync();
         Task UpdateProductAsync(ProductVM productVM);
-        Task DeleteProductAsync(int productVMId);
+        Task DeleteProductAsync(int id);
     }
 }
