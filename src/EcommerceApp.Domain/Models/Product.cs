@@ -27,6 +27,10 @@ namespace EcommerceApp.Domain.Models
 
         public int CategoryId { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string CategoryName { get; set; }
+
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Products")]
         public Category Category { get; set; }
