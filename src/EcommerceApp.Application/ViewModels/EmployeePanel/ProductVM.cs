@@ -18,7 +18,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Product, ProductVM>().ReverseMap();
     }
 
-    public class ProductValidator : AbstractValidator<Domain.Models.Product>
+    public class ProductValidator : AbstractValidator<ProductVM>
     {
         public ProductValidator()
         {
