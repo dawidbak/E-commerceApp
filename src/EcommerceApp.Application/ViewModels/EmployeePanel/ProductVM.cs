@@ -3,6 +3,7 @@ using System;
 using EcommerceApp.Application.Mapping;
 using AutoMapper;
 using FluentValidation;
+using System.Collections.Generic;
 
 namespace EcommerceApp.Application.ViewModels.EmployeePanel
 {
@@ -14,6 +15,8 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         public decimal UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
         public byte[] Picture { get; set; }
+        public string CategoryName { get; set; }
+        public List<CategoriesVM> Categories { get; set; }
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Product, ProductVM>().ReverseMap();
     }
