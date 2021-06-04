@@ -1,14 +1,14 @@
 using System;
-using Xunit;
-using Moq;
-using EcommerceApp.Application.Services;
-using AutoMapper;
-using EcommerceApp.Domain.Interfaces;
-using System.Threading.Tasks;
-using EcommerceApp.Domain.Models;
-using EcommerceApp.Application.ViewModels.EmployeePanel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using EcommerceApp.Application.Services;
+using EcommerceApp.Application.ViewModels.EmployeePanel;
+using EcommerceApp.Domain.Interfaces;
+using EcommerceApp.Domain.Models;
+using Moq;
+using Xunit;
 
 namespace EcommerceApp.Application.Tests.Services.UnitTests
 {
@@ -21,7 +21,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
         public ProductServiceUnitTests()
         {
-            _sut = new ProductService(_productRepository.Object,_categoryRepository.Object, _mapper.Object);
+            _sut = new ProductService(_productRepository.Object, _categoryRepository.Object, _mapper.Object);
         }
 
         [Fact]
@@ -29,9 +29,9 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         {
             //Arrange
             var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
-            var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, CategoryName="mleko" };
-            var category = new Category(){Id = 1, Name="mleko"};
-            
+            var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, CategoryName = "mleko" };
+            var category = new Category() { Id = 1, Name = "mleko" };
+
             _categoryRepository.Setup(x => x.GetCategoryAsync(productVM.CategoryName)).ReturnsAsync(category);
             _mapper.Setup(x => x.Map<Product>(productVM)).Returns(product);
 
@@ -110,8 +110,10 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
             //Arrange
             var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
             var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
+            var category = new Category() { Id = 1, Name = "mleko" };
 
             _mapper.Setup(x => x.Map<Product>(productVM)).Returns(product);
+            _categoryRepository.Setup(x => x.GetCategoryAsync(productVM.CategoryName)).ReturnsAsync(category);
 
             //Act
             await _sut.UpdateProductAsync(productVM);
