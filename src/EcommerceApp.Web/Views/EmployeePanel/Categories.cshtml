@@ -2,35 +2,36 @@
     @{
     ViewData["Title"] = "List of Categories";
     }
-    <center>
+    <div class="text-center">
         <h1>@ViewData["Title"]</h1>
-        <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a>
-    </center>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
-                        asp-route-id="@item.CategoryId">Edit</a>
+        <p><a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a></p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
+                            asp-route-id="@item.CategoryId">Edit</a>
 
-                    <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
-                        asp-route-id="@item.CategoryId">Delete</a>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+                        <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
+                            asp-route-id="@item.CategoryId">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
