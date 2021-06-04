@@ -1,15 +1,15 @@
-using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Xunit;
-using Moq;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Web.Controllers;
-using Microsoft.Extensions.Logging;
 using EcommerceApp.Application.ViewModels.AdminPanel;
+using EcommerceApp.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
 
 namespace EcommerceApp.Web.Tests.Controllers.UnitTests
 {
