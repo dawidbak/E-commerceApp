@@ -1,0 +1,14 @@
+@{
+ViewData["Title"] = "Employee Panel";
+}
+<center>
+    <h1>@ViewData["Title"]</h1>
+    <div class="container">
+        <dl class="dl-horizontal">
+
+            <dt><a class="btn btn-primary btn-lg" asp-controller="EmployeePanel" asp-action="Categories">Category Management</a></dt>
+            <dd></dd>
+            <dt><a class="btn btn-primary btn-lg" asp-controller="EmployeePanel" asp-action="Products">Product Management</a></dt>
+        </dl>
+    </div>
+</center>

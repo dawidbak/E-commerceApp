@@ -1,0 +1,48 @@
+@model List<EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM>;
+    @{
+    ViewData["Title"] = "List of Products";
+    }
+    <center>
+        <h1>@ViewData["Title"]</h1>
+        <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
+    </center>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Category Name</th>
+                <th>Name</th>
+                <th>Unit Price</th>
+                <th>Units in Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsInStock)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditProduct"
+                        asp-route-id="@item.ProductId">Edit</a>
+
+                    <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteProduct"
+                        asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
