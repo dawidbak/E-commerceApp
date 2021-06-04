@@ -33,6 +33,6 @@ namespace EcommerceApp.Domain.Models
 
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Products")]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }
