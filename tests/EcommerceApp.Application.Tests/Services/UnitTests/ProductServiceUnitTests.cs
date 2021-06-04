@@ -29,8 +29,10 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         {
             //Arrange
             var product = new Product() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
-            var productVM = new ProductVM() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
-
+            var productVM = new ProductVM() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, CategoryName="mleko" };
+            var category = new Category(){CategoryId = 1, Name="mleko"};
+            
+            _categoryRepository.Setup(x => x.GetCategoryAsync(productVM.CategoryName)).ReturnsAsync(category);
             _mapper.Setup(x => x.Map<Product>(productVM)).Returns(product);
 
             //Act
@@ -92,33 +94,14 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
             var product = new Product() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
             var productVM = new ProductVM() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
 
-            List<Category> categories = new()
-            {
-                new Category{CategoryId = 1, Name = "Item1", Description = "test1"},
-                new Category{CategoryId = 2, Name = "Item2", Description = "test2"},
-                new Category{CategoryId = 3, Name = "Item3", Description = "test3"},
-            };
-            List<CategoriesVM> categoriesVM = new()
-            {
-                new CategoriesVM{CategoryId = 1, Name = "Item1"},
-                new CategoriesVM{CategoryId = 2, Name = "Item2"},
-                new CategoriesVM{CategoryId = 3, Name = "Item3"},
-            };
-
-            var productVMWithCategoriesList = new ProductVM() { ProductId = 1, Name = "Item", Description = "test", UnitPrice = 1.29M,
-            UnitsInStock = 5, Categories = categoriesVM};
-
             _productRepository.Setup(x => x.GetProductAsync(product.ProductId)).ReturnsAsync(product);
-            _categoryRepository.Setup(x => x.GetAllCategoriesAsync()).ReturnsAsync(categories.AsQueryable);
-            _mapper.Setup(x => x.Map<List<CategoriesVM>>(categories)).Returns(categoriesVM);
             _mapper.Setup(x => x.Map<ProductVM>(product)).Returns(productVM);
 
             //Act
             var result = await _sut.GetProductAsync(productVM.ProductId);
 
             //Assert
-            Assert.Equal(productVMWithCategoriesList.ProductId, result.ProductId);
-            Assert.Equal(productVMWithCategoriesList.Categories,result.Categories);
+            Assert.Equal(productVM.ProductId, result.ProductId);
         }
 
         [Fact]
