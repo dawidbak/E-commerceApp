@@ -25,7 +25,7 @@ namespace EcommerceApp.Infrastructure.Repositories
         public async Task DeleteCategoryAsync(int categoryId)
         {
             var category = await _appDbContext.Categories.FindAsync(categoryId);
-            if(category != null)
+            if (category != null)
             {
                 _appDbContext.Categories.Remove(category);
                 await _appDbContext.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace EcommerceApp.Infrastructure.Repositories
         {
             return await _appDbContext.Categories.FindAsync(categoryId);
         }
-        
+
         public async Task<Category> GetCategoryAsync(string categoryName)
         {
             return await _appDbContext.Categories.FirstOrDefaultAsync(x => x.Name == categoryName);

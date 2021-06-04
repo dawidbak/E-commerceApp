@@ -10,12 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace EcommerceApp.Web.Controllers
 {
-    [Authorize(Policy ="EmployeePanelEntry")]
+    [Authorize(Policy = "EmployeePanelEntry")]
     public class EmployeePanelController : Controller
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-       private readonly ILogger<EmployeePanelController> _logger;
+        private readonly ILogger<EmployeePanelController> _logger;
 
         public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger)
         {
