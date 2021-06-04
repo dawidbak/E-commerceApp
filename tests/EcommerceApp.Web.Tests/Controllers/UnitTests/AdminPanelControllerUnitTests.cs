@@ -47,7 +47,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public void AddEmployeeGet_ReturnCorrectViewResult()
+        public void AddEmployee_Get_ReturnCorrectViewResult()
         {
             //Arrange
 
@@ -60,7 +60,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task AddEmployeePost_ReturnsBadRequestResult_WhenModelStateIsInvalid()
+        public async Task AddEmployee_Post_ReturnsBadRequestResultWhenModelStateIsInvalid()
         {
             //Arrange
             var employeeVM = new EmployeeVM() { Id = 1, FirstName = "n", LastName = "test", Position = "xunit" };
@@ -75,7 +75,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task AddEmployeePost_ReturnsARedirectAndAddsEmployee_WhenModelStateIsValid()
+        public async Task AddEmployee_Post_ReturnsRedirectAndAddsEmployeeWhenModelStateIsValid()
         {
             //Arrange
             var employeeVM = new EmployeeVM() { FirstName = "unit", LastName = "test", Position = "xunit" };
@@ -121,7 +121,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task EditEmployeeGet_ReturnsNotFoundWhenIdIsNull()
+        public async Task EditEmployee_Get_ReturnsNotFoundWhenIdIsNull()
         {
             //Arrange
             int? id = null;
@@ -135,7 +135,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task EditEmployeeGet_ReturnsViewResultWithEmployeeViewModel()
+        public async Task EditEmployee_Get_ReturnsViewResultWithEmployeeViewModel()
         {
             //Arrange
             var employeeVM = new EmployeeVM() { Id = 2, FirstName = "unit", LastName = "test", Position = "xunit" };
@@ -155,7 +155,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task EditEmployeePost_ReturnsBadRequestResult_WhenModelStateIsInvalid()
+        public async Task EditEmployee_Post_ReturnsBadRequestResultWhenModelStateIsInvalid()
         {
             //Arrange
             var employeeVM = new EmployeeVM() { Id = 2, FirstName = "unit", LastName = "test", Position = "xunit" };
@@ -169,7 +169,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task EditEmployeePost_ReturnsARedirectAndUpdatesEmployee_WhenModelStateIsValid()
+        public async Task EditEmployee_Post_ReturnsARedirectAndUpdatesEmployeeWhenModelStateIsValid()
         {
             //Arrange
             var employeeVM = new EmployeeVM() { Id = 2, FirstName = "unit", LastName = "test", Position = "xunit" };
