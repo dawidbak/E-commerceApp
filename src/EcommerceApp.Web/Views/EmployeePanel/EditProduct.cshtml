@@ -1,6 +1,6 @@
 @model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
 @{
-ViewData["Title"] = "Edit Product Details";
+    ViewData["Title"] = "Edit Product Details";
 }
 <center>
     <h2>@ViewData["Title"]</h2>
@@ -29,7 +29,7 @@ ViewData["Title"] = "Edit Product Details";
     <center>
         <p>Fill in the fields and edit product details</p>
         <div class="col-md-6">
-            <form asp-action="EditCategory">
+            <form asp-action="EditProduct">
                 <div class="form-group">
                     <label asp-for="@Model.Name"></label>
                     <p><input asp-for="@Model.Name" /></p>
