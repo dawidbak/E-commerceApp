@@ -10,14 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace EcommerceApp.Web.Controllers
 {
-    [Authorize("Admin,Employee")]
+    [Authorize(Policy ="EmployeePanelEntry")]
     public class EmployeePanelController : Controller
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly ILogger _logger;
+       private readonly ILogger<EmployeePanelController> _logger;
 
-        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger logger)
+        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger)
         {
             _productService = productService;
             _categoryService = categoryService;
@@ -44,7 +44,7 @@ namespace EcommerceApp.Web.Controllers
         public async Task<IActionResult> AddProduct()
         {
             var model = await _categoryService.GetAllCategoriesAsync();
-            return View(model);
+            return View();
         }
 
         [HttpPost]
