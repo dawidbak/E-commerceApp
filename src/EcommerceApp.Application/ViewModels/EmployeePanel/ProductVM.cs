@@ -9,7 +9,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
 {
     public class ProductVM : IMapFrom<Domain.Models.Product>
     {
-        public int ProductId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal UnitPrice { get; set; }
@@ -24,7 +24,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
     {
         public ProductValidator()
         {
-            RuleFor(x => x.ProductId).NotNull();
+            RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Description).MaximumLength(200);
             RuleFor(x => x.UnitPrice).NotEmpty().ScalePrecision(2,18);

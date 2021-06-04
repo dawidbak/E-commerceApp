@@ -1,6 +1,6 @@
-@model EcommerceApp.Application.ViewModels.EmployeePanel.CategoryVM
+@model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
 @{
-ViewData["Title"] = "Edit Category Details";
+ViewData["Title"] = "Edit Product Details";
 }
 <center>
     <h2>@ViewData["Title"]</h2>
@@ -14,6 +14,12 @@ ViewData["Title"] = "Edit Category Details";
             <dd>@Model.Name</dd>
             <dt>Description:</dt>
             <dd>@Model.Description</dd>
+            <dt>Unit Price:</dt>
+            <dd>@Model.UnitPrice</dd>
+            <dt>Units in Stock:</dt>
+            <dd>@Model.UnitsInStock</dd>
+            <dt>Category Name:</dt>
+            <dd>@Model.CategoryName</dd>
             <dt>Picture:</dt>
             <dd>@Model.Picture</dd>
         </dl>
@@ -21,7 +27,7 @@ ViewData["Title"] = "Edit Category Details";
 </span>
 <span style="float:center">
     <center>
-        <p>Fill in the fields and edit category details</p>
+        <p>Fill in the fields and edit product details</p>
         <div class="col-md-6">
             <form asp-action="EditCategory">
                 <div class="form-group">
@@ -33,6 +39,21 @@ ViewData["Title"] = "Edit Category Details";
                     <label asp-for="@Model.Description"></label>
                     <p><input asp-for="@Model.Description" /></p>
                     <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.UnitPrice"></label>
+                    <p><input asp-for="@Model.UnitPrice" /></p>
+                    <span asp-validation-for="@Model.UnitPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.UnitsInStock"></label>
+                    <p><input asp-for="@Model.UnitsInStock" /></p>
+                    <span asp-validation-for="@Model.UnitsInStock" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.CategoryName"></label>
+                    <p><input asp-for="@Model.CategoryName" /></p>
+                    <span asp-validation-for="@Model.CategoryName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Picture"></label>

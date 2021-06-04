@@ -1,6 +1,6 @@
 @model List<EcommerceApp.Application.ViewModels.EmployeePanel.CategoryVM>;
     @{
-    ViewData["Title"] = "List of Categories";
+    ViewData["Title"] = "Category management";
     }
     <div class="text-center">
         <h1>@ViewData["Title"]</h1>
@@ -18,17 +18,17 @@
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CategoryId)
+                        @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
-                            asp-route-id="@item.CategoryId">Edit</a>
+                            asp-route-id="@item.Id">Edit</a>
 
                         <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
-                            asp-route-id="@item.CategoryId">Delete</a>
+                            asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
                 }

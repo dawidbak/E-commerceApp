@@ -7,7 +7,7 @@ namespace EcommerceApp.Domain.Models
     public class Product
     {
         [Key]
-        public int ProductId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]

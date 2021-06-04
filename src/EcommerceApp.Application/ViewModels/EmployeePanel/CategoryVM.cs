@@ -7,7 +7,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
 {
     public class CategoryVM : IMapFrom<Domain.Models.Category>
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public byte[] Picture { get; set;}
@@ -19,7 +19,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         {
             public CategoryValidator()
             {
-                RuleFor(x => x.CategoryId).NotNull();
+                RuleFor(x => x.Id).NotNull();
                 RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
                 RuleFor(x => x.Description).MaximumLength(200);
             }

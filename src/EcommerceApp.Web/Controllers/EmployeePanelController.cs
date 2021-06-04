@@ -41,9 +41,8 @@ namespace EcommerceApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddProduct()
+        public IActionResult AddProduct()
         {
-            var model = await _categoryService.GetAllCategoriesAsync();
             return View();
         }
 

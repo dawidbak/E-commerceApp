@@ -26,7 +26,7 @@ namespace EcommerceApp.Application.Services
         {
             var product = _mapper.Map<Product>(productVM);
             var category = await _categoryRepository.GetCategoryAsync(productVM.CategoryName);
-            product.CategoryId = category.CategoryId;
+            product.CategoryId = category.Id;
             await _productRepository.AddProductAsync(product);
         }
 
