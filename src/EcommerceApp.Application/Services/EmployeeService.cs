@@ -31,7 +31,7 @@ namespace EcommerceApp.Application.Services
             var user = new ApplicationUser { UserName = employeeVM.Email, Email = employeeVM.Email };
             employee.AppUserId = user.Id;
             var result = await _userManager.CreateAsync(user, employeeVM.Password);
-
+            await _userManager.ConfirmEmailAsync(user,await _userManager.GenerateEmailConfirmationTokenAsync(user));
             await _employeeRepository.AddEmployeeAsync(employee);
 
             var claim = new Claim("isEmployee","True");
