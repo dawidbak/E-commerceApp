@@ -16,7 +16,6 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         public int UnitsInStock { get; set; }
         public byte[] Picture { get; set; }
         public string CategoryName { get; set; }
-        public List<CategoriesVM> Categories { get; set; }
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Product, ProductVM>().ReverseMap();
     }
