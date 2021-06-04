@@ -1,0 +1,54 @@
+@model EcommerceApp.Application.ViewModels.EmployeePanel.CategoryVM
+@{
+ViewData["Title"] = "Edit Category Details";
+}
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
+<hr />
+<span style="float:left">
+    <div>
+        <h4>Current data</h4>
+        <dl class="dl-horizontal">
+            <dt>Name:</dt>
+            <dd>@Model.Name</dd>
+            <dt>Description:</dt>
+            <dd>@Model.Description</dd>
+            <dt>Picture:</dt>
+            <dd>@Model.Picture</dd>
+        </dl>
+    </div>
+</span>
+<span style="float:center">
+    <center>
+        <p>Fill in the fields and edit category details</p>
+        <div class="col-md-6">
+            <form asp-action="EditCategory" asp-controller="EmployeePanel">
+                <div class="form-group">
+                    <label asp-for="@Model.Name">Name: </label>
+                    <input asp-for="@Model.Name" />
+                    <p></p>
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Description">Description: </label>
+                    <input asp-for="@Model.Description" />
+                    <p></p>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Picture">Picture: </label>
+                    <input asp-for="@Model.Picture" />
+                    <p></p>
+                    <span asp-validation-for="@Model.Picture" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+        </div>
+    </center>
+</span>
+
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial" />
+}
