@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.Services;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Domain.Interfaces;
@@ -16,10 +17,11 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         private readonly CategoryService _sut;
         private readonly Mock<IMapper> _mapper = new Mock<IMapper>();
         private readonly Mock<ICategoryRepository> _categoryRepository = new Mock<ICategoryRepository>();
+        private readonly Mock<IImageConverterService> _imageConverterService = new Mock<IImageConverterService>();
 
         public CategoryServiceUnitTests()
         {
-            _sut = new CategoryService(_categoryRepository.Object, _mapper.Object);
+            _sut = new CategoryService(_categoryRepository.Object, _mapper.Object, _imageConverterService.Object);
         }
 
         [Fact]
