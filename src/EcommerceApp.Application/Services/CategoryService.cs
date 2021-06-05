@@ -15,38 +15,44 @@ namespace EcommerceApp.Application.Services
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+        private readonly IImageConverterService _imageConverterService;
 
-        public CategoryService(ICategoryRepository categoryRepository,IMapper mapper)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
+            _imageConverterService = imageConverterService;
         }
         public async Task AddCategoryAsync(CategoryVM categoryVM)
         {
             var category = _mapper.Map<Category>(categoryVM);
+            category.Image = await _imageConverterService.GetByteArrayFromImageAsync(categoryVM.ImageFormFile);
             await _categoryRepository.AddCategoryAsync(category);
         }
 
         public async Task DeleteCategoryAsync(int categoryVMId)
         {
-           await _categoryRepository.DeleteCategoryAsync(categoryVMId);
+            await _categoryRepository.DeleteCategoryAsync(categoryVMId);
         }
 
         public async Task<List<CategoryVM>> GetAllCategoriesAsync()
         {
-            var categories =  (await _categoryRepository.GetAllCategoriesAsync()).ToList();
+            var categories = (await _categoryRepository.GetAllCategoriesAsync()).ToList();
             return _mapper.Map<List<CategoryVM>>(categories);
         }
 
         public async Task<CategoryVM> GetCategoryAsync(int categoryVMId)
         {
             var category = await _categoryRepository.GetCategoryAsync(categoryVMId);
-            return _mapper.Map<CategoryVM>(category);
+            var categoryVM = _mapper.Map<CategoryVM>(category);
+            categoryVM.ImageUrl = _imageConverterService.GetImageUrlFromByteArray(category.Image);
+            return categoryVM;
         }
 
         public async Task UpdateCategoryAsync(CategoryVM categoryVM)
         {
             var category = _mapper.Map<Category>(categoryVM);
+            category.Image = await _imageConverterService.GetByteArrayFromImageAsync(categoryVM.ImageFormFile);
             await _categoryRepository.UpdateCategoryAsync(category);
         }
     }
