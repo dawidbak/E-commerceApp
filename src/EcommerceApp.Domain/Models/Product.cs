@@ -23,7 +23,7 @@ namespace EcommerceApp.Domain.Models
         [Required]
         public int UnitsInStock { get; set; }
 
-        public byte[] Picture { get; set; }
+        public byte[] Image { get; set; }
 
         public int CategoryId { get; set; }
 
