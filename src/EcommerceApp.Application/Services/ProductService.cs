@@ -15,18 +15,21 @@ namespace EcommerceApp.Application.Services
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+        private readonly IImageConverterService _imageConverterService;
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+            _imageConverterService = imageConverterService;
         }
         public async Task AddProductAsync(ProductVM productVM)
         {
             var product = _mapper.Map<Product>(productVM);
             var category = await _categoryRepository.GetCategoryAsync(productVM.CategoryName);
             product.CategoryId = category.Id;
+            product.Image = await _imageConverterService.GetByteArrayFromImageAsync(productVM.ImageFormFile);
             await _productRepository.AddProductAsync(product);
         }
 
@@ -44,7 +47,9 @@ namespace EcommerceApp.Application.Services
         public async Task<ProductVM> GetProductAsync(int id)
         {
             var product = await _productRepository.GetProductAsync(id);
-            return _mapper.Map<ProductVM>(product);
+            var productVM =  _mapper.Map<ProductVM>(product);
+            productVM.ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image);
+            return productVM;
         }
 
         public async Task UpdateProductAsync(ProductVM productVM)
@@ -52,6 +57,7 @@ namespace EcommerceApp.Application.Services
             var product = _mapper.Map<Product>(productVM);
             var category = await _categoryRepository.GetCategoryAsync(product.CategoryName);
             product.CategoryId = category.Id;
+            product.Image = await _imageConverterService.GetByteArrayFromImageAsync(productVM.ImageFormFile);
             await _productRepository.UpdateProductAsync(product);
         }
     }
