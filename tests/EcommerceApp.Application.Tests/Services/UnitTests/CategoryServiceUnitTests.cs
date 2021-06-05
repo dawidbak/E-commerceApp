@@ -19,6 +19,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         private readonly Mock<IMapper> _mapper = new Mock<IMapper>();
         private readonly Mock<ICategoryRepository> _categoryRepository = new Mock<ICategoryRepository>();
         private readonly Mock<IImageConverterService> _imageConverterService = new ();
+        private readonly Mock<IFormFile> _fileMock = new();
 
         public CategoryServiceUnitTests()
         {
@@ -29,10 +30,11 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         public async Task AddCategoryAsync_ShouldCategoryAddMethodRunsOnce()
         {
             //Arrange
-            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test",Image = new byte[]{1,2,3} };
             var categoryVM = new CategoryVM() { Id = 10, Name = "GoodCategory", Description = "test" };
 
             _mapper.Setup(x => x.Map<Category>(categoryVM)).Returns(category);
+            _imageConverterService.Setup(x => x.GetByteArrayFromImageAsync(_fileMock.Object)).ReturnsAsync(category.Image);
 
             //Act
             await _sut.AddCategoryAsync(categoryVM);
@@ -46,11 +48,12 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         public async Task GetCategoryAsync_ShouldReturnCategoryVMAndBeEqualToTheModel()
         {
             //Arrange
-            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
-            var categoryVM = new CategoryVM() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test",Image = new byte[]{1,2,3} };
+            var categoryVM = new CategoryVM() { Id = 10, Name = "GoodCategory", Description = "test", ImageUrl ="test123" };
 
             _categoryRepository.Setup(x => x.GetCategoryAsync(category.Id)).ReturnsAsync(category);
             _mapper.Setup(x => x.Map<CategoryVM>(category)).Returns(categoryVM);
+            _imageConverterService.Setup(x => x.GetImageUrlFromByteArray(category.Image)).Returns(categoryVM.ImageUrl);
 
             //Act
             var result = await _sut.GetCategoryAsync(categoryVM.Id);
@@ -91,10 +94,11 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         public async Task UpdateCategoryAsync_ShouldRunsUpdateOnce()
         {
             //Arrange
-            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test", Image = new byte[]{1,2,3} };
             var categoryVM = new CategoryVM() { Id = 10, Name = "BadCategory", Description = "xtest" };
 
             _mapper.Setup(x => x.Map<Category>(categoryVM)).Returns(category);
+            _imageConverterService.Setup(x => x.GetByteArrayFromImageAsync(_fileMock.Object)).ReturnsAsync(category.Image);
             //Act
             await _sut.UpdateCategoryAsync(categoryVM);
             //Assert

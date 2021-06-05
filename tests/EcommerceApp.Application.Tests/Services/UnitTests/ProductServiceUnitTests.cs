@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,22 +22,24 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         private readonly Mock<IProductRepository> _productRepository = new();
         private readonly Mock<ICategoryRepository> _categoryRepository = new();
         private readonly Mock<IImageConverterService> _imageConverterService = new();
+        private readonly Mock<IFormFile> _fileMock = new();
 
         public ProductServiceUnitTests()
         {
-            _sut = new ProductService(_productRepository.Object, _categoryRepository.Object, _mapper.Object,_imageConverterService.Object);
+            _sut = new ProductService(_productRepository.Object, _categoryRepository.Object, _mapper.Object, _imageConverterService.Object);
         }
 
         [Fact]
         public async Task AddProductAsync_ShouldAddProductMethodRunsOnce()
         {
             //Arrange
-            var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
+            var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, Image = new byte[]{2,3,4} };
             var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, CategoryName = "mleko" };
             var category = new Category() { Id = 1, Name = "mleko" };
 
             _categoryRepository.Setup(x => x.GetCategoryAsync(productVM.CategoryName)).ReturnsAsync(category);
             _mapper.Setup(x => x.Map<Product>(productVM)).Returns(product);
+            _imageConverterService.Setup(x => x.GetByteArrayFromImageAsync(_fileMock.Object)).ReturnsAsync(product.Image);
 
             //Act
             await _sut.AddProductAsync(productVM);
@@ -95,18 +98,25 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         public async Task GetProductAsync_FetchProductAndVerifyIfEqualToModel()
         {
             //Arrange
-            var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
-            var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
+            byte[] numbers = { 0, 16, 2, 3, 4 };
+            var product = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, Image = numbers };
+            var productVM = new ProductVM() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5, ImageUrl = "2sdasds" };
 
             _productRepository.Setup(x => x.GetProductAsync(product.Id)).ReturnsAsync(product);
             _mapper.Setup(x => x.Map<ProductVM>(product)).Returns(productVM);
+            _imageConverterService.Setup(x => x.GetImageUrlFromByteArray(product.Image)).Returns(productVM.ImageUrl);
 
             //Act
             var result = await _sut.GetProductAsync(productVM.Id);
 
             //Assert
             Assert.Equal(productVM.Id, result.Id);
-            _imageConverterService.Verify(x => x.GetImageUrlFromByteArray(It.IsAny<byte[]>()),Times.Once);
+            Assert.Equal(productVM.Name, result.Name);
+            Assert.Equal(productVM.Description, result.Description);
+            Assert.Equal(productVM.UnitPrice, result.UnitPrice);
+            Assert.Equal(productVM.UnitsInStock, result.UnitsInStock);
+            Assert.Equal(productVM.ImageUrl, result.ImageUrl);
+            _imageConverterService.Verify(x => x.GetImageUrlFromByteArray(It.IsAny<byte[]>()), Times.Once);
         }
 
         [Fact]
@@ -119,6 +129,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             _mapper.Setup(x => x.Map<Product>(productVM)).Returns(product);
             _categoryRepository.Setup(x => x.GetCategoryAsync(productVM.CategoryName)).ReturnsAsync(category);
+            _imageConverterService.Setup(x => x.GetByteArrayFromImageAsync(_fileMock.Object)).ReturnsAsync(product.Image);
 
             //Act
             await _sut.UpdateProductAsync(productVM);
