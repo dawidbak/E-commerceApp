@@ -14,16 +14,15 @@ ViewData["Title"] = "Edit Category Details";
             <dd>@Model.Name</dd>
             <dt>Description:</dt>
             <dd>@Model.Description</dd>
-            <dt>Picture:</dt>
-            <dd>@Model.Picture</dd>
+            <dt.ImageFormFile:< /dt> <dd><img src="@Model.ImageUrl" width="256" height="256" /></dd>
         </dl>
     </div>
 </span>
-<span style="float:center">
-    <center>
-        <p>Fill in the fields and edit category details</p>
+<center>
+    <span style="float:center">
         <div class="col-md-6">
-            <form asp-action="EditCategory">
+            <p style="margin-right 25px;">Fill in the fields and edit category details</p>
+            <form asp-action="EditCategory" enctype="multipart/form-data">
                 <div class="form-group">
                     <label asp-for="@Model.Name"></label>
                     <p><input asp-for="@Model.Name" /></p>
@@ -35,16 +34,15 @@ ViewData["Title"] = "Edit Category Details";
                     <span asp-validation-for="@Model.Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Picture"></label>
-                    <p><input asp-for="@Model.Picture" /></p>
-                    <span asp-validation-for="@Model.Picture" class="text-danger"></span>
+                    <label asp-for="@Model.ImageFormFile" class="ml-2"></label>
+                    <p><input asp-for="@Model.ImageFormFile class=" form-control" type="file" /></p>
+                    <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
         </div>
-    </center>
-</span>
-
+    </span>
+</center>
 @section Scripts
 {
 <partial name="_ValidationScriptsPartial" />

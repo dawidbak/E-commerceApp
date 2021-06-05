@@ -4,28 +4,25 @@ ViewData["Title"] = "Add Category";
 }
 <center>
     <h1>@ViewData["Title"]</h1>
-    <p>Fill in the fields and create a new category</p>
     <div class="col-md-6">
-        <form asp-action="AddCategory">
+        <p>Fill in the fields and create a new category</p>
+        <form asp-action="AddCategory" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="@Model.Name"></label>
-                <input asp-for="@Model.Name" />
-                <p></p>
+                <p><input asp-for="@Model.Name" /></p>
                 <span asp-validation-for="@Model.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Description"></label>
-                <input asp-for="@Model.Description" />
-                <p></p>
+                <p><input asp-for="@Model.Description" /></p>
                 <span asp-validation-for="@Model.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Picture"></label>
-                <input asp-for="@Model.Picture" />
-                <p></p>
-                <span asp-validation-for="@Model.Picture" class="text-danger"></span>
+                <label asp-for="@Model.ImageFormFile"></label>
+                <p><input asp-for="@Model.ImageFormFile" /></p>
+                <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Add Category</button>
         </form>
     </div>

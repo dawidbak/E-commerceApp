@@ -1,6 +1,6 @@
 @model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
 @{
-    ViewData["Title"] = "Edit Product Details";
+ViewData["Title"] = "Edit Product Details";
 }
 <center>
     <h2>@ViewData["Title"]</h2>
@@ -20,15 +20,15 @@
             <dd>@Model.UnitsInStock</dd>
             <dt>Category Name:</dt>
             <dd>@Model.CategoryName</dd>
-            <dt>Picture:</dt>
-            <dd>@Model.Picture</dd>
+            <dt>Image:</dt>
+            <dd>@Model.Image</dd>
         </dl>
     </div>
 </span>
 <span style="float:center">
     <center>
-        <p>Fill in the fields and edit product details</p>
         <div class="col-md-6">
+            <p>Fill in the fields and edit product details</p>
             <form asp-action="EditProduct">
                 <div class="form-group">
                     <label asp-for="@Model.Name"></label>
@@ -56,9 +56,9 @@
                     <span asp-validation-for="@Model.CategoryName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Picture"></label>
-                    <p><input asp-for="@Model.Picture" /></p>
-                    <span asp-validation-for="@Model.Picture" class="text-danger"></span>
+                    <label asp-for="@Model.Image"></label>
+                    <p><input asp-for="@Model.Image" /></p>
+                    <span asp-validation-for="@Model.Image" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
