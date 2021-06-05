@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.Services;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
 
@@ -18,10 +20,11 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         private readonly Mock<IMapper> _mapper = new();
         private readonly Mock<IProductRepository> _productRepository = new();
         private readonly Mock<ICategoryRepository> _categoryRepository = new();
+        private readonly Mock<IImageConverterService> _imageConverterService = new();
 
         public ProductServiceUnitTests()
         {
-            _sut = new ProductService(_productRepository.Object, _categoryRepository.Object, _mapper.Object);
+            _sut = new ProductService(_productRepository.Object, _categoryRepository.Object, _mapper.Object,_imageConverterService.Object);
         }
 
         [Fact]
@@ -40,6 +43,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             //Assert
             _productRepository.Verify(x => x.AddProductAsync(It.IsAny<Product>()), Times.Once);
+            _imageConverterService.Verify(x => x.GetByteArrayFromImageAsync(It.IsAny<IFormFile>()), Times.Once);
         }
 
         [Fact]
@@ -102,6 +106,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             //Assert
             Assert.Equal(productVM.Id, result.Id);
+            _imageConverterService.Verify(x => x.GetImageUrlFromByteArray(It.IsAny<byte[]>()),Times.Once);
         }
 
         [Fact]
@@ -120,6 +125,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             //Assert
             _productRepository.Verify(x => x.UpdateProductAsync(It.IsAny<Product>()), Times.Once);
+            _imageConverterService.Verify(x => x.GetByteArrayFromImageAsync(It.IsAny<IFormFile>()), Times.Once);
         }
     }
 }

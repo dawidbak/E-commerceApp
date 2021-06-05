@@ -8,6 +8,7 @@ using EcommerceApp.Application.Services;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
 namespace EcommerceApp.Application.Tests.Services.UnitTests
@@ -17,7 +18,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         private readonly CategoryService _sut;
         private readonly Mock<IMapper> _mapper = new Mock<IMapper>();
         private readonly Mock<ICategoryRepository> _categoryRepository = new Mock<ICategoryRepository>();
-        private readonly Mock<IImageConverterService> _imageConverterService = new Mock<IImageConverterService>();
+        private readonly Mock<IImageConverterService> _imageConverterService = new ();
 
         public CategoryServiceUnitTests()
         {
@@ -38,6 +39,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
 
             //Assert
             _categoryRepository.Verify(c => c.AddCategoryAsync(It.IsAny<Category>()), Times.Once);
+            _imageConverterService.Verify(x => x.GetByteArrayFromImageAsync(It.IsAny<IFormFile>()), Times.Once);
         }
 
         [Fact]
@@ -54,6 +56,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
             var result = await _sut.GetCategoryAsync(categoryVM.Id);
 
             //Arrange
+            _imageConverterService.Verify(x => x.GetImageUrlFromByteArray(It.IsAny<byte[]>()),Times.Once);
             Assert.Equal(category.Id, result.Id);
             Assert.Equal(category.Name, result.Name);
             Assert.Equal(category.Description, result.Description);
@@ -96,6 +99,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
             await _sut.UpdateCategoryAsync(categoryVM);
             //Assert
             _categoryRepository.Verify(x => x.UpdateCategoryAsync(It.IsAny<Category>()), Times.Once);
+            _imageConverterService.Verify(x => x.GetByteArrayFromImageAsync(It.IsAny<IFormFile>()), Times.Once);
             Assert.Equal(category.Id, categoryVM.Id);
         }
 
