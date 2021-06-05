@@ -19,10 +19,10 @@ ViewData["Title"] = "Add Category";
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ImageFormFile"></label>
-                <p><input asp-for="@Model.ImageFormFile" /></p>
+                <p><input asp-for="@Model.ImageFormFile" class="form-control" type="file"/></p>
                 <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
+                <p>Max file size: 200KB, Allowed formats: .jpeg, .jpg, .png</p>
             </div>
-
             <button type="submit" class="btn btn-primary">Add Category</button>
         </form>
     </div>

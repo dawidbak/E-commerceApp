@@ -14,7 +14,15 @@ ViewData["Title"] = "Edit Category Details";
             <dd>@Model.Name</dd>
             <dt>Description:</dt>
             <dd>@Model.Description</dd>
-            <dt.ImageFormFile:< /dt> <dd><img src="@Model.ImageUrl" width="256" height="256" /></dd>
+            <dt>Image:</dt>
+            @if(Model.ImageUrl == "No photo available")
+            {
+                <dd>@Model.ImageUrl</dd>
+            }
+            else
+            {
+                <dd><img src="@Model.ImageUrl" width="256" height="256" /></dd>
+            }
         </dl>
     </div>
 </span>
@@ -37,6 +45,7 @@ ViewData["Title"] = "Edit Category Details";
                     <label asp-for="@Model.ImageFormFile" class="ml-2"></label>
                     <p><input asp-for="@Model.ImageFormFile class=" form-control" type="file" /></p>
                     <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
+                    <p>Max file size: 200KB, Allowed formats: .jpeg, .jpg, .png</p>
                 </div>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
