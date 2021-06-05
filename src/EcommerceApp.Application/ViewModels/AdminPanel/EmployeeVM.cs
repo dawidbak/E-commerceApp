@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using EcommerceApp.Application.Mapping;
-using FluentValidation;
 
 namespace EcommerceApp.Application.ViewModels.AdminPanel
 {
@@ -12,7 +11,7 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
 
         [Display(Name = "Email")]
         public string Email { get; set; }
-        
+
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -24,16 +23,4 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Employee, EmployeeVM>().ReverseMap();
 
     }
-        public class EmployeeValidator : AbstractValidator<EmployeeVM>
-        {
-            public EmployeeValidator()
-            {
-                RuleFor(x => x.Id).NotNull().WithMessage("You must provide a valid {Id}");
-                RuleFor(x => x.FirstName).NotEmpty().MinimumLength(2).MaximumLength(50);
-                RuleFor(x => x.LastName).NotEmpty().MinimumLength(2).MaximumLength(50);
-                RuleFor(x => x.Position).NotEmpty().MinimumLength(2).MaximumLength(50);
-                RuleFor(x => x.Email).EmailAddress().NotEmpty();
-                
-            }
-        }
 }

@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using EcommerceApp.Application.Mapping;
-using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
 namespace EcommerceApp.Application.ViewModels.EmployeePanel
 {
@@ -10,18 +10,9 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public byte[] Picture { get; set;}
+        public IFormFile ImageFormFile { get; set; }
+        public string ImageUrl { get; set; }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Category,CategoryVM>().ReverseMap();
-
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Category, CategoryVM>().ReverseMap();
     }
-        public class CategoryValidator : AbstractValidator<CategoryVM>
-        {
-            public CategoryValidator()
-            {
-                RuleFor(x => x.Id).NotNull();
-                RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
-                RuleFor(x => x.Description).MaximumLength(200);
-            }
-        }
 }
