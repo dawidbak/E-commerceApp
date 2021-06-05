@@ -1,13 +1,15 @@
 using System.Reflection;
 using EcommerceApp.Application.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using EcommerceApp.Application.Policies.CanAccessEmployeePanel;
 using EcommerceApp.Application.Services;
 using EcommerceApp.Application.ViewModels.AdminPanel;
-using FluentValidation.AspNetCore;
-using FluentValidation;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
-using EcommerceApp.Application.Policies.CanAccessEmployeePanel;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using EcommerceApp.Application.Validations;
+using Microsoft.AspNetCore.Http;
 
 namespace EcommerceApp.Application
 {
@@ -19,10 +21,12 @@ namespace EcommerceApp.Application
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IImageConverterService, ImageConverterService>();
             services.AddMvc().AddFluentValidation();
-            services.AddTransient<IValidator<EmployeeVM>, EmployeeValidator>();
-            services.AddTransient<IValidator<CategoryVM>, CategoryValidator>();
-            services.AddTransient<IValidator<ProductVM>, ProductValidator>();
+            services.AddTransient<IValidator<EmployeeVM>, EmployeeVMValidator>();
+            services.AddTransient<IValidator<CategoryVM>, CategoryVMValidator>();
+            services.AddTransient<IValidator<ProductVM>, ProductVMValidator>();
+            services.AddTransient<IValidator<IFormFile>,FileValidator>();
             services.AddSingleton<IAuthorizationHandler, HasAdminClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, HasIsEmployeeClaimHandler>();
             services.AddAuthorization(options =>
