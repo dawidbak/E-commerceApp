@@ -12,7 +12,8 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
         public string Description { get; set; }
         public decimal UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
-        public IFormFile Image { get; set; }
+        public IFormFile ImageFormFile { get; set; }
+        public string ImageUrl { get; set; }
         public string CategoryName { get; set; }
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Product, ProductVM>().ReverseMap();
