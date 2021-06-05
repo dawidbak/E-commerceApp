@@ -13,6 +13,7 @@ namespace EcommerceApp.Application.Validations
             RuleFor(x => x.Description).MaximumLength(200);
             RuleFor(x => x.UnitPrice).NotEmpty().ScalePrecision(2, 18);
             RuleFor(x => x.UnitsInStock).NotNull();
+            RuleFor(x => x.ImageFormFile).SetValidator(new FileValidator());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace EcommerceApp.Application.Validations
             RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Description).MaximumLength(200);
-            RuleFor(x => x.ImageFormFile).SetValidator(new FileValidator()).WithMessage("Wrong image");
+            RuleFor(x => x.ImageFormFile).SetValidator(new FileValidator());
         }
     }
 }

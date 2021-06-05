@@ -8,9 +8,9 @@ namespace EcommerceApp.Application.Validations
     {
         public FileValidator()
         {
-            RuleFor(x => x.Length).NotNull().LessThanOrEqualTo(200000); //.WithMessage("File size is larger than allowed,max 200KB");
-            RuleFor(x => x.ContentType).NotNull().Must(x => x.Equals("image/jpeg") || x.Equals("image/jpg") || x.Equals("image/png"));
-            //.WithMessage("File type is different than allowed, must be:.jpeg, .jpg or .png");
+            RuleFor(x => x.Length).NotNull().LessThanOrEqualTo(200000).WithMessage("File size is larger than allowed,max 200KB");
+            RuleFor(x => x.ContentType).NotNull().Must(x => x.Equals("image/jpeg") || x.Equals("image/jpg") || x.Equals("image/png"))
+            .WithMessage("File type is different than allowed, must be:.jpeg, .jpg or .png");
         }
     }
 }
