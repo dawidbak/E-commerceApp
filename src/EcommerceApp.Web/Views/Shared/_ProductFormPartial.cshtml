@@ -1,0 +1,38 @@
+@model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
+@using EcommerceApp.Application.ViewModels.EmployeePanel
+@using EcommerceApp.Application.Interfaces
+@inject ICategoryService CategoryService
+@{
+    List<CategoryVM> list = await CategoryService.GetAllCategoriesAsync();
+}
+
+<div class="form-group">
+    <label asp-for="@Model.Name"></label>
+    <p><input asp-for="@Model.Name" /></p>
+    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Description"></label>
+    <p><input asp-for="@Model.Description" /></p>
+    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.UnitPrice"></label>
+    <p><input asp-for="@Model.UnitPrice" /></p>
+    <span asp-validation-for="@Model.UnitPrice" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.UnitsInStock"></label>
+    <p><input asp-for="@Model.UnitsInStock" /></p>
+    <span asp-validation-for="@Model.UnitsInStock" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.CategoryName"></label>
+    @Html.DropDownListFor(x => Model.CategoryName, new SelectList(list.Select(x => x.Name)),"Select Category", new { @class = "form-control"})
+</div>
+<div class="form-group">
+    <label asp-for="@Model.ImageFormFile"></label>
+    <p><input asp-for="@Model.ImageFormFile" class=" form-control" type="file" /></p>
+    <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
+    <p>Max file size: 2MB, Allowed formats: .jpeg, .jpg, .png</p>
+</div>
