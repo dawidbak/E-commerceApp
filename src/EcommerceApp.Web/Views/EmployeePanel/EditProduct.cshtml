@@ -14,17 +14,17 @@ List<CategoryVM> list = await CategoryService.GetAllCategoriesAsync();
         <div>
             <h4>Current data</h4>
             <dl class="dl-horizontal">
-                <dt>Name:</dt>
+                <dt>@Model.Name:</dt>
                 <dd>@Model.Name</dd>
-                <dt>Description:</dt>
+                <dt>@Model.Description:</dt>
                 <dd>@Model.Description</dd>
-                <dt>Unit Price:</dt>
+                <dt>@Model.UnitPrice:</dt>
                 <dd>@Model.UnitPrice</dd>
-                <dt>Units in Stock:</dt>
+                <dt>@Model.UnitsInStock:</dt>
                 <dd>@Model.UnitsInStock</dd>
-                <dt>Category Name:</dt>
+                <dt>@Model.CategoryName:</dt>
                 <dd>@Model.CategoryName</dd>
-                <dt>Image:</dt>
+                <dt>@Model.ImageUrl:</dt>
                 @if(Model.ImageUrl == "No photo available")
                 {
                     <dd>@Model.ImageUrl</dd>
