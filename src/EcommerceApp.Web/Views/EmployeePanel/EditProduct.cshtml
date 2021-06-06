@@ -1,83 +1,50 @@
 @model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
-@using EcommerceApp.Application.ViewModels.EmployeePanel
-@using EcommerceApp.Application.Interfaces
-@inject ICategoryService CategoryService
 @{
 ViewData["Title"] = "Edit Product Details";
-List<CategoryVM> list = await CategoryService.GetAllCategoriesAsync();
-    }
+}
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
+<hr />
+<span style="float:left">
+    <div>
+        <h4>Current data</h4>
+        <dl class="dl-horizontal">
+            <dt><label asp-for="@Model.Name"></label></dt>
+            <dd>@Model.Name</dd>
+            <dt><label asp-for="@Model.Description"></label></dt>
+            <dd>@Model.Description</dd>
+            <dt><label asp-for="@Model.UnitPrice"></label></dt>
+            <dd>@Model.UnitPrice</dd>
+            <dt><label asp-for="@Model.UnitsInStock"></label></dt>
+            <dd>@Model.UnitsInStock</dd>
+            <dt><label asp-for="@Model.CategoryName"></label></dt>
+            <dd>@Model.CategoryName</dd>
+            <dt><label asp-for="@Model.ImageUrl"></label></dt>
+            @if(Model.ImageUrl == "No photo available")
+            {
+            <dd>@Model.ImageUrl</dd>
+            }
+            else
+            {
+            <dd><img src="@Model.ImageUrl" width="256" height="256" /></dd>
+            }
+        </dl>
+    </div>
+</span>
+<span style="float:center">
     <center>
-        <h2>@ViewData["Title"]</h2>
-    </center>
-    <hr />
-    <span style="float:left">
-        <div>
-            <h4>Current data</h4>
-            <dl class="dl-horizontal">
-                <dt>@Model.Name:</dt>
-                <dd>@Model.Name</dd>
-                <dt>@Model.Description:</dt>
-                <dd>@Model.Description</dd>
-                <dt>@Model.UnitPrice:</dt>
-                <dd>@Model.UnitPrice</dd>
-                <dt>@Model.UnitsInStock:</dt>
-                <dd>@Model.UnitsInStock</dd>
-                <dt>@Model.CategoryName:</dt>
-                <dd>@Model.CategoryName</dd>
-                <dt>@Model.ImageUrl:</dt>
-                @if(Model.ImageUrl == "No photo available")
-                {
-                    <dd>@Model.ImageUrl</dd>
-                }
-                else
-                {
-                    <dd><img src="@Model.ImageUrl" width="256" height="256" /></dd>
-                }
-            </dl>
+        <div class="col-md-6">
+            <p>Fill in the fields and edit product details</p>
+            <form asp-action="EditProduct" enctype="multipart/form-data">
+                <partial name="_ProductFormPartial" />
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
         </div>
-    </span>
-    <span style="float:center">
-        <center>
-            <div class="col-md-6">
-                <p>Fill in the fields and edit product details</p>
-                <form asp-action="EditProduct" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label asp-for="@Model.Name"></label>
-                        <p><input asp-for="@Model.Name" /></p>
-                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Description"></label>
-                        <p><input asp-for="@Model.Description" /></p>
-                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.UnitPrice"></label>
-                        <p><input asp-for="@Model.UnitPrice" /></p>
-                        <span asp-validation-for="@Model.UnitPrice" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.UnitsInStock"></label>
-                        <p><input asp-for="@Model.UnitsInStock" /></p>
-                        <span asp-validation-for="@Model.UnitsInStock" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.CategoryName"></label>
-                        @Html.DropDownListFor(x => Model.CategoryName, new SelectList(list.Select(x => x.Name)),"Select Category", new { @class = "form-control"})
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.ImageFormFile"></label>
-                        <p><input asp-for="@Model.ImageFormFile" class=" form-control" type="file" /></p>
-                        <span asp-validation-for="@Model.ImageFormFile" class="text-danger"></span>
-                        <p>Max file size: 200KB, Allowed formats: .jpeg, .jpg, .png</p>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
-            </div>
-        </center>
-    </span>
+    </center>
+</span>
 
-    @section Scripts
-    {
-    <partial name="_ValidationScriptsPartial" />
-    }
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial" />
+}
