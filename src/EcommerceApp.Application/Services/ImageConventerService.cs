@@ -12,7 +12,10 @@ namespace EcommerceApp.Application.Services
         {
             using (var memoryStream = new MemoryStream())
             {
-                await file.CopyToAsync(memoryStream);
+                if(file != null)
+                {
+                    await file.CopyToAsync(memoryStream);
+                }
                 return memoryStream.ToArray();
             }
         }
