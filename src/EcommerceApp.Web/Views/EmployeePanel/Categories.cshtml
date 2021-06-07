@@ -7,11 +7,11 @@
     <div class="text-center">
         <h1>@ViewData["Title"]</h1>
         <p><a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a></p>
-        <Form method="get" asp-action="Categories">
+        <p><Form method="get" asp-action="Categories">
             <select asp-items="searchSelectList.CategorySelectList" name="SelectedValue"></select>
             <input text="text" name="SearchString" />
             <input type="submit" value="Filter" />
-        </Form>
+        </Form></p>
         <table class="table">
             <thead>
                 <tr>
