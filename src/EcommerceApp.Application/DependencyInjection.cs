@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using EcommerceApp.Application.Validations;
 using Microsoft.AspNetCore.Http;
+using EcommerceApp.Application.Resources;
 
 namespace EcommerceApp.Application
 {
@@ -22,6 +23,7 @@ namespace EcommerceApp.Application
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageConverterService, ImageConverterService>();
+            services.AddScoped<ISearchService, SearchService>();
             services.AddMvc().AddFluentValidation();
             services.AddTransient<IValidator<EmployeeVM>, EmployeeVMValidator>();
             services.AddTransient<IValidator<CategoryVM>, CategoryVMValidator>();
@@ -29,6 +31,7 @@ namespace EcommerceApp.Application
             services.AddTransient<IValidator<IFormFile>,FileValidator>();
             services.AddSingleton<IAuthorizationHandler, HasAdminClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, HasIsEmployeeClaimHandler>();
+            services.AddSingleton<ISearchSelectList,SearchSelectList>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("EmployeePanelEntry", policyBuilder => policyBuilder.Requirements.Add(new CanAccessEmployeePanelRequirement()));
