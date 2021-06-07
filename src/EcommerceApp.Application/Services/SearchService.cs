@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
+using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Domain.Interfaces;
 
@@ -12,10 +13,12 @@ namespace EcommerceApp.Application.Services
     {
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
-        public SearchService(ICategoryService categoryService, IProductService productService)
+        private readonly IEmployeeService _employeeService;
+        public SearchService(ICategoryService categoryService, IProductService productService,IEmployeeService employeeService)
         {
             _categoryService = categoryService;
             _productService = productService;
+            _employeeService = employeeService;
         }
         public async Task<List<CategoryVM>> SearchSelectedCategoryAsync(string selectedValue, string searchString)
         {
@@ -44,6 +47,22 @@ namespace EcommerceApp.Application.Services
                 "UnitPrice" => unitPriceParse ? (await _productService.GetAllProductsAsync()).Where(x => x.UnitPrice == price).ToList() : model,
                 "UnitsInStock" => unitsInStock ? (await _productService.GetAllProductsAsync()).Where(x => x.UnitsInStock == units).ToList() : model,
                 "CategoryName" => (await _productService.GetAllProductsAsync()).Where(x => x.Name.Contains(searchString)).ToList(),
+                _ => model,
+            };
+        }
+
+          public async Task<List<EmployeeVM>> SearchSelectedEmployeeAsync(string selectedValue, string searchString)
+        {
+            List<EmployeeVM> model = new();
+            var idParse = int.TryParse(searchString, out int id);
+
+            return selectedValue switch
+            {
+                "Id" => idParse ? (await _employeeService.GetAllEmployeesAsync()).Where(x => x.Id == id).ToList() : model,
+                "FirstName" => (await _employeeService.GetAllEmployeesAsync()).Where(x => x.FirstName.Contains(searchString)).ToList(),
+                "Email" => (await _employeeService.GetAllEmployeesAsync()).Where(x => x.Email.Contains(searchString)).ToList(),
+                "LastName" => (await _employeeService.GetAllEmployeesAsync()).Where(x => x.LastName.Contains(searchString)).ToList(),
+                "Position" => (await _employeeService.GetAllEmployeesAsync()).Where(x => x.Position.Contains(searchString)).ToList(),
                 _ => model,
             };
         }

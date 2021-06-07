@@ -21,5 +21,14 @@ namespace EcommerceApp.Application.Resources
             new SelectListItem { Value = "UnitPrice", Text="Unit Price"},
             new SelectListItem { Value = "UnitsInStock", Text="Units in Stock"},
         };
+
+        public List<SelectListItem> EmployeeSelectList { get; } = new()
+        {
+            new SelectListItem { Value = "Id",Text ="Id"},
+            new SelectListItem { Value = "Email",Text ="Email"},
+            new SelectListItem { Value = "FirstName",Text ="First Name"},
+            new SelectListItem { Value = "LastName",Text ="Last Name"},
+            new SelectListItem { Value = "Position",Text ="Position"},
+        };
     }
 }
