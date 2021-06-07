@@ -17,17 +17,22 @@ namespace EcommerceApp.Web.Controllers
     public class AdminPanelController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly ISearchService _searchService;
         private readonly ILogger<AdminPanelController> _logger;
-        public AdminPanelController(IEmployeeService employeeService,ILogger<AdminPanelController> logger)
+        public AdminPanelController(IEmployeeService employeeService,ILogger<AdminPanelController> logger, ISearchService searchService)
         {
             _employeeService = employeeService;
             _logger = logger;
+            _searchService = searchService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string selectedValue, string searchString)
         {
-            var model = await _employeeService.GetAllEmployeesAsync();
-            return View(model);
+            if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
+            {
+                return View(await _searchService.SearchSelectedEmployeeAsync(selectedValue, searchString));
+            }
+            return View(await _employeeService.GetAllEmployeesAsync());
         }
         [HttpGet]
         public IActionResult AddEmployee()
@@ -76,6 +81,5 @@ namespace EcommerceApp.Web.Controllers
             }
             return BadRequest();
         }
-
     }
 }
