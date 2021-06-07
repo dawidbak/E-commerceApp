@@ -1,10 +1,19 @@
-@model List<EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM>;
-    @{
+@model List<EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM>
+@using EcommerceApp.Application.Interfaces
+@inject ISearchSelectList searchSelectList
+@{
     ViewData["Title"] = "Product management";
-    }
+}
     <center>
         <h1>@ViewData["Title"]</h1>
         <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
+        <p>
+            <Form method="get" asp-action="Products">
+                <select asp-items="searchSelectList.ProductSelectList" name="SelectedValue"></select>
+                <input text="text" name="SearchString" />
+                <input type="submit" value="Filter" />
+            </Form>
+        </p>
     </center>
     <table class="table">
         <thead>

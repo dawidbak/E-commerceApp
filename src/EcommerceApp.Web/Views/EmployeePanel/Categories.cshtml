@@ -1,10 +1,17 @@
-@model List<EcommerceApp.Application.ViewModels.EmployeePanel.CategoryVM>;
-    @{
+@model List<EcommerceApp.Application.ViewModels.EmployeePanel.CategoryVM>
+@using EcommerceApp.Application.Interfaces
+@inject ISearchSelectList searchSelectList
+@{
     ViewData["Title"] = "Category management";
-    }
+}
     <div class="text-center">
         <h1>@ViewData["Title"]</h1>
         <p><a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a></p>
+        <Form method="get" asp-action="Categories">
+            <select asp-items="searchSelectList.CategorySelectList" name="SelectedValue"></select>
+            <input text="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </Form>
         <table class="table">
             <thead>
                 <tr>
@@ -24,11 +31,14 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
+                        
+
                         <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
                             asp-route-id="@item.Id">Edit</a>
 
                         <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
                             asp-route-id="@item.Id">Delete</a>
+                        
                     </td>
                 </tr>
                 }

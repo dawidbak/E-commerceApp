@@ -16,28 +16,36 @@ namespace EcommerceApp.Web.Controllers
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ILogger<EmployeePanelController> _logger;
+        private readonly ISearchService _searchService;
 
-        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger)
+        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger, ISearchService SearchService)
         {
             _productService = productService;
             _categoryService = categoryService;
             _logger = logger;
+            _searchService = SearchService;
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Categories()
+        public async Task<IActionResult> Categories(string selectedValue, string searchString)
         {
-            var model = await _categoryService.GetAllCategoriesAsync();
-            return View(model);
+            if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
+            {
+                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString));
+            }
+            return View(await _categoryService.GetAllCategoriesAsync());
         }
 
-        public async Task<IActionResult> Products()
+        public async Task<IActionResult> Products(string selectedValue, string searchString)
         {
-            var model = await _productService.GetAllProductsAsync();
-            return View(model);
+            if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
+            {
+                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString));
+            }
+            return View(await _productService.GetAllProductsAsync());
         }
 
         [HttpGet]
