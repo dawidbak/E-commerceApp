@@ -15,12 +15,13 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
     {
         private readonly Mock<IProductService> _productService = new();
         private readonly Mock<ICategoryService> _categoryService = new();
+        private readonly Mock<ISearchService> _searchService = new();
         private readonly Mock<ILogger<EmployeePanelController>> _logger = new();
         private readonly EmployeePanelController _sut;
 
         public EmployeePanelControllerUnitTests()
         {
-            _sut = new EmployeePanelController(_productService.Object, _categoryService.Object, _logger.Object);
+            _sut = new EmployeePanelController(_productService.Object, _categoryService.Object, _logger.Object,_searchService.Object);
         }
 
         [Fact]
@@ -41,7 +42,26 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
             _categoryService.Setup(x => x.GetAllCategoriesAsync()).ReturnsAsync(GetCategoryVMs());
 
             //Act
-            var results = await _sut.Categories();
+            var results = await _sut.Categories(string.Empty,string.Empty);
+
+            //Assert
+            Assert.NotNull(results);
+            var viewResult = Assert.IsType<ViewResult>(results);
+            var model = Assert.IsAssignableFrom<List<CategoryVM>>(viewResult.Model);
+            Assert.Equal(model[0].Id, GetCategoryVMs()[0].Id);
+            Assert.Equal(model.Count, GetCategoryVMs().Count);
+        }
+
+        [Fact]
+        public async Task Categories_ReturnsCorrectViewResultWithSearchedCategories()
+        {
+            //Arrange
+            string selectedValue = "Name";
+            string searchString = "abcd";
+            _searchService.Setup(x => x.SearchSelectedCategoryAsync(selectedValue,searchString)).ReturnsAsync(GetCategoryVMs());
+
+            //Act
+            var results = await _sut.Categories(selectedValue,searchString);
 
             //Assert
             Assert.NotNull(results);
@@ -58,7 +78,26 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
             _productService.Setup(x => x.GetAllProductsAsync()).ReturnsAsync(GetProductVMs());
 
             //Act
-            var results = await _sut.Products();
+            var results = await _sut.Products(string.Empty,string.Empty);
+
+            //Assert
+            Assert.NotNull(results);
+            var viewResult = Assert.IsType<ViewResult>(results);
+            var model = Assert.IsAssignableFrom<List<ProductVM>>(viewResult.Model);
+            Assert.Equal(model[0].Name, GetProductVMs()[0].Name);
+            Assert.Equal(model.Count, GetProductVMs().Count);
+        }
+
+        [Fact]
+        public async Task Products_ReturnsCorrectViewResultWithSearchedProducts()
+        {
+            //Arrange
+            string selectedValue = "Name";
+            string searchString = "abcd";
+            _searchService.Setup(x => x.SearchSelectedProductAsync(selectedValue,searchString)).ReturnsAsync(GetProductVMs());
+
+            //Act
+            var results = await _sut.Products(selectedValue,searchString);
 
             //Assert
             Assert.NotNull(results);

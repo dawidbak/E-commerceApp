@@ -15,16 +15,17 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
 {
     public class AdminPanelControllerUnitTests
     {
-        private readonly Mock<IEmployeeService> _service = new Mock<IEmployeeService>();
+        private readonly Mock<IEmployeeService> _employeeService = new Mock<IEmployeeService>();
         private readonly Mock<ILogger<AdminPanelController>> _logger = new Mock<ILogger<AdminPanelController>>();
         private readonly AdminPanelController _sut;
+        private readonly Mock<ISearchService> _searchService = new();
 
         public AdminPanelControllerUnitTests()
         {
-            _sut = new AdminPanelController(_service.Object, _logger.Object);
+            _sut = new AdminPanelController(_employeeService.Object, _logger.Object,_searchService.Object);
         }
         [Fact]
-        public async Task Index_ReturnCorrectViewResult()
+        public async Task Index_ReturnsCorrectViewResultWithAllEmployees()
         {
             //Arrange
             List<EmployeeVM> employeeVMs = new()
@@ -33,17 +34,43 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
                 new EmployeeVM { FirstName = "unit2", LastName = "test2", Position = "xunit2" },
             };
 
-            _service.Setup(s => s.GetAllEmployeesAsync()).ReturnsAsync(employeeVMs);
+            _employeeService.Setup(s => s.GetAllEmployeesAsync()).ReturnsAsync(employeeVMs);
 
             //Act
-            var result = await _sut.Index();
+            var result = await _sut.Index(string.Empty,string.Empty);
 
             //Assert
             Assert.NotNull(result);
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<List<EmployeeVM>>(viewResult.Model);
             Assert.Equal(model[0].FirstName, employeeVMs[0].FirstName);
+            Assert.Equal(model[1].FirstName,employeeVMs[1].FirstName);
             Assert.Equal(model.Count, employeeVMs.Count);
+        }
+
+        [Fact]
+        public async Task Index_ReturnsViewResultWithSelectedEmployees()
+        {
+            //Arrange
+            List<EmployeeVM> employeeFiltered = new()
+            {
+                new EmployeeVM { FirstName = "unit", LastName = "test", Position = "xunit" },
+                new EmployeeVM { FirstName = "unit2", LastName = "test", Position = "xunit2" },
+            };
+
+            string selectedValue = "LastName";
+            string searchString = "test";
+            _searchService.Setup(x => x.SearchSelectedEmployeeAsync(selectedValue,searchString)).ReturnsAsync(employeeFiltered);
+
+            //Act
+            var result = await _sut.Index(selectedValue,searchString);
+
+            //Assert
+            Assert.NotNull(result);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<List<EmployeeVM>>(viewResult.Model);
+            Assert.Equal(model[0].LastName, employeeFiltered[0].LastName);
+            Assert.Equal(model[1].LastName, employeeFiltered[1].LastName);
         }
 
         [Fact]
@@ -87,7 +114,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Null(redirectToActionResult.ControllerName);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            _service.Verify(x => x.AddEmployeeAsync(It.IsAny<EmployeeVM>()), Times.Once);
+            _employeeService.Verify(x => x.AddEmployeeAsync(It.IsAny<EmployeeVM>()), Times.Once);
         }
 
         [Fact]
@@ -117,7 +144,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Null(redirectToActionResult.ControllerName);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            _service.Verify(x => x.DeleteEmployeeAsync(It.IsAny<int>()), Times.Once);
+            _employeeService.Verify(x => x.DeleteEmployeeAsync(It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
@@ -139,13 +166,13 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
         {
             //Arrange
             var employeeVM = new EmployeeVM() { Id = 2, FirstName = "unit", LastName = "test", Position = "xunit" };
-            _service.Setup(x => x.GetEmployeeAsync(employeeVM.Id)).ReturnsAsync(employeeVM);
+            _employeeService.Setup(x => x.GetEmployeeAsync(employeeVM.Id)).ReturnsAsync(employeeVM);
 
             //Act
             var result = await _sut.EditEmployee(employeeVM.Id);
 
             //Assert
-            _service.Verify(x => x.GetEmployeeAsync(It.IsAny<int>()), Times.Once);
+            _employeeService.Verify(x => x.GetEmployeeAsync(It.IsAny<int>()), Times.Once);
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<EmployeeVM>(viewResult.ViewData.Model);
             Assert.Equal(employeeVM.Id, model.Id);
@@ -181,7 +208,7 @@ namespace EcommerceApp.Web.Tests.Controllers.UnitTests
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Null(redirectToActionResult.ControllerName);
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            _service.Verify(x => x.UpdateEmployeeAsync(It.IsAny<EmployeeVM>()), Times.Once);
+            _employeeService.Verify(x => x.UpdateEmployeeAsync(It.IsAny<EmployeeVM>()), Times.Once);
         }
     }
 }
