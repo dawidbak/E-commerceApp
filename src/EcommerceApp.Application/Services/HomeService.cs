@@ -25,13 +25,13 @@ namespace EcommerceApp.Application.Services
             HomeVM homeVM = new()
             {
                 Categories = categoriesVM,
-                Products = await GetRandomProductVMList(productsVM),
+                Products = GetRandomProductVMList(productsVM),
             };
 
             return homeVM;
         }
 
-        public Task<List<ProductVM>> GetRandomProductVMList(List<ProductVM> products)
+        public List<ProductVM> GetRandomProductVMList(List<ProductVM> products)
         {
             var randomProductVMList = new List<ProductVM>();
             var checkList = new List<int>();
@@ -40,7 +40,7 @@ namespace EcommerceApp.Application.Services
 
             if (numberOfProducts >= products.Count)
             {
-                return Task.FromResult(products);
+                return products;
             }
 
             while (randomProductVMList.Count <= numberOfProducts)
@@ -53,7 +53,7 @@ namespace EcommerceApp.Application.Services
                 }
             }
 
-            return Task.FromResult(randomProductVMList);
+            return randomProductVMList;
         }
     }
 }
