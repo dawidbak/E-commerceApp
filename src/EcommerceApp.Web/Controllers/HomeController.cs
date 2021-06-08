@@ -7,21 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EcommerceApp.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using EcommerceApp.Application.Interfaces;
 
 namespace EcommerceApp.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _homeService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
         {
             _logger = logger;
+            _homeService = homeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult>Index()
         {
-            return View();
+            var model = await  _homeService.GetHomeVMForIndexAsync();
+            return View(model);
         }
 
         public IActionResult Privacy()
