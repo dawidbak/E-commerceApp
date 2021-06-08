@@ -19,13 +19,13 @@ namespace EcommerceApp.Application.Services
         }
         public async Task<HomeVM> GetHomeVMForIndexAsync()
         {
-            var categoryVM = await _categoryService.GetAllCategoriesAsync();
-            var productVM = await _productService.GetAllProductsAsync();
+            var categoriesVM = await _categoryService.GetAllCategoriesAsync();
+            var productsVM = await _productService.GetAllProductsWithImagesAsync();
             
             HomeVM homeVM = new()
             {
-                Categories = categoryVM,
-                Products = await GetRandomProductVMList(productVM),
+                Categories = categoriesVM,
+                Products = await GetRandomProductVMList(productsVM),
             };
 
             return homeVM;
