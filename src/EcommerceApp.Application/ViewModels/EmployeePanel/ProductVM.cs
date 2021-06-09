@@ -23,6 +23,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
 
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
 
 
         [Display(Name = "Category Name")]
