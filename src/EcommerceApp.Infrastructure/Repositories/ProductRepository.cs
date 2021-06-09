@@ -44,6 +44,10 @@ namespace EcommerceApp.Infrastructure.Repositories
         public async Task UpdateProductAsync(Product product)
         {
             _appDbContext.Products.Update(product);
+            if(product.Image.Length == 0)
+            {
+                _appDbContext.Entry<Product>(product).Property(x => x.Image).IsModified = false;
+            }
             await _appDbContext.SaveChangesAsync();
         }
     }

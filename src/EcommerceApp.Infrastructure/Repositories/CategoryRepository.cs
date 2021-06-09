@@ -50,6 +50,10 @@ namespace EcommerceApp.Infrastructure.Repositories
         public async Task UpdateCategoryAsync(Category category)
         {
             _appDbContext.Categories.Update(category);
+            if(category.Image.Length == 0)
+            {
+                _appDbContext.Entry<Category>(category).Property(x => x.Image).IsModified = false;
+            }
             await _appDbContext.SaveChangesAsync();
         }
     }
