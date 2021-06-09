@@ -1,0 +1,26 @@
+@model EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM
+@{
+ViewData["Title"] = @Model.Name;
+}
+<center>
+    <span style="float:left">
+        <img src="@Model.ImageUrl" width="384" height="384" />
+    </span>
+    <span style="float:center">
+        <div class="col-md-9">
+            <div class="card md-3">
+                <h2>@Model.Name</h2>
+                <h4 class="text-danger">Price: @Model.UnitPrice $</h4>
+                <form class="d-lg-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label>Quantity: </label>
+                        <input type="number" class="col-sm-2" value="1" min="1">
+                        <button type="submit" class="btn btn-primary mb-2">Add to cart</button>
+                    </div>
+                </form>
+                <h2><label>Product Description</label></h2>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+    </span>
+</center>
