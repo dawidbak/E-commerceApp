@@ -1,0 +1,19 @@
+@model List<EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM>
+    @{
+    ViewData["Title"] = "Products";
+    }
+    <div class="row">
+        @foreach(var item in Model)
+        {
+        <div class="col-md-3">
+            <p>
+                <div class="card">
+                    <h2>@item.Name</h2>
+                    <dd><img src=@item.ImageUrl width="253" height="256" /></dd>
+                    <p>@item.Description</p>
+                    <p>@item.UnitPrice</p>
+                </div>
+            </p>
+        </div>
+        }
+    </div>
