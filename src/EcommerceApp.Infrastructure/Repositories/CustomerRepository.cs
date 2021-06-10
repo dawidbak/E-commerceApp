@@ -32,6 +32,11 @@ namespace EcommerceApp.Infrastructure.Repositories
             return await _appDbContext.Customers.FindAsync(customerId);
         }
 
+        public async Task<int> GetCustomerIdAsync(string AppUserId)
+        {
+            var customer = await _appDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.AppUserId == AppUserId);
+            return customer.Id;
+        }   
         public async Task UpdateCustomerAsync(Customer customer)
         {
             _appDbContext.Update(customer);
