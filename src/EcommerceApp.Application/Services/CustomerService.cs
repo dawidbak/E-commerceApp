@@ -34,7 +34,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<List<CustomerVM>> GetAllCustomersAsync()
         {
-            var customers = await (await _customerRepository.GetAllCustomersAsync()).ToListAsync();
+            var customers = (await _customerRepository.GetAllCustomersAsync()).ToList();
             var customersVM = _mapper.Map<List<CustomerVM>>(customers);
             for (int i = 0; i < customers.Count; i++)
             {
@@ -50,7 +50,7 @@ namespace EcommerceApp.Application.Services
             var customer = await _customerRepository.GetCustomerAsync(customerId);
             var customerVM = _mapper.Map<CustomerVM>(customer);
 
-            var user = new ApplicationUser{Id = customer.AppUserId};
+            var user = new ApplicationUser { Id = customer.AppUserId };
             customerVM.Email = await _userManager.GetEmailAsync(user);
             customerVM.PhoneNumber = await _userManager.GetEmailAsync(user);
             return customerVM;
