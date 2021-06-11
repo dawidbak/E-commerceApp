@@ -25,6 +25,7 @@ namespace EcommerceApp.Application
             services.AddScoped<IImageConverterService, ImageConverterService>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddMvc().AddFluentValidation();
             services.AddTransient<IValidator<EmployeeVM>, EmployeeVMValidator>();
             services.AddTransient<IValidator<CategoryVM>, CategoryVMValidator>();
