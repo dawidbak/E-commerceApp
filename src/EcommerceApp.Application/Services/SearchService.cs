@@ -15,7 +15,7 @@ namespace EcommerceApp.Application.Services
         private readonly IProductService _productService;
         private readonly IEmployeeService _employeeService;
         private readonly ICustomerService _customerService;
-        public SearchService(ICategoryService categoryService, IProductService productService,IEmployeeService employeeService, ICustomerService customerService)
+        public SearchService(ICategoryService categoryService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService)
         {
             _categoryService = categoryService;
             _productService = productService;
@@ -39,7 +39,7 @@ namespace EcommerceApp.Application.Services
         {
             List<ProductVM> model = new();
             var idParse = int.TryParse(searchString, out int id);
-            var unitPriceParse = decimal.TryParse(searchString,out decimal price);
+            var unitPriceParse = decimal.TryParse(searchString, out decimal price);
             var unitsInStock = int.TryParse(searchString, out int units);
 
             return selectedValue switch
@@ -53,7 +53,7 @@ namespace EcommerceApp.Application.Services
             };
         }
 
-          public async Task<List<EmployeeVM>> SearchSelectedEmployeeAsync(string selectedValue, string searchString)
+        public async Task<List<EmployeeVM>> SearchSelectedEmployeeAsync(string selectedValue, string searchString)
         {
             List<EmployeeVM> model = new();
             var idParse = int.TryParse(searchString, out int id);
