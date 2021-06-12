@@ -1,4 +1,4 @@
-@model List<EcommerceApp.Application.ViewModels.AdminPanel.CustomerVM>;
+@model EcommerceApp.Application.ViewModels.AdminPanel.ListCustomerVM;
 @using EcommerceApp.Application.Interfaces
 @inject ISearchSelectList searchSelectList
 @{
@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Customers)
         {
         <tr>
             <td>
