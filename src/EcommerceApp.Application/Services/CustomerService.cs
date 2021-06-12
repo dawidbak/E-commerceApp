@@ -32,17 +32,20 @@ namespace EcommerceApp.Application.Services
             await _userManager.DeleteAsync(user);
         }
 
-        public async Task<List<CustomerVM>> GetAllCustomersAsync()
+        public async Task<ListCustomerVM> GetAllCustomersAsync()
         {
             var customers = (await _customerRepository.GetAllCustomersAsync()).ToList();
             var customersVM = _mapper.Map<List<CustomerVM>>(customers);
             for (int i = 0; i < customers.Count; i++)
             {
                 var user = await _userManager.FindByIdAsync(customers[i].AppUserId);
-                customersVM[i].Email = await _userManager.GetEmailAsync(user);
-                customersVM[i].PhoneNumber = await _userManager.GetPhoneNumberAsync(user);
+                customersVM[i].Email = user.Email;
+                customersVM[i].PhoneNumber = user.PhoneNumber;
             }
-            return customersVM;
+            return new ListCustomerVM()
+            {
+                Customers = customersVM
+            };
         }
 
         public async Task<CustomerVM> GetCustomerAsync(int customerId)

@@ -7,7 +7,7 @@ namespace EcommerceApp.Application.Interfaces
 {
     public interface ICustomerService
     {
-        Task<List<CustomerVM>> GetAllCustomersAsync();
+        Task<ListCustomerVM> GetAllCustomersAsync();
         Task<CustomerVM> GetCustomerAsync(int customerId);
         Task DeleteCustomerAsync(int customerId);
     }
