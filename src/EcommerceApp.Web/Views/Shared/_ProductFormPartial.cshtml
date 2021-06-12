@@ -3,7 +3,7 @@
 @using EcommerceApp.Application.Interfaces
 @inject ICategoryService CategoryService
 @{
-    List<CategoryVM> list = await CategoryService.GetAllCategoriesAsync();
+    ListCategoryForListVM list = await CategoryService.GetAllCategoriesAsync();
 }
 
 <div class="form-group">
@@ -28,7 +28,7 @@
 </div>
 <div class="form-group">
     <label asp-for="@Model.CategoryName"></label>
-    @Html.DropDownListFor(x => Model.CategoryName, new SelectList(list.Select(x => x.Name)),"Select Category", new { @class = "form-control"})
+    @Html.DropDownListFor(x => Model.CategoryName, new SelectList(list.Categories.Select(x => x.Name)),"Select Category", new { @class = "form-control"})
 </div>
 <div class="form-group">
     <label asp-for="@Model.ImageFormFile"></label>
