@@ -8,7 +8,7 @@
     <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown"
         id="navbarDropdown">Categories</a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        @foreach(var category in categoriesList)
+        @foreach(var category in categoriesList.Categories)
         {
 
         <a class="dropdown-item" asp-controller="Category" asp-action="Products"
