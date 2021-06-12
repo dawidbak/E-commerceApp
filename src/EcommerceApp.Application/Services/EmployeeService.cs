@@ -37,16 +37,28 @@ namespace EcommerceApp.Application.Services
             var claim = new Claim("isEmployee","True");
             await _userManager.AddClaimAsync(user,claim);
         }
-        public async Task<List<EmployeeVM>> GetAllEmployeesAsync()
+        public async Task<ListEmployeeForListVM> GetAllEmployeesAsync()
         {
             var employees = (await _employeeRepository.GetAllEmployeesAsync()).ToList();
-            return _mapper.Map<List<EmployeeVM>>(employees);
+            var employeesVM =  _mapper.Map<List<EmployeeForListVM>>(employees);
+            for(int i=0;i<employees.Count;i++)
+            {
+                var user = await _userManager.FindByIdAsync(employees[i].AppUserId);
+                employeesVM[i].Email = user.Email;
+            }
+            return new ListEmployeeForListVM()
+            {
+                Employees = employeesVM
+            };
 
         }
         public async Task<EmployeeVM> GetEmployeeAsync(int id)
         {
             var employee = await _employeeRepository.GetEmployeeAsync(id);
-            return _mapper.Map<EmployeeVM>(employee);
+            var employeeVM = _mapper.Map<EmployeeVM>(employee);
+            var user = await _userManager.FindByIdAsync(employee.AppUserId);
+            employeeVM.Email = user.Email;
+            return employeeVM;
         }
         public async Task UpdateEmployeeAsync(EmployeeVM employeeVM)
         {
@@ -76,6 +88,5 @@ namespace EcommerceApp.Application.Services
             await _employeeRepository.DeleteEmployeeAsync(id);
             await _userManager.DeleteAsync(user);
         }
-
     }
 }
