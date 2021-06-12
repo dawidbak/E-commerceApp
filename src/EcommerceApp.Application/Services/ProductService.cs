@@ -6,6 +6,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
+using EcommerceApp.Application.ViewModels.Product;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
 
@@ -49,15 +50,18 @@ namespace EcommerceApp.Application.Services
             };
         }
 
-        public async Task<List<ProductVM>> GetAllProductsWithImagesAsync()
+        public async Task<ListProductDetailsForUserVM> GetAllProductsWithImagesAsync()
         {
             var products = (await _productRepository.GetAllProductsAsync()).ToList();
-            var productsVM = _mapper.Map<List<ProductVM>>(products);
+            var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
             for (int i = 0; i < productsVM.Count; i++)
             {
                 productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(products[i].Image);
             }
-            return productsVM;
+            return new ListProductDetailsForUserVM()
+            {
+                Products = productsVM
+            };
         }
 
         public async Task<ProductVM> GetProductAsync(int id)
@@ -68,14 +72,26 @@ namespace EcommerceApp.Application.Services
             return productVM;
         }
 
-        public async Task<List<ProductVM>> GetProductsByCategoryNameAsync(string categoryName)
+        public async Task<ProductDetailsForUserVM> GetProductDetailsForUser(int id)
         {
-            var productsVM = (await _productRepository.GetAllProductsAsync()).Where(p => p.CategoryName == categoryName).ProjectTo<ProductVM>(_mapper.ConfigurationProvider).ToList();
+            var product = await _productRepository.GetProductAsync(id);
+            var productVM = _mapper.Map<ProductDetailsForUserVM>(product);
+            productVM.ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image);
+            return productVM;
+        }
+
+        public async Task<ListProductDetailsForUserVM> GetProductsByCategoryNameAsync(string categoryName)
+        {
+            var products = (await _productRepository.GetAllProductsAsync()).Where(p => p.CategoryName == categoryName).ToList();
+            var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
             for (int i = 0; i < productsVM.Count; i++)
             {
-                productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(productsVM[i].Image);
+                productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(products[i].Image);
             }
-            return productsVM;
+            return new ListProductDetailsForUserVM()
+            {
+                Products = productsVM
+            };
         }
 
         public async Task UpdateProductAsync(ProductVM productVM)
