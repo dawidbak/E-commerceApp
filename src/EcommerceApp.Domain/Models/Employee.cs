@@ -22,10 +22,6 @@ namespace EcommerceApp.Domain.Models
         public string Position { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
         public string AppUserId { get; set; }
 
         [ForeignKey("AppUserId")]
