@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Application.ViewModels.Home;
+using EcommerceApp.Application.ViewModels.Product;
 
 namespace EcommerceApp.Application.Services
 {
@@ -19,36 +19,32 @@ namespace EcommerceApp.Application.Services
         }
         public async Task<HomeVM> GetHomeVMForIndexAsync()
         {
-            var categoriesVM = await _categoryService.GetAllCategoriesAsync();
             var productsVM = await _productService.GetAllProductsWithImagesAsync();
-            
-            HomeVM homeVM = new()
+
+            return new HomeVM()
             {
-                Categories = categoriesVM,
                 Products = GetRandomProductVMList(productsVM),
             };
-
-            return homeVM;
         }
 
-        public List<ProductVM> GetRandomProductVMList(List<ProductVM> products)
+        public ListProductDetailsForUserVM GetRandomProductVMList(ListProductDetailsForUserVM products)
         {
-            var randomProductVMList = new List<ProductVM>();
+            var randomProductVMList = new ListProductDetailsForUserVM();
             var checkList = new List<int>();
             int numberOfProducts = 8;
             Random random = new();
 
-            if (numberOfProducts >= products.Count)
+            if (numberOfProducts >= products.Products.Count)
             {
                 return products;
             }
 
-            while (randomProductVMList.Count <= numberOfProducts)
+            while (randomProductVMList.Products.Count <= numberOfProducts)
             {
-                int index = random.Next(products.Count);
-                if(!checkList.Contains(index))
+                int index = random.Next(products.Products.Count);
+                if (!checkList.Contains(index))
                 {
-                    randomProductVMList.Add(products[index]);
+                    randomProductVMList.Products.Add(products.Products[index]);
                     checkList.Add(index);
                 }
             }
