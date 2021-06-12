@@ -8,9 +8,9 @@ namespace EcommerceApp.Application.Interfaces
 {
     public interface ISearchService
     {
-        Task<List<CategoryVM>> SearchSelectedCategoryAsync(string selectedValue, string searchString);
-        Task<List<ProductVM>> SearchSelectedProductAsync(string selectedValue, string searchString);
-        Task<List<EmployeeVM>> SearchSelectedEmployeeAsync(string selectedValue, string searchString);
-        Task<List<CustomerVM>> SearchSelectedCustomerAsync(string selectedValue, string searchString);
+        Task<ListCategoryForListVM> SearchSelectedCategoryAsync(string selectedValue, string searchString);
+        Task<ListProductForListVM> SearchSelectedProductAsync(string selectedValue, string searchString);
+        Task<ListEmployeeForListVM> SearchSelectedEmployeeAsync(string selectedValue, string searchString);
+        Task<ListCustomerVM> SearchSelectedCustomerAsync(string selectedValue, string searchString);
     }
 }
