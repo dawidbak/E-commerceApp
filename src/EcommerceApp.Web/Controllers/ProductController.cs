@@ -21,11 +21,11 @@ namespace EcommerceApp.Web.Controllers
 
         public async Task<IActionResult> Product(int? id)
         {
-            if(!id.HasValue)
+            if (!id.HasValue)
             {
                 return NotFound("You must pass a valid Employee ID in the route, for example, /Product/21");
             }
-            return View(await _productService.GetProductAsync(id.Value));
+            return View(await _productService.GetProductDetailsForUser(id.Value));
         }
     }
 }
