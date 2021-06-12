@@ -35,10 +35,14 @@ namespace EcommerceApp.Application.Services
             await _categoryRepository.DeleteCategoryAsync(categoryVMId);
         }
 
-        public async Task<List<CategoryVM>> GetAllCategoriesAsync()
+        public async Task<ListCategoryForListVM> GetAllCategoriesAsync()
         {
             var categories = (await _categoryRepository.GetAllCategoriesAsync()).ToList();
-            return _mapper.Map<List<CategoryVM>>(categories);
+            var categoriesVM = _mapper.Map<List<CategoryForListVM>>(categories);
+            return new ListCategoryForListVM()
+            {
+                Categories = categoriesVM
+            };
         }
 
         public async Task<CategoryVM> GetCategoryAsync(int categoryVMId)
