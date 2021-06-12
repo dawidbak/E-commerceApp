@@ -39,17 +39,21 @@ namespace EcommerceApp.Application.Services
             await _productRepository.DeleteProductAsync(id);
         }
 
-        public async Task<List<ProductVM>> GetAllProductsAsync()
+        public async Task<ListProductForListVM> GetAllProductsAsync()
         {
             var products = (await _productRepository.GetAllProductsAsync()).ToList();
-            return _mapper.Map<List<ProductVM>>(products);
+            var productsVM = _mapper.Map<List<ProductForListVM>>(products);
+            return new ListProductForListVM()
+            {
+                Products = productsVM
+            };
         }
 
         public async Task<List<ProductVM>> GetAllProductsWithImagesAsync()
         {
             var products = (await _productRepository.GetAllProductsAsync()).ToList();
             var productsVM = _mapper.Map<List<ProductVM>>(products);
-            for(int i = 0; i < productsVM.Count;i++)
+            for (int i = 0; i < productsVM.Count; i++)
             {
                 productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(products[i].Image);
             }
@@ -59,7 +63,7 @@ namespace EcommerceApp.Application.Services
         public async Task<ProductVM> GetProductAsync(int id)
         {
             var product = await _productRepository.GetProductAsync(id);
-            var productVM =  _mapper.Map<ProductVM>(product);
+            var productVM = _mapper.Map<ProductVM>(product);
             productVM.ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image);
             return productVM;
         }
@@ -67,7 +71,7 @@ namespace EcommerceApp.Application.Services
         public async Task<List<ProductVM>> GetProductsByCategoryNameAsync(string categoryName)
         {
             var productsVM = (await _productRepository.GetAllProductsAsync()).Where(p => p.CategoryName == categoryName).ProjectTo<ProductVM>(_mapper.ConfigurationProvider).ToList();
-            for(int i = 0; i < productsVM.Count; i++)
+            for (int i = 0; i < productsVM.Count; i++)
             {
                 productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(productsVM[i].Image);
             }
