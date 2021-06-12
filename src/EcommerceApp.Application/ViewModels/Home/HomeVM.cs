@@ -7,7 +7,7 @@ namespace EcommerceApp.Application.ViewModels.Home
 {
     public class HomeVM
     {
-        public List<CategoryVM> Categories = new List<CategoryVM>();
+        public ListCategoryForListVM Categories = new ListCategoryForListVM();
         public List<ProductVM> Products = new List<ProductVM>();
     }
 }
