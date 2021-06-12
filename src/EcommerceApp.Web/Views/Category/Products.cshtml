@@ -1,9 +1,9 @@
-@model List<EcommerceApp.Application.ViewModels.EmployeePanel.ProductVM>
+@model EcommerceApp.Application.ViewModels.Product.ListProductDetailsForUserVM
     @{
     ViewData["Title"] = "Products";
     }
     <div class="row">
-        @foreach(var item in Model)
+        @foreach(var item in Model.Products)
         {
         <div class="col-md-3">
             <p>
