@@ -27,7 +27,7 @@ namespace EcommerceApp.Application.Services
             ListCategoryForListVM model = new();
             var intParse = int.TryParse(searchString, out int id);
 
-            model.Categories =  selectedValue switch
+            model.Categories = selectedValue switch
             {
                 "Id" => intParse ? (await _categoryService.GetAllCategoriesAsync()).Categories.Where(x => x.Id == id).ToList() : model.Categories,
                 "Name" => (await _categoryService.GetAllCategoriesAsync()).Categories.Where(x => x.Name.Contains(searchString)).ToList(),
@@ -77,7 +77,7 @@ namespace EcommerceApp.Application.Services
             ListCustomerVM model = new();
             var idParse = int.TryParse(searchString, out int id);
 
-            model.Customers =  selectedValue switch
+            model.Customers = selectedValue switch
             {
                 "Id" => idParse ? (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.Id == id).ToList() : model.Customers,
                 "FirstName" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.FirstName.Contains(searchString)).ToList(),
