@@ -1,15 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
-using AutoMapper.QueryableExtensions;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace EcommerceApp.Application.Services
 {
@@ -31,17 +31,17 @@ namespace EcommerceApp.Application.Services
             var user = new ApplicationUser { UserName = employeeVM.Email, Email = employeeVM.Email };
             employee.AppUserId = user.Id;
             var result = await _userManager.CreateAsync(user, employeeVM.Password);
-            await _userManager.ConfirmEmailAsync(user,await _userManager.GenerateEmailConfirmationTokenAsync(user));
+            await _userManager.ConfirmEmailAsync(user, await _userManager.GenerateEmailConfirmationTokenAsync(user));
             await _employeeRepository.AddEmployeeAsync(employee);
 
-            var claim = new Claim("isEmployee","True");
-            await _userManager.AddClaimAsync(user,claim);
+            var claim = new Claim("isEmployee", "True");
+            await _userManager.AddClaimAsync(user, claim);
         }
         public async Task<ListEmployeeForListVM> GetAllEmployeesAsync()
         {
             var employees = (await _employeeRepository.GetAllEmployeesAsync()).ToList();
-            var employeesVM =  _mapper.Map<List<EmployeeForListVM>>(employees);
-            for(int i=0;i<employees.Count;i++)
+            var employeesVM = _mapper.Map<List<EmployeeForListVM>>(employees);
+            for (int i = 0; i < employees.Count; i++)
             {
                 var user = await _userManager.FindByIdAsync(employees[i].AppUserId);
                 employeesVM[i].Email = user.Email;
