@@ -25,7 +25,6 @@ namespace EcommerceApp.Domain.Models
         public string AppUserId { get; set; }
 
         [ForeignKey("AppUserId")]
-        [InverseProperty(nameof(ApplicationUser.Employee))]
         public virtual ApplicationUser AppUser { get; set; }
     }
 }
