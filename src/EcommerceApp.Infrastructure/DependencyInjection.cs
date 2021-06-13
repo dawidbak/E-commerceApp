@@ -14,7 +14,8 @@ namespace EcommerceApp.Infrastructure
             services.AddScoped<IProductRepository,ProductRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICartItemRepository,CartItemRepository>();
-            
+            services.AddScoped<ICartRepository, CartRepository>();
+
             return services;
         }
     }
