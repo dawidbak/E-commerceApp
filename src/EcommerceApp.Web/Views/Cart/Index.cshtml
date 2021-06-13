@@ -1,0 +1,33 @@
+@model EcommerceApp.Application.ViewModels.Cart.ListCartItemForListVM
+@{
+    ViewData["Title"] = "Index";
+}
+<table class="table">
+            <thead>
+                <tr>
+                    <th>ProductId</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
