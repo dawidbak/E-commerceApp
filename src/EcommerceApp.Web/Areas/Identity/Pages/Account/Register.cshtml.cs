@@ -28,19 +28,22 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ICustomerRepository _customerRepository;
+        private readonly ICartRepository _cartRepository;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository,
+            ICartRepository cartRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _customerRepository = customerRepository;
+            _cartRepository = cartRepository;
         }
 
         [BindProperty]
@@ -122,6 +125,10 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account
                     Address = Input.Address, AppUserId = user.Id};
 
                     await _customerRepository.AddCustomerAsync(customer);
+
+                    var cart = new Cart{CustomerId = customer.Id};
+                    await _cartRepository.AddCartAsync(cart);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
