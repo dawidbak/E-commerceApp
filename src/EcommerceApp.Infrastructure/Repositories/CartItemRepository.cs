@@ -30,9 +30,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<IQueryable<CartItem>> GetAllCartItemsAsync()
+        public async Task<IQueryable<CartItem>> GetAllCartItemsAsync(int cartId)
         {
-            return (await _appDbContext.CartItems.ToListAsync()).AsQueryable();
+            return (await _appDbContext.CartItems.Where(x => x.CartId == cartId).ToListAsync()).AsQueryable();
         }
 
         public async Task<CartItem> GetCartItemAsync(int cartItemId)
