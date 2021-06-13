@@ -14,8 +14,8 @@
                 <form class="d-lg-inline">
                     <div class="form-group mx-sm-3 mb-2">
                         <label>Quantity: </label>
-                        <input type="number" class="col-sm-2" value="1" min="1">
-                        <button type="submit" class="btn btn-primary mb-2">Add to cart</button>
+                        <input type="number" class="col-sm-2" value="1" min="1" name="quantity">
+                        <button type="submit" class="btn btn-primary mb-2" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id">Add to cart</button>
                     </div>
                 </form>
                 <h2><label>Product Description</label></h2>
