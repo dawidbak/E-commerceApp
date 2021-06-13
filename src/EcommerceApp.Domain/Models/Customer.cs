@@ -29,6 +29,7 @@ namespace EcommerceApp.Domain.Models
         [StringLength(50, MinimumLength = 2)]
         public string Address { get; set; }
 
+        [Required]
         public string AppUserId { get; set; }
 
         [ForeignKey("AppUserId")]
