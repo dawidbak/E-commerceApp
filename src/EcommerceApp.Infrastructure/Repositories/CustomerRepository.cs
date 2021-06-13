@@ -36,7 +36,7 @@ namespace EcommerceApp.Infrastructure.Repositories
         {
             var customer = await _appDbContext.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.AppUserId == AppUserId);
             return customer.Id;
-        }   
+        }
         public async Task UpdateCustomerAsync(Customer customer)
         {
             _appDbContext.Update(customer);
@@ -48,7 +48,7 @@ namespace EcommerceApp.Infrastructure.Repositories
             var customer = await _appDbContext.Customers.FindAsync(customerId);
             if (customer != null)
             {
-                _appDbContext.Remove(customer);
+                _appDbContext.Customers.Remove(customer);
                 await _appDbContext.SaveChangesAsync();
             }
         }
