@@ -6,6 +6,7 @@ namespace EcommerceApp.Application.ViewModels.Cart
 {
     public class ListCartItemForListVM
     {
+        public int CartId { get; set; }
         public List<CartItemForListVM> CartItems { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C}")]
