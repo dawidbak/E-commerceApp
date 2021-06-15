@@ -17,15 +17,17 @@ namespace EcommerceApp.Application.Services
         private readonly ICartRepository _cartRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
+        private readonly IImageConverterService _imageConverterService;
 
         public CartService(ICartItemRepository cartItemRepository, IProductRepository productRepository, ICartRepository cartRepository,
-        ICustomerRepository customerRepository, IMapper mapper)
+        ICustomerRepository customerRepository, IMapper mapper, IImageConverterService imageConverterService)
         {
             _cartItemRepository = cartItemRepository;
             _productRepository = productRepository;
             _cartRepository = cartRepository;
             _customerRepository = customerRepository;
             _mapper = mapper;
+            _imageConverterService = imageConverterService;
         }
         public async Task AddCartItemAsync(int productId, int quantity, string appUserId)
         {
@@ -35,36 +37,50 @@ namespace EcommerceApp.Application.Services
             await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cartId });
         }
 
-        public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUser(string appUserId)
+        public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId)
         {
             var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
             var cartId = await _cartRepository.GetCartId(customerId);
             var cartItems = (await _cartItemRepository.GetAllCartItemsAsync(cartId)).ToList();
-
-            var productIdList = new List<int>();
+            var cartItemList = new List<CartItemForListVM>();
             for (int i = 0; i < cartItems.Count; i++)
             {
-                productIdList.Add(cartItems[i].ProductId);
+                var product = await _productRepository.GetProductAsync(cartItems[i].ProductId);
+                cartItemList.Add(new CartItemForListVM
+                {
+                    Id = cartItems[i].Id,
+                    Name = product.Name,
+                    Quantity = cartItems[i].Quantity,
+                    ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image),
+                    UnitPrice = product.UnitPrice,
+                });
             }
-
-            List<Product> productList = new();
-            foreach (var id in productIdList)
+            return new ListCartItemForListVM()
             {
-                var product = await _productRepository.GetProductAsync(id);
-                productList.Add(product);
-            }
-
-            var cartItemsVM = _mapper.Map<List<CartItemForListVM>>(productList);
-
-            for (int i = 0; i < cartItemsVM.Count; i++)
-            {
-                cartItemsVM[i].Quantity = cartItems[i].Quantity;
-                cartItemsVM[i].TotalPrice = cartItemsVM[i].Quantity * cartItemsVM[i].UnitPrice;
-            }
-            return new ListCartItemForListVM
-            {
-                CartItems = cartItemsVM
+                CartItems = cartItemList,
             };
+        }
+
+        public async Task IncreaseQuantityCartItemByOneAsync(int cartItemId)
+        {
+            var cartItem = await _cartItemRepository.GetCartItemAsync(cartItemId);
+            cartItem.Quantity += 1;
+            await _cartItemRepository.UpdateCartItemAsync(cartItem);
+        }
+
+        public async Task DecreaseQuantityCartItemByOneAsync(int cartItemId)
+        {
+            var cartItem = await _cartItemRepository.GetCartItemAsync(cartItemId);
+            if (cartItem.Quantity > 1)
+            {
+                cartItem.Quantity -= 1;
+            }
+            await _cartItemRepository.UpdateCartItemAsync(cartItem);
+        }
+
+        public async Task DeleteCartItemAsync(int cartItemId)
+        {
+            await _cartItemRepository.DeleteCartItemAsync(cartItemId);
         }
     }
 }
