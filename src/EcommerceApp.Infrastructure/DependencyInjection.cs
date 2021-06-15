@@ -5,7 +5,7 @@ using EcommerceApp.Domain.Interfaces;
 
 namespace EcommerceApp.Infrastructure
 {
-    public static class DependencyIncjection
+    public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
@@ -15,6 +15,8 @@ namespace EcommerceApp.Infrastructure
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICartItemRepository,CartItemRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }
