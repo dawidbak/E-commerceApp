@@ -33,15 +33,15 @@ namespace EcommerceApp.Application.Services
         {
             var product = await _productRepository.GetProductAsync(productId);
             var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-            var cartId = await _cartRepository.GetCartId(customerId);
+            var cartId = await _cartRepository.GetCartIdAsync(customerId);
             await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cartId });
         }
 
         public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId)
         {
             var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-            var cartId = await _cartRepository.GetCartId(customerId);
-            var cartItems = (await _cartItemRepository.GetAllCartItemsAsync(cartId)).ToList();
+            var cartId = await _cartRepository.GetCartIdAsync(customerId);
+            var cartItems = (await _cartItemRepository.GetAllCartItemsByCartIdAsync(cartId)).ToList();
             var cartItemList = new List<CartItemForListVM>();
             for (int i = 0; i < cartItems.Count; i++)
             {
@@ -49,6 +49,7 @@ namespace EcommerceApp.Application.Services
                 cartItemList.Add(new CartItemForListVM
                 {
                     Id = cartItems[i].Id,
+                    ProductId = product.Id,
                     Name = product.Name,
                     Quantity = cartItems[i].Quantity,
                     ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image),
@@ -58,6 +59,7 @@ namespace EcommerceApp.Application.Services
             return new ListCartItemForListVM()
             {
                 CartItems = cartItemList,
+                CartId = cartId,
             };
         }
 
