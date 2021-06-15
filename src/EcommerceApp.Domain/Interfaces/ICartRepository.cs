@@ -7,6 +7,7 @@ namespace EcommerceApp.Domain.Interfaces
     public interface ICartRepository
     {
         Task AddCartAsync(Cart cart);
-        Task<int> GetCartId(int customerId);
+        Task<int> GetCartIdAsync(int customerId);
+        Task<Cart> GetCartAsync(int cartId);
     }
 }
