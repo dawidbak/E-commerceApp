@@ -30,9 +30,21 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<IQueryable<CartItem>> GetAllCartItemsAsync(int cartId)
+        public async Task DeleteAllCartItemsByCartIdAsync(int cartId)
+        {
+            var cartItems = await _appDbContext.CartItems.Where(x => x.CartId == cartId).ToListAsync();
+            _appDbContext.CartItems.RemoveRange(cartItems);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IQueryable<CartItem>> GetAllCartItemsByCartIdAsync(int cartId)
         {
             return (await _appDbContext.CartItems.Where(x => x.CartId == cartId).ToListAsync()).AsQueryable();
+        }
+
+        public async Task<IQueryable<CartItem>> GetAllCartItemsAsync()
+        {
+            return (await _appDbContext.CartItems.ToListAsync()).AsQueryable();
         }
 
         public async Task<CartItem> GetCartItemAsync(int cartItemId)
