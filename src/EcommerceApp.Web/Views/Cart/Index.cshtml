@@ -1,33 +1,52 @@
 @model EcommerceApp.Application.ViewModels.Cart.ListCartItemForListVM
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Shopping Cart";
 }
-<table class="table-striped table-dark table-sm">
-            <thead>
-                <tr>
-                    <th>ProductId</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.CartItems)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UnitPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalPrice)
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+<center>
+    <h1>@ViewData["Title"]</h1>
+</center>
+<center>
+<table class="table-striped table-dark table-sm text-center">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <img src="@item.ImageUrl" width="128" height="128" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCartItemPrice)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="IncreaseQuantityCartItemByOne"
+                    asp-route-cartItemId="@item.Id">+</a>
+                    <a class="btn btn-danger" asp-action="DecreaseQuantityCartItemByOne"
+                    asp-route-cartItemId="@item.Id">-</a>
+                    <a class="btn btn-warning" asp-action="DeleteCartItem"
+                    asp-route-cartItemId="@item.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+        <td class="text-right"><strong>Total price:@Html.DisplayFor(x => x.TotalPrice)</strong></td>
+    </tbody>
+</table>
+</center>
