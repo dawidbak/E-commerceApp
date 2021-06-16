@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EcommerceApp.Application.Validations;
 using Microsoft.AspNetCore.Http;
 using EcommerceApp.Application.Resources;
+using EcommerceApp.Application.ViewModels.Order;
 
 namespace EcommerceApp.Application
 {
@@ -33,6 +34,7 @@ namespace EcommerceApp.Application
             services.AddTransient<IValidator<CategoryVM>, CategoryVMValidator>();
             services.AddTransient<IValidator<ProductVM>, ProductVMValidator>();
             services.AddTransient<IValidator<IFormFile>,FileValidator>();
+            services.AddTransient<IValidator<OrderCheckoutVM>,OrderCheckoutVMValidator>();
             services.AddSingleton<IAuthorizationHandler, HasAdminClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, HasIsEmployeeClaimHandler>();
             services.AddSingleton<ISearchSelectList,SearchSelectList>();
