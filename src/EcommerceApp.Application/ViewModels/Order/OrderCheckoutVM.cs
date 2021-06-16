@@ -31,7 +31,8 @@ namespace EcommerceApp.Application.ViewModels.Order
         [Display(Name = "Address")]
         public string Address { get; set; }
 
-        [Phone]
+        [Phone(ErrorMessage = "Invalid Phone Number")]
+        [Required]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
     }
