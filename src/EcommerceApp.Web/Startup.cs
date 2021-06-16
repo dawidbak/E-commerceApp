@@ -17,6 +17,7 @@ using EcommerceApp.Application;
 using EcommerceApp.Domain.Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using EcommerceApp.Web.Filters;
 
 namespace EcommerceApp.Web
 {
@@ -40,6 +41,8 @@ namespace EcommerceApp.Web
                 options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim("Admin","True"));
                 options.AddPolicy("Employee", policyBuilder => policyBuilder.RequireClaim("isEmployee","True"));
             });
+            services.AddScoped<CheckCheckoutGetPermission>();
+            services.AddScoped<CheckCheckoutPostPermission>();
             services.AddApplication();
             services.AddInfrastructure();
         }
