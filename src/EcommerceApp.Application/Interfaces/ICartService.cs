@@ -8,6 +8,7 @@ namespace EcommerceApp.Application.Interfaces
     {
         Task AddCartItemAsync(int productId, int quantity, string appUserId);
         Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId);
+        Task<int> GetCartIdAsync(string appUserId);
         Task IncreaseQuantityCartItemByOneAsync(int cartItemId);
         Task DecreaseQuantityCartItemByOneAsync(int cartItemId);
         Task DeleteCartItemAsync(int cartItemId);
