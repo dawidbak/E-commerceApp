@@ -8,6 +8,7 @@ using EcommerceApp.Application.ViewModels.Order;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Application.Services
 {
@@ -65,7 +66,7 @@ namespace EcommerceApp.Application.Services
             var cart = await _cartRepository.GetCartAsync(cartId);
             var customer = await _customerRepository.GetCustomerAsync(cart.CustomerId);
             var appUser = await _userManager.FindByIdAsync(customer.AppUserId);
-            var cartItems = (await _cartItemRepository.GetAllCartItemsByCartIdAsync(cartId)).ToList();
+            var cartItems = await _cartItemRepository.GetAllCartItemsByCartId(cartId).ToListAsync();
             var cartItemList = new List<CartItemForListVM>();
             var totalPrice = 0m;
             for (int i = 0; i < cartItems.Count; i++)
