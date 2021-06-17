@@ -42,5 +42,13 @@ namespace EcommerceApp.Application.Resources
             new SelectListItem { Value = "Address", Text = "Address" },
             new SelectListItem { Value = "PostalCode", Text = "Postal Code" },
         };
+
+        public List<SelectListItem> PageSizeSelectList { get; } = new()
+        {
+            new SelectListItem { Value = "5", Text = "5" },
+            new SelectListItem { Value = "10", Text = "10" },
+            new SelectListItem { Value = "20", Text = "20" },
+            new SelectListItem { Value = "50", Text = "50" },
+        };
     }
 }
