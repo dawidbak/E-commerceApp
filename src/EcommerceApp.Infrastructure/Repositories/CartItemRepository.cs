@@ -37,14 +37,14 @@ namespace EcommerceApp.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<IQueryable<CartItem>> GetAllCartItemsByCartIdAsync(int cartId)
+        public IQueryable<CartItem> GetAllCartItemsByCartId(int cartId)
         {
-            return (await _appDbContext.CartItems.Where(x => x.CartId == cartId).ToListAsync()).AsQueryable();
+            return _appDbContext.CartItems.Where(x => x.CartId == cartId).AsQueryable();
         }
 
-        public async Task<IQueryable<CartItem>> GetAllCartItemsAsync()
+        public IQueryable<CartItem> GetAllCartItems()
         {
-            return (await _appDbContext.CartItems.ToListAsync()).AsQueryable();
+            return _appDbContext.CartItems.AsQueryable();
         }
 
         public async Task<CartItem> GetCartItemAsync(int cartItemId)

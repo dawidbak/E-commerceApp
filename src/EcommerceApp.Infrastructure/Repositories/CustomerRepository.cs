@@ -22,9 +22,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<IQueryable<Customer>> GetAllCustomersAsync()
+        public IQueryable<Customer> GetAllCustomers()
         {
-            return (await _appDbContext.Customers.ToListAsync()).AsQueryable();
+            return _appDbContext.Customers.AsQueryable();
         }
 
         public async Task<Customer> GetCustomerAsync(int customerId)

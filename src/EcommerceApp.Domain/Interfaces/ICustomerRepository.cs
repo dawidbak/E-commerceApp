@@ -8,7 +8,7 @@ namespace EcommerceApp.Domain.Interfaces
     public interface ICustomerRepository
     {
         Task AddCustomerAsync(Customer customer);
-        Task<IQueryable<Customer>> GetAllCustomersAsync();
+        IQueryable<Customer> GetAllCustomers();
         Task<Customer> GetCustomerAsync(int customerId);
         Task<int> GetCustomerIdAsync(string AppUserId);
         Task UpdateCustomerAsync(Customer customer);

@@ -32,7 +32,7 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Employee> GetAllEmployeesAsync()
+        public IQueryable<Employee> GetAllEmployees()
         {
             return _appDbContext.Employees.AsQueryable();
         }

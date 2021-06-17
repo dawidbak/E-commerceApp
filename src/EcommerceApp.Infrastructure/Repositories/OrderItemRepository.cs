@@ -31,9 +31,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<IQueryable<OrderItem>> GetAllOrderItemsAsync()
+        public IQueryable<OrderItem> GetAllOrderItems()
         {
-            return (await _appDbContext.OrderItems.ToListAsync()).AsQueryable();
+            return _appDbContext.OrderItems.AsQueryable();
         }
 
         public async Task<OrderItem> GetOrderItemAsync(int orderItemId)

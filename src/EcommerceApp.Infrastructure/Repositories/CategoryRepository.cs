@@ -32,9 +32,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<IQueryable<Category>> GetAllCategoriesAsync()
+        public IQueryable<Category> GetAllCategories()
         {
-            return (await _appDbContext.Categories.ToListAsync()).AsQueryable();
+            return _appDbContext.Categories.AsQueryable();
         }
 
         public async Task<Category> GetCategoryAsync(int categoryId)

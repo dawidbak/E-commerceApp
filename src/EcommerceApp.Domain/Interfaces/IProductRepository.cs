@@ -9,7 +9,7 @@ namespace EcommerceApp.Domain.Interfaces
     {
         Task AddProductAsync(Product product);
         Task<Product> GetProductAsync(int productId);
-        Task<IQueryable<Product>> GetAllProductsAsync();
+        IQueryable<Product> GetAllProducts();
         Task UpdateProductAsync(Product product);
         Task DeleteProductAsync(int productId);
     }
