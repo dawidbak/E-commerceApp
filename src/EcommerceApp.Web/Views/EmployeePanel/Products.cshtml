@@ -9,6 +9,7 @@
        <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
        <p>
            <Form method="get" asp-action="Products">
+               Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
                <select asp-items="searchSelectList.ProductSelectList" name="SelectedValue"></select>
                <input text="text" name="SearchString" />
                <input type="submit" value="Filter" />
@@ -54,4 +55,5 @@
            </tr>
            }
        </tbody>
+       <partial name="_PaginationPartialView"></partial>
    </table>
