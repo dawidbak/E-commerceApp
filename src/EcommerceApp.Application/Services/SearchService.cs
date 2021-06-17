@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
-using EcommerceApp.Domain.Interfaces;
 
 namespace EcommerceApp.Application.Services
 {
@@ -15,14 +12,17 @@ namespace EcommerceApp.Application.Services
         private readonly IProductService _productService;
         private readonly IEmployeeService _employeeService;
         private readonly ICustomerService _customerService;
-        public SearchService(ICategoryService categoryService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService)
+        private readonly IPaginationService<EmployeeForListVM> _paginationEmployeeService;
+        public SearchService(ICategoryService categoryService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService,
+        IPaginationService<EmployeeForListVM> paginationEmployeeService)
         {
             _categoryService = categoryService;
             _productService = productService;
             _employeeService = employeeService;
             _customerService = customerService;
+            _paginationEmployeeService = paginationEmployeeService;
         }
-        public async Task<ListCategoryForListVM> SearchSelectedCategoryAsync(string selectedValue, string searchString)
+        public async Task<ListCategoryForListVM> SearchSelectedCategoryAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
             ListCategoryForListVM model = new();
             var intParse = int.TryParse(searchString, out int id);
@@ -36,7 +36,7 @@ namespace EcommerceApp.Application.Services
             return model;
         }
 
-        public async Task<ListProductForListVM> SearchSelectedProductAsync(string selectedValue, string searchString)
+        public async Task<ListProductForListVM> SearchSelectedProductAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
             ListProductForListVM model = new();
             var idParse = int.TryParse(searchString, out int id);
@@ -55,7 +55,7 @@ namespace EcommerceApp.Application.Services
             return model;
         }
 
-        public async Task<ListEmployeeForListVM> SearchSelectedEmployeeAsync(string selectedValue, string searchString)
+        public async Task<ListEmployeeForListVM> SearchSelectedEmployeeAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
             ListEmployeeForListVM model = new();
             var idParse = int.TryParse(searchString, out int id);
@@ -69,10 +69,14 @@ namespace EcommerceApp.Application.Services
                 "Position" => (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.Position.Contains(searchString)).ToList(),
                 _ => model.Employees,
             };
+            var paginatedVM = await _paginationEmployeeService.CreateAsync(model.Employees.AsQueryable(), pageNumber, pageSize);
+            model.Employees = paginatedVM.Items;
+            model.CurrentPage = paginatedVM.CurrentPage;
+            model.TotalPages = paginatedVM.TotalPages;
             return model;
         }
 
-        public async Task<ListCustomerVM> SearchSelectedCustomerAsync(string selectedValue, string searchString)
+        public async Task<ListCustomerVM> SearchSelectedCustomerAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
             ListCustomerVM model = new();
             var idParse = int.TryParse(searchString, out int id);

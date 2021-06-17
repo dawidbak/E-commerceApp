@@ -32,9 +32,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<IQueryable<Employee>> GetAllEmployeesAsync()
+        public IQueryable<Employee> GetAllEmployeesAsync()
         {
-            return (await _appDbContext.Employees.ToListAsync()).AsQueryable();
+            return _appDbContext.Employees.AsQueryable();
         }
 
         public async Task<Employee> GetEmployeeAsync(int employeeId)

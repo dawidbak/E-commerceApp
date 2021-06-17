@@ -30,20 +30,30 @@ namespace EcommerceApp.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Categories(string selectedValue, string searchString)
+        public async Task<IActionResult> Categories(string selectedValue, string searchString, int pageSize, int? pageNumber)
         {
+            if (!pageNumber.HasValue)
+            {
+                pageNumber = 1;
+            }
+            pageSize = 2;
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString));
+                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString, pageSize, pageNumber.Value));
             }
             return View(await _categoryService.GetAllCategoriesAsync());
         }
 
-        public async Task<IActionResult> Products(string selectedValue, string searchString)
+        public async Task<IActionResult> Products(string selectedValue, string searchString, int pageSize, int? pageNumber)
         {
+            if (!pageNumber.HasValue)
+            {
+                pageNumber = 1;
+            }
+            pageSize = 2;
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString));
+                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString, pageSize, pageNumber.Value));
             }
             return View(await _productService.GetAllProductsAsync());
         }

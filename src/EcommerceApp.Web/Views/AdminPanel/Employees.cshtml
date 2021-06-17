@@ -2,17 +2,25 @@
 @using EcommerceApp.Application.Interfaces
 @inject ISearchSelectList searchSelectList
 @{
-ViewData["Title"] = "Employee Management";
+    ViewData["Title"] = "Employee Management";
+    bool showPrevious = Model.CurrentPage > 1;
+    bool showNext = Model.CurrentPage < Model.TotalPages;
+    bool showFirst = Model.CurrentPage != 1;
+    bool showLast = Model.CurrentPage != Model.TotalPages;
+    var searchString = Context.Request.Query["SearchString"];
+    var selectedValue = Context.Request.Query["SelectedValue"];
+    var pageSize = Context.Request.Query["PageSize"];
 }
 <center>
     <h1>@ViewData["Title"]</h1>
     <a class="btn btn-success" asp-controller="AdminPanel" asp-action="AddEmployee">AddEmployee</a>
     <p>
-        <Form method="get" asp-action="Employees">
-            <select asp-items="searchSelectList.EmployeeSelectList" name="SelectedValue"></select>
-            <input text="text" name="SearchString" />
-            <input type="submit" value="Filter" />
-        </Form>
+    <Form method="get" asp-action="Employees">
+        Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
+        <select asp-items="searchSelectList.EmployeeSelectList" name="SelectedValue"></select>
+        <input text="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </Form>
     </p>
 </center>
 <table class="table">
@@ -28,30 +36,59 @@ ViewData["Title"] = "Employee Management";
     <tbody>
         @foreach (var item in Model.Employees)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td>
-                <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="EditEmployee"
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="EditEmployee"
                     asp-route-id="@item.Id">Edit</a>
 
-                <a class="btn btn-danger" asp-controller="AdminPanel" asp-action="DeleteEmployee"
+                    <a class="btn btn-danger" asp-controller="AdminPanel" asp-action="DeleteEmployee"
                     asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+<div>
+    <ul class="pagination">
+        <li class="page-item @(!showFirst? " disabled":"")">
+            <a asp-action="Employees" asp-route-pageNumber="1" asp-route-selectedValue="@selectedValue"
+                asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link"><i
+                    class="fas fa-fast-backward"></i></a>
+        </li>
+
+        <li class="page-item @(!showPrevious ? " disabled":"")">
+            <a asp-action="Employees" asp-route-pageNumber="@(Model.CurrentPage -1)"
+                asp-route-selectedValue="@selectedValue" asp-route-searchString="@searchString"
+                asp-route-pageSize="@pageSize" class="page-link arrow-left"><i class="fas fa-step-backward"></i></a>
+        </li>
+        <li>
+            <a class="page-link">@Model.CurrentPage</a>
+        </li>
+        <li class="page-item  @(!showNext ? " disabled":"")">
+            <a asp-action="Employees" asp-route-pageNumber="@(Model.CurrentPage + 1)"
+                asp-route-selectedValue="@selectedValue" asp-route-searchString="@searchString"
+                asp-route-pageSize="@pageSize" class="page-link"><i class="fas fa-step-forward"></i></a>
+        </li>
+
+        <li class="page-item  @(!showLast ? " disabled":"")">
+            <a asp-action="Employees" asp-route-pageNumber="@Model.TotalPages" asp-route-selectedValue="@selectedValue"
+                asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link"><i
+                    class="fas fa-fast-forward"></i></a>
+        </li>
+    </ul>
+</div>

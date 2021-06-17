@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
+using EcommerceApp.Application.ViewModels;
 using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Application.Services
 {
@@ -18,12 +18,14 @@ namespace EcommerceApp.Application.Services
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPaginationService<EmployeeForListVM> _paginationService;
 
-        public EmployeeService(IMapper mapper, IEmployeeRepository employeeRepository, UserManager<ApplicationUser> userManager)
+        public EmployeeService(IMapper mapper, IEmployeeRepository employeeRepository, UserManager<ApplicationUser> userManager, IPaginationService<EmployeeForListVM> paginationService)
         {
             _mapper = mapper;
             _employeeRepository = employeeRepository;
             _userManager = userManager;
+            _paginationService = paginationService;
         }
         public async Task AddEmployeeAsync(EmployeeVM employeeVM)
         {
@@ -39,7 +41,7 @@ namespace EcommerceApp.Application.Services
         }
         public async Task<ListEmployeeForListVM> GetAllEmployeesAsync()
         {
-            var employees = (await _employeeRepository.GetAllEmployeesAsync()).ToList();
+            var employees = await _employeeRepository.GetAllEmployeesAsync().ToListAsync();
             var employeesVM = _mapper.Map<List<EmployeeForListVM>>(employees);
             for (int i = 0; i < employees.Count; i++)
             {
@@ -48,10 +50,28 @@ namespace EcommerceApp.Application.Services
             }
             return new ListEmployeeForListVM()
             {
-                Employees = employeesVM
+                Employees = employeesVM,
             };
-
         }
+
+        public async Task<ListEmployeeForListVM> GetAllPaginatedEmployeesAsync(int pageSize, int pageNumber)
+        {
+            var employees = await _employeeRepository.GetAllEmployeesAsync().ToListAsync();
+            var employeesVM = _mapper.Map<List<EmployeeForListVM>>(employees);
+            for (int i = 0; i < employees.Count; i++)
+            {
+                var user = await _userManager.FindByIdAsync(employees[i].AppUserId);
+                employeesVM[i].Email = user.Email;
+            }
+            var paginatedVM = await _paginationService.CreateAsync(employeesVM.AsQueryable(), pageNumber, pageSize);
+            return new ListEmployeeForListVM()
+            {
+                Employees = paginatedVM.Items,
+                CurrentPage = paginatedVM.CurrentPage,
+                TotalPages = paginatedVM.TotalPages
+            };
+        }
+
         public async Task<EmployeeVM> GetEmployeeAsync(int id)
         {
             var employee = await _employeeRepository.GetEmployeeAsync(id);

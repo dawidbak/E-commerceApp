@@ -9,6 +9,7 @@ using EcommerceApp.Infrastructure.Repositories;
 using EcommerceApp.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace EcommerceApp.Web.Controllers
@@ -20,12 +21,15 @@ namespace EcommerceApp.Web.Controllers
         private readonly ISearchService _searchService;
         private readonly ICustomerService _customerService;
         private readonly ILogger<AdminPanelController> _logger;
-        public AdminPanelController(IEmployeeService employeeService, ILogger<AdminPanelController> logger, ISearchService searchService, ICustomerService customerService)
+        private readonly IConfiguration _configuration;
+        public AdminPanelController(IEmployeeService employeeService, ILogger<AdminPanelController> logger, ISearchService searchService,
+        ICustomerService customerService, IConfiguration configuration)
         {
             _employeeService = employeeService;
             _logger = logger;
             _searchService = searchService;
             _customerService = customerService;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -33,20 +37,34 @@ namespace EcommerceApp.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Employees(string selectedValue, string searchString)
+        public async Task<IActionResult> Employees(string selectedValue, string searchString, string pageSize, int? pageNumber)
         {
+            if (!pageNumber.HasValue)
+            {
+                pageNumber = 1;
+            }
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedEmployeeAsync(selectedValue, searchString));
+                return View(await _searchService.SearchSelectedEmployeeAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
-            return View(await _employeeService.GetAllEmployeesAsync());
+            return View(await _employeeService.GetAllPaginatedEmployeesAsync(intPageSize, pageNumber.Value));
         }
 
-        public async Task<IActionResult> Customers(string selectedValue, string searchString)
+        public async Task<IActionResult> Customers(string selectedValue, string searchString, int pageSize, int? pageNumber)
         {
+            if (!pageNumber.HasValue)
+            {
+                pageNumber = 1;
+            }
+            pageSize = 2;
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCustomerAsync(selectedValue, searchString));
+                return View(await _searchService.SearchSelectedCustomerAsync(selectedValue, searchString, pageSize, pageNumber.Value));
             }
             return View(await _customerService.GetAllCustomersAsync());
         }
