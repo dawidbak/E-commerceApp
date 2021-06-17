@@ -4,56 +4,58 @@
 @{
     ViewData["Title"] = "Product management";
 }
+<div>
     <center>
-       <h1>@ViewData["Title"]</h1>
-       <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
-       <p>
-           <Form method="get" asp-action="Products">
-               Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
-               <select asp-items="searchSelectList.ProductSelectList" name="SelectedValue"></select>
-               <input text="text" name="SearchString" />
-               <input type="submit" value="Filter" />
-           </Form>
-       </p>
-   </center>
-   <table class="table">
-       <thead>
-           <tr>
-               <th>Id</th>
-               <th>Category Name</th>
-               <th>Name</th>
-               <th>Unit Price</th>
-               <th>Units in Stock</th>
-           </tr>
-       </thead>
-       <tbody>
-           @foreach (var item in Model.Products)
-           {
-           <tr>
-               <td>
-                   @Html.DisplayFor(modelItem => item.Id)
-               </td>
-               <td>
-                   @Html.DisplayFor(modelItem => item.CategoryName)
-               </td>
-               <td>
-                   @Html.DisplayFor(modelItem => item.Name)
-               </td>
-               <td>
-                   @Html.DisplayFor(modelItem => item.UnitPrice)
-               </td>
-               <td>
-                   @Html.DisplayFor(modelItem => item.UnitsInStock)
-               </td>
-               <td>
-                   <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditProduct"
-                       asp-route-id="@item.Id">Edit</a>
+        <h1>@ViewData["Title"]</h1>
+        <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
+        <p>
+        <Form method="get" asp-action="Products">
+            Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
+            <select asp-items="searchSelectList.ProductSelectList" name="SelectedValue"></select>
+            <input text="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </Form>
+        </p>
+    </center>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Category Name</th>
+                <th>Name</th>
+                <th>Unit Price</th>
+                <th>Units in Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsInStock)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditProduct"
+                        asp-route-id="@item.Id">Edit</a>
 
-                   <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteProduct"
-                       asp-route-id="@item.Id">Delete</a>
-               </td>
-           </tr>
-           }
-       </tbody>
-       <partial name="_PaginationPartialView"></partial>
-   </table>
+                        <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteProduct"
+                        asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PaginationPartialView"></partial>
+</div>
