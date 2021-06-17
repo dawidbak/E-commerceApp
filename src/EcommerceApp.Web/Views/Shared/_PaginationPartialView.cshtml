@@ -10,27 +10,26 @@
 <div>
     <ul class="pagination">
         <li class="page-item @(!showFirst? " disabled":"")">
-            <a asp-action="Employees" asp-route-pageNumber="1" asp-route-selectedValue="@selectedValue"
-                asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link"><i
-                    class="fas fa-fast-backward"></i></a>
+            <a asp-route-pageNumber="1" asp-route-selectedValue="@selectedValue" asp-route-searchString="@searchString"
+                asp-route-pageSize="@pageSize" class="page-link"><i class="fas fa-fast-backward"></i></a>
         </li>
 
         <li class="page-item @(!showPrevious ? " disabled":"")">
-            <a asp-action="Employees" asp-route-pageNumber="@(Model.CurrentPage -1)"
-                asp-route-selectedValue="@selectedValue" asp-route-searchString="@searchString"
-                asp-route-pageSize="@pageSize" class="page-link arrow-left"><i class="fas fa-step-backward"></i></a>
+            <a asp-route-pageNumber="@(Model.CurrentPage -1)" asp-route-selectedValue="@selectedValue"
+                asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link arrow-left"><i
+                    class="fas fa-step-backward"></i></a>
         </li>
         <li>
             <a class="page-link">@Model.CurrentPage</a>
         </li>
         <li class="page-item  @(!showNext ? " disabled":"")">
-            <a asp-action="Employees" asp-route-pageNumber="@(Model.CurrentPage + 1)"
-                asp-route-selectedValue="@selectedValue" asp-route-searchString="@searchString"
-                asp-route-pageSize="@pageSize" class="page-link"><i class="fas fa-step-forward"></i></a>
+            <a asp-route-pageNumber="@(Model.CurrentPage + 1)" asp-route-selectedValue="@selectedValue"
+                asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link"><i
+                    class="fas fa-step-forward"></i></a>
         </li>
 
         <li class="page-item  @(!showLast ? " disabled":"")">
-            <a asp-action="Employees" asp-route-pageNumber="@Model.TotalPages" asp-route-selectedValue="@selectedValue"
+            <a asp-route-pageNumber="@Model.TotalPages" asp-route-selectedValue="@selectedValue"
                 asp-route-searchString="@searchString" asp-route-pageSize="@pageSize" class="page-link"><i
                     class="fas fa-fast-forward"></i></a>
         </li>
