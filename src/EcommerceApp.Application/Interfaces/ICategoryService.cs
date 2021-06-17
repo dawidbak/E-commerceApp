@@ -10,6 +10,7 @@ namespace EcommerceApp.Application.Interfaces
         Task AddCategoryAsync(CategoryVM categoryVM);
         Task<CategoryVM> GetCategoryAsync(int categoryVMId);
         Task<ListCategoryForListVM> GetAllCategoriesAsync();
+        Task<ListCategoryForListVM> GetAllPaginatedCategoriesAsync(int pageSize, int pageNumber);
         Task UpdateCategoryAsync(CategoryVM categoryVM);
         Task DeleteCategoryAsync(int categoryVMId);
     }

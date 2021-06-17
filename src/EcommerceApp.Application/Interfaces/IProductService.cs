@@ -14,6 +14,7 @@ namespace EcommerceApp.Application.Interfaces
         Task<ListProductForListVM> GetAllProductsAsync();
         Task<ListProductDetailsForUserVM> GetAllProductsWithImagesAsync();
         Task<ListProductDetailsForUserVM> GetProductsByCategoryNameAsync(string categoryName);
+        Task<ListProductForListVM> GetAllPaginatedProductsAsync(int pageSize, int pageNumber);
         Task UpdateProductAsync(ProductVM productVM);
         Task DeleteProductAsync(int id);
     }

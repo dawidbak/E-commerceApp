@@ -6,6 +6,7 @@ using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace EcommerceApp.Web.Controllers
@@ -17,45 +18,56 @@ namespace EcommerceApp.Web.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ILogger<EmployeePanelController> _logger;
         private readonly ISearchService _searchService;
+        private readonly IConfiguration _configuration;
 
-        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger, ISearchService SearchService)
+        public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger, ISearchService SearchService,
+        IConfiguration configuration)
         {
             _productService = productService;
             _categoryService = categoryService;
             _logger = logger;
             _searchService = SearchService;
+            _configuration = configuration;
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Categories(string selectedValue, string searchString, int pageSize, int? pageNumber)
+        public async Task<IActionResult> Categories(string selectedValue, string searchString, string pageSize, int? pageNumber)
         {
             if (!pageNumber.HasValue)
             {
                 pageNumber = 1;
             }
-            pageSize = 2;
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString, pageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
-            return View(await _categoryService.GetAllCategoriesAsync());
+            return View(await _categoryService.GetAllPaginatedCategoriesAsync(intPageSize, pageNumber.Value));
         }
 
-        public async Task<IActionResult> Products(string selectedValue, string searchString, int pageSize, int? pageNumber)
+        public async Task<IActionResult> Products(string selectedValue, string searchString, string pageSize, int? pageNumber)
         {
             if (!pageNumber.HasValue)
             {
                 pageNumber = 1;
             }
-            pageSize = 2;
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString, pageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
-            return View(await _productService.GetAllProductsAsync());
+            return View(await _productService.GetAllPaginatedProductsAsync(intPageSize, pageNumber.Value));
         }
 
         [HttpGet]

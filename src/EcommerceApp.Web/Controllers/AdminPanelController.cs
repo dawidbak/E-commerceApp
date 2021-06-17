@@ -55,18 +55,22 @@ namespace EcommerceApp.Web.Controllers
             return View(await _employeeService.GetAllPaginatedEmployeesAsync(intPageSize, pageNumber.Value));
         }
 
-        public async Task<IActionResult> Customers(string selectedValue, string searchString, int pageSize, int? pageNumber)
+        public async Task<IActionResult> Customers(string selectedValue, string searchString, string pageSize, int? pageNumber)
         {
             if (!pageNumber.HasValue)
             {
                 pageNumber = 1;
             }
-            pageSize = 2;
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCustomerAsync(selectedValue, searchString, pageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedCustomerAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
-            return View(await _customerService.GetAllCustomersAsync());
+            return View(await _customerService.GetAllPaginatedCustomersAsync(intPageSize, pageNumber.Value));
         }
 
         [HttpGet]

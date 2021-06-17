@@ -9,6 +9,7 @@ using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Application.ViewModels.Product;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Application.Services
 {
@@ -18,13 +19,16 @@ namespace EcommerceApp.Application.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
         private readonly IImageConverterService _imageConverterService;
+        private readonly IPaginationService<ProductForListVM> _paginationService;
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService,
+         IPaginationService<ProductForListVM> paginationService)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _mapper = mapper;
             _imageConverterService = imageConverterService;
+            _paginationService = paginationService;
         }
         public async Task AddProductAsync(ProductVM productVM)
         {
@@ -42,7 +46,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductForListVM> GetAllProductsAsync()
         {
-            var products = (await _productRepository.GetAllProductsAsync()).ToList();
+            var products = await _productRepository.GetAllProducts().ToListAsync();
             var productsVM = _mapper.Map<List<ProductForListVM>>(products);
             return new ListProductForListVM()
             {
@@ -52,7 +56,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductDetailsForUserVM> GetAllProductsWithImagesAsync()
         {
-            var products = (await _productRepository.GetAllProductsAsync()).ToList();
+            var products = await _productRepository.GetAllProducts().ToListAsync();
             var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
             for (int i = 0; i < productsVM.Count; i++)
             {
@@ -61,6 +65,19 @@ namespace EcommerceApp.Application.Services
             return new ListProductDetailsForUserVM()
             {
                 Products = productsVM
+            };
+        }
+
+        public async Task<ListProductForListVM> GetAllPaginatedProductsAsync(int pageSize, int pageNumber)
+        {
+            var products = await _productRepository.GetAllProducts().ToListAsync();
+            var productsVM = _mapper.Map<List<ProductForListVM>>(products);
+            var paginatedVM = await _paginationService.CreateAsync(productsVM.AsQueryable(), pageNumber, pageSize);
+            return new ListProductForListVM()
+            {
+                Products = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage
             };
         }
 
@@ -82,7 +99,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductDetailsForUserVM> GetProductsByCategoryNameAsync(string categoryName)
         {
-            var products = (await _productRepository.GetAllProductsAsync()).Where(p => p.CategoryName == categoryName).ToList();
+            var products = await _productRepository.GetAllProducts().Where(p => p.CategoryName == categoryName).ToListAsync();
             var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
             for (int i = 0; i < productsVM.Count; i++)
             {

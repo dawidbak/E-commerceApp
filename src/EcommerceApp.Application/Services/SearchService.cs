@@ -13,14 +13,20 @@ namespace EcommerceApp.Application.Services
         private readonly IEmployeeService _employeeService;
         private readonly ICustomerService _customerService;
         private readonly IPaginationService<EmployeeForListVM> _paginationEmployeeService;
+        private readonly IPaginationService<CategoryForListVM> _paginationCategoryService;
+        private readonly IPaginationService<ProductForListVM> _paginationProductService;
+        private readonly IPaginationService<CustomerVM> _paginationCustomerService;
         public SearchService(ICategoryService categoryService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService,
-        IPaginationService<EmployeeForListVM> paginationEmployeeService)
+        IPaginationService<EmployeeForListVM> paginationEmployeeService, IPaginationService<CategoryForListVM> paginationCategoryService, IPaginationService<CustomerVM> paginationCustomerService, IPaginationService<ProductForListVM> paginationProductService)
         {
             _categoryService = categoryService;
             _productService = productService;
             _employeeService = employeeService;
             _customerService = customerService;
             _paginationEmployeeService = paginationEmployeeService;
+            _paginationCategoryService = paginationCategoryService;
+            _paginationCustomerService = paginationCustomerService;
+            _paginationProductService = paginationProductService;
         }
         public async Task<ListCategoryForListVM> SearchSelectedCategoryAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
@@ -33,6 +39,10 @@ namespace EcommerceApp.Application.Services
                 "Name" => (await _categoryService.GetAllCategoriesAsync()).Categories.Where(x => x.Name.Contains(searchString)).ToList(),
                 _ => model.Categories,
             };
+            var paginatedVM = await _paginationCategoryService.CreateAsync(model.Categories.AsQueryable(),pageNumber,pageSize);
+            model.Categories = paginatedVM.Items;
+            model.CurrentPage = paginatedVM.CurrentPage;
+            model.TotalPages = paginatedVM.TotalPages;
             return model;
         }
 
@@ -52,6 +62,10 @@ namespace EcommerceApp.Application.Services
                 "CategoryName" => (await _productService.GetAllProductsAsync()).Products.Where(x => x.Name.Contains(searchString)).ToList(),
                 _ => model.Products,
             };
+            var paginatedVM = await _paginationProductService.CreateAsync(model.Products.AsQueryable(),pageNumber,pageSize);
+            model.Products = paginatedVM.Items;
+            model.CurrentPage = paginatedVM.CurrentPage;
+            model.TotalPages = paginatedVM.TotalPages;
             return model;
         }
 
@@ -93,6 +107,10 @@ namespace EcommerceApp.Application.Services
                 "PhoneNumber" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.PhoneNumber.Contains(searchString)).ToList(),
                 _ => model.Customers,
             };
+            var paginatedVM = await _paginationCustomerService.CreateAsync(model.Customers.AsQueryable(),pageNumber,pageSize);
+            model.Customers = paginatedVM.Items;
+            model.CurrentPage = paginatedVM.CurrentPage;
+            model.TotalPages = paginatedVM.TotalPages;
             return model;
         }
     }

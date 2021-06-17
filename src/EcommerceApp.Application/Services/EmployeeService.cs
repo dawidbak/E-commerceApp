@@ -41,7 +41,7 @@ namespace EcommerceApp.Application.Services
         }
         public async Task<ListEmployeeForListVM> GetAllEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllEmployeesAsync().ToListAsync();
+            var employees = await _employeeRepository.GetAllEmployees().ToListAsync();
             var employeesVM = _mapper.Map<List<EmployeeForListVM>>(employees);
             for (int i = 0; i < employees.Count; i++)
             {
@@ -56,7 +56,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListEmployeeForListVM> GetAllPaginatedEmployeesAsync(int pageSize, int pageNumber)
         {
-            var employees = await _employeeRepository.GetAllEmployeesAsync().ToListAsync();
+            var employees = await _employeeRepository.GetAllEmployees().ToListAsync();
             var employeesVM = _mapper.Map<List<EmployeeForListVM>>(employees);
             for (int i = 0; i < employees.Count; i++)
             {

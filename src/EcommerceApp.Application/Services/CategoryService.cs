@@ -16,12 +16,14 @@ namespace EcommerceApp.Application.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
         private readonly IImageConverterService _imageConverterService;
+        private readonly IPaginationService<CategoryForListVM> _paginationService;
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IImageConverterService imageConverterService, IPaginationService<CategoryForListVM> paginationService)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
             _imageConverterService = imageConverterService;
+            _paginationService = paginationService;
         }
         public async Task AddCategoryAsync(CategoryVM categoryVM)
         {
@@ -37,11 +39,24 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCategoryForListVM> GetAllCategoriesAsync()
         {
-            var categories = (await _categoryRepository.GetAllCategoriesAsync()).ToList();
+            var categories = await _categoryRepository.GetAllCategories().ToListAsync();
             var categoriesVM = _mapper.Map<List<CategoryForListVM>>(categories);
             return new ListCategoryForListVM()
             {
                 Categories = categoriesVM
+            };
+        }
+
+        public async Task<ListCategoryForListVM> GetAllPaginatedCategoriesAsync(int pageSize, int pageNumber)
+        {
+            var categories = await _categoryRepository.GetAllCategories().ToListAsync();
+            var categoriesVM = _mapper.Map<List<CategoryForListVM>>(categories);
+            var paginatedVM = await _paginationService.CreateAsync(categoriesVM.AsQueryable(), pageNumber, pageSize);
+            return new ListCategoryForListVM()
+            {
+                Categories = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage
             };
         }
 

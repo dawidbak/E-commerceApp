@@ -17,12 +17,14 @@ namespace EcommerceApp.Application.Services
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPaginationService<CustomerVM> _paginationService;
 
-        public CustomerService(ICustomerRepository customerRepository, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public CustomerService(ICustomerRepository customerRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IPaginationService<CustomerVM> paginationService)
         {
             _customerRepository = customerRepository;
             _mapper = mapper;
             _userManager = userManager;
+            _paginationService = paginationService;
         }
 
         public async Task DeleteCustomerAsync(int customerId)
@@ -34,7 +36,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCustomerVM> GetAllCustomersAsync()
         {
-            var customers = (await _customerRepository.GetAllCustomersAsync()).ToList();
+            var customers = await _customerRepository.GetAllCustomers().ToListAsync();
             var customersVM = _mapper.Map<List<CustomerVM>>(customers);
             for (int i = 0; i < customers.Count; i++)
             {
@@ -45,6 +47,25 @@ namespace EcommerceApp.Application.Services
             return new ListCustomerVM()
             {
                 Customers = customersVM
+            };
+        }
+
+        public async Task<ListCustomerVM> GetAllPaginatedCustomersAsync(int pageSize, int pageNumber)
+        {
+            var customers = await _customerRepository.GetAllCustomers().ToListAsync();
+            var customersVM = _mapper.Map<List<CustomerVM>>(customers);
+            for (int i = 0; i < customers.Count; i++)
+            {
+                var user = await _userManager.FindByIdAsync(customers[i].AppUserId);
+                customersVM[i].Email = user.Email;
+                customersVM[i].PhoneNumber = user.PhoneNumber;
+            }
+            var paginatedVM = await _paginationService.CreateAsync(customersVM.AsQueryable(), pageNumber, pageSize);
+            return new ListCustomerVM()
+            {
+                Customers = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage
             };
         }
 
