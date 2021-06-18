@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Domain.Interfaces;
@@ -39,8 +40,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCategoryForListVM> GetAllCategoriesAsync()
         {
-            var categories = await _categoryRepository.GetAllCategories().ToListAsync();
-            var categoriesVM = _mapper.Map<List<CategoryForListVM>>(categories);
+            var categoriesVM = await _categoryRepository.GetAllCategories().ProjectTo<CategoryForListVM>(_mapper.ConfigurationProvider).ToListAsync();
             return new ListCategoryForListVM()
             {
                 Categories = categoriesVM
@@ -49,9 +49,8 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCategoryForListVM> GetAllPaginatedCategoriesAsync(int pageSize, int pageNumber)
         {
-            var categories = await _categoryRepository.GetAllCategories().ToListAsync();
-            var categoriesVM = _mapper.Map<List<CategoryForListVM>>(categories);
-            var paginatedVM = await _paginationService.CreateAsync(categoriesVM.AsQueryable(), pageNumber, pageSize);
+            var categories = _categoryRepository.GetAllCategories().ProjectTo<CategoryForListVM>(_mapper.ConfigurationProvider);
+            var paginatedVM = await _paginationService.CreateAsync(categories, pageNumber, pageSize);
             return new ListCategoryForListVM()
             {
                 Categories = paginatedVM.Items,

@@ -46,8 +46,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductForListVM> GetAllProductsAsync()
         {
-            var products = await _productRepository.GetAllProducts().ToListAsync();
-            var productsVM = _mapper.Map<List<ProductForListVM>>(products);
+            var productsVM = await _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider).ToListAsync();
             return new ListProductForListVM()
             {
                 Products = productsVM
@@ -70,9 +69,8 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductForListVM> GetAllPaginatedProductsAsync(int pageSize, int pageNumber)
         {
-            var products = await _productRepository.GetAllProducts().ToListAsync();
-            var productsVM = _mapper.Map<List<ProductForListVM>>(products);
-            var paginatedVM = await _paginationService.CreateAsync(productsVM.AsQueryable(), pageNumber, pageSize);
+            var products = _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider);
+            var paginatedVM = await _paginationService.CreateAsync(products, pageNumber, pageSize);
             return new ListProductForListVM()
             {
                 Products = paginatedVM.Items,

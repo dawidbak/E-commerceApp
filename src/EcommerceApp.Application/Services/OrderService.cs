@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.Cart;
+using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Application.ViewModels.Order;
 using EcommerceApp.Domain.Interfaces;
 using EcommerceApp.Domain.Models;
@@ -22,10 +25,12 @@ namespace EcommerceApp.Application.Services
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IImageConverterService _imageConverterService;
+        private readonly IMapper _mapper;
+        private readonly IPaginationService<OrderForListVM> _paginationService;
 
         public OrderService(ICartRepository cartRepository, ICartItemRepository cartItemRepository, ICustomerRepository customerRepository,
         IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, UserManager<ApplicationUser> userManager,
-        IProductRepository productRepository, IImageConverterService imageConverterService)
+        IProductRepository productRepository, IImageConverterService imageConverterService, IMapper mapper, IPaginationService<OrderForListVM> paginationService)
         {
             _cartRepository = cartRepository;
             _cartItemRepository = cartItemRepository;
@@ -35,6 +40,8 @@ namespace EcommerceApp.Application.Services
             _userManager = userManager;
             _productRepository = productRepository;
             _imageConverterService = imageConverterService;
+            _mapper = mapper;
+            _paginationService = paginationService;
         }
 
         public async Task AddOrderAsync(OrderCheckoutVM orderCheckoutVM)
@@ -97,6 +104,42 @@ namespace EcommerceApp.Application.Services
                 PostalCode = customer.PostalCode,
                 Address = customer.Address,
             };
+        }
+
+        public async Task<ListOrderForListVM> GetAllOrdersAsync()
+        {
+            var ordersVM = await _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider).ToListAsync();
+            return new ListOrderForListVM
+            {
+                Orders = ordersVM
+            };
+        }
+
+        public async Task<ListOrderForListVM> GetAllPaginatedOrdersAsync(int pageSize, int pageNumber)
+        {
+            var ordersVM = _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider);
+            var paginatedVM = await _paginationService.CreateAsync(ordersVM, pageNumber, pageSize);
+            return new ListOrderForListVM
+            {
+                Orders = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage
+            };
+        }
+
+        public async Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId)
+        {
+            var order = await _orderRepository.GetOrderAsync(orderId);
+            var orderVM = _mapper.Map<OrderDetailsVM>(order);
+            var orderItems = await _orderItemRepository.GetAllOrderItems().Where(x => x.OrderId == orderVM.Id).ToListAsync();
+            var orderItemsVM = _mapper.Map<List<OrderItemsForListVM>>(orderItems);
+            for(int i =0;i<orderItemsVM.Count;i++)
+            {
+                var product = await _productRepository.GetProductAsync(orderItemsVM[i].ProductId);
+                orderItemsVM[i].Name = product.Name;
+            }
+            orderVM.OrderItems.AddRange(orderItemsVM);
+            return orderVM;
         }
     }
 }

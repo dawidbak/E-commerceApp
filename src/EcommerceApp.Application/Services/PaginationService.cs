@@ -14,14 +14,24 @@ namespace EcommerceApp.Application.Services
         {
             var count = await source.ToAsyncEnumerable().CountAsync();
             source = source.Skip((currentPage - 1) * pageSize).Take(pageSize);
-            var items = await source.ToAsyncEnumerable().ToListAsync();
+            List<T> items;
+            int totalPages = 1;
+            if (count == 0)
+            {
+                items = new List<T>();
+            }
+            else
+            {
+                items = await source.ToAsyncEnumerable().ToListAsync();
+                totalPages = (int)Math.Ceiling(count / (double)pageSize);
+            }
             return new PaginatedVM<T>
             {
                 Items = items,
                 CurrentPage = currentPage,
                 PageSize = pageSize,
                 TotalCount = count,
-                TotalPages = (int)Math.Ceiling(count / (double)pageSize)
+                TotalPages = totalPages
             };
         }
     }

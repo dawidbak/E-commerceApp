@@ -1,117 +1,167 @@
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
+using EcommerceApp.Domain.Interfaces;
 
 namespace EcommerceApp.Application.Services
 {
     public class SearchService : ISearchService
     {
-        private readonly ICategoryService _categoryService;
-        private readonly IProductService _productService;
-        private readonly IEmployeeService _employeeService;
-        private readonly ICustomerService _customerService;
-        private readonly IPaginationService<EmployeeForListVM> _paginationEmployeeService;
-        private readonly IPaginationService<CategoryForListVM> _paginationCategoryService;
-        private readonly IPaginationService<ProductForListVM> _paginationProductService;
-        private readonly IPaginationService<CustomerVM> _paginationCustomerService;
-        public SearchService(ICategoryService categoryService, IProductService productService, IEmployeeService employeeService, ICustomerService customerService,
-        IPaginationService<EmployeeForListVM> paginationEmployeeService, IPaginationService<CategoryForListVM> paginationCategoryService, IPaginationService<CustomerVM> paginationCustomerService, IPaginationService<ProductForListVM> paginationProductService)
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IPaginationService<EmployeeForListVM> _employeePaginationService;
+        private readonly IPaginationService<CategoryForListVM> _categoryPaginationService;
+        private readonly IPaginationService<ProductForListVM> _productPaginationService;
+        private readonly IPaginationService<CustomerVM> _customerPaginationService;
+        private readonly IPaginationService<OrderForListVM> _orderPaginationService;
+        private readonly IMapper _mapper;
+        public SearchService(ICategoryRepository categoryRepository, IProductRepository productRepository, IEmployeeRepository employeeRepository, ICustomerRepository customerRepository,
+        IPaginationService<EmployeeForListVM> employeePaginationService, IPaginationService<CategoryForListVM> categoryPaginationService, IPaginationService<CustomerVM> customerPaginationService,
+        IPaginationService<ProductForListVM> productPaginationService, IOrderRepository orderRepository, IPaginationService<OrderForListVM> orderPaginationService, IMapper mapper)
         {
-            _categoryService = categoryService;
-            _productService = productService;
-            _employeeService = employeeService;
-            _customerService = customerService;
-            _paginationEmployeeService = paginationEmployeeService;
-            _paginationCategoryService = paginationCategoryService;
-            _paginationCustomerService = paginationCustomerService;
-            _paginationProductService = paginationProductService;
+            _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
+            _employeeRepository = employeeRepository;
+            _customerRepository = customerRepository;
+            _orderRepository = orderRepository;
+            _employeePaginationService = employeePaginationService;
+            _categoryPaginationService = categoryPaginationService;
+            _customerPaginationService = customerPaginationService;
+            _productPaginationService = productPaginationService;
+            _orderPaginationService = orderPaginationService;
+            _mapper = mapper;
         }
-        public async Task<ListCategoryForListVM> SearchSelectedCategoryAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
+        public async Task<ListCategoryForListVM> SearchSelectedCategoriesAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
-            ListCategoryForListVM model = new();
-            var intParse = int.TryParse(searchString, out int id);
-
-            model.Categories = selectedValue switch
+            var idParse = int.TryParse(searchString, out int id);
+            var emptyQuery = Enumerable.Empty<CategoryForListVM>().AsQueryable();
+            var baseQuery = _categoryRepository.GetAllCategories().ProjectTo<CategoryForListVM>(_mapper.ConfigurationProvider);
+            IQueryable<CategoryForListVM> query = selectedValue switch
             {
-                "Id" => intParse ? (await _categoryService.GetAllCategoriesAsync()).Categories.Where(x => x.Id == id).ToList() : model.Categories,
-                "Name" => (await _categoryService.GetAllCategoriesAsync()).Categories.Where(x => x.Name.Contains(searchString)).ToList(),
-                _ => model.Categories,
+                "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
+                "Name" => baseQuery.Where(x => x.Name.Contains(searchString)),
+                _ => emptyQuery,
             };
-            var paginatedVM = await _paginationCategoryService.CreateAsync(model.Categories.AsQueryable(),pageNumber,pageSize);
-            model.Categories = paginatedVM.Items;
-            model.CurrentPage = paginatedVM.CurrentPage;
-            model.TotalPages = paginatedVM.TotalPages;
-            return model;
+            var paginatedVM = await _categoryPaginationService.CreateAsync(query, pageNumber, pageSize);
+            return new ListCategoryForListVM
+            {
+                Categories = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage
+            };
         }
 
-        public async Task<ListProductForListVM> SearchSelectedProductAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
+        public async Task<ListProductForListVM> SearchSelectedProductsAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
-            ListProductForListVM model = new();
             var idParse = int.TryParse(searchString, out int id);
             var unitPriceParse = decimal.TryParse(searchString, out decimal price);
             var unitsInStock = int.TryParse(searchString, out int units);
+            var emptyQuery = Enumerable.Empty<ProductForListVM>().AsQueryable();
+            var baseQuery = _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider);
 
-            model.Products = selectedValue switch
+            IQueryable<ProductForListVM> query = selectedValue switch
             {
-                "Id" => idParse ? (await _productService.GetAllProductsAsync()).Products.Where(x => x.Id == id).ToList() : model.Products,
-                "Name" => (await _productService.GetAllProductsAsync()).Products.Where(x => x.CategoryName.Contains(searchString)).ToList(),
-                "UnitPrice" => unitPriceParse ? (await _productService.GetAllProductsAsync()).Products.Where(x => x.UnitPrice == price).ToList() : model.Products,
-                "UnitsInStock" => unitsInStock ? (await _productService.GetAllProductsAsync()).Products.Where(x => x.UnitsInStock == units).ToList() : model.Products,
-                "CategoryName" => (await _productService.GetAllProductsAsync()).Products.Where(x => x.Name.Contains(searchString)).ToList(),
-                _ => model.Products,
+                "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
+                "Name" => baseQuery.Where(x => x.CategoryName.Contains(searchString)),
+                "UnitPrice" => unitPriceParse ? baseQuery.Where(x => x.UnitPrice == price) : emptyQuery,
+                "UnitsInStock" => unitsInStock ? baseQuery.Where(x => x.UnitsInStock == units) : emptyQuery,
+                "CategoryName" => baseQuery.Where(x => x.Name.Contains(searchString)),
+                _ => emptyQuery,
             };
-            var paginatedVM = await _paginationProductService.CreateAsync(model.Products.AsQueryable(),pageNumber,pageSize);
-            model.Products = paginatedVM.Items;
-            model.CurrentPage = paginatedVM.CurrentPage;
-            model.TotalPages = paginatedVM.TotalPages;
-            return model;
+            var paginatedVM = await _productPaginationService.CreateAsync(query, pageNumber, pageSize);
+            return new ListProductForListVM
+            {
+                Products = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage,
+            };
         }
 
-        public async Task<ListEmployeeForListVM> SearchSelectedEmployeeAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
+        public async Task<ListEmployeeForListVM> SearchSelectedEmployeesAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
-            ListEmployeeForListVM model = new();
             var idParse = int.TryParse(searchString, out int id);
+            var emptyQuery = Enumerable.Empty<EmployeeForListVM>().AsQueryable();
+            var baseQuery = _productRepository.GetAllProducts().ProjectTo<EmployeeForListVM>(_mapper.ConfigurationProvider);
 
-            model.Employees = selectedValue switch
+            IQueryable<EmployeeForListVM> query = selectedValue switch
             {
-                "Id" => idParse ? (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.Id == id).ToList() : model.Employees,
-                "FirstName" => (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.FirstName.Contains(searchString)).ToList(),
-                "Email" => (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.Email.Contains(searchString)).ToList(),
-                "LastName" => (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.LastName.Contains(searchString)).ToList(),
-                "Position" => (await _employeeService.GetAllEmployeesAsync()).Employees.Where(x => x.Position.Contains(searchString)).ToList(),
-                _ => model.Employees,
+                "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
+                "FirstName" => baseQuery.Where(x => x.FirstName.Contains(searchString)),
+                "Email" => baseQuery.Where(x => x.Email.Contains(searchString)),
+                "LastName" => baseQuery.Where(x => x.LastName.Contains(searchString)),
+                "Position" => baseQuery.Where(x => x.Position.Contains(searchString)),
+                _ => emptyQuery,
             };
-            var paginatedVM = await _paginationEmployeeService.CreateAsync(model.Employees.AsQueryable(), pageNumber, pageSize);
-            model.Employees = paginatedVM.Items;
-            model.CurrentPage = paginatedVM.CurrentPage;
-            model.TotalPages = paginatedVM.TotalPages;
-            return model;
+            var paginatedVM = await _employeePaginationService.CreateAsync(query, pageNumber, pageSize);
+            return new ListEmployeeForListVM
+            {
+                Employees = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage,
+            };
         }
 
-        public async Task<ListCustomerVM> SearchSelectedCustomerAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
+        public async Task<ListCustomerVM> SearchSelectedCustomersAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
         {
-            ListCustomerVM model = new();
             var idParse = int.TryParse(searchString, out int id);
-
-            model.Customers = selectedValue switch
+            var emptyQuery = Enumerable.Empty<CustomerVM>().AsQueryable();
+            var baseQuery = _productRepository.GetAllProducts().ProjectTo<CustomerVM>(_mapper.ConfigurationProvider);
+            IQueryable<CustomerVM> query = selectedValue switch
             {
-                "Id" => idParse ? (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.Id == id).ToList() : model.Customers,
-                "FirstName" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.FirstName.Contains(searchString)).ToList(),
-                "Email" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.Email.Contains(searchString)).ToList(),
-                "LastName" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.LastName.Contains(searchString)).ToList(),
-                "City" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.City.Contains(searchString)).ToList(),
-                "PostalCode" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.PostalCode.Contains(searchString)).ToList(),
-                "Address" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.Address.Contains(searchString)).ToList(),
-                "PhoneNumber" => (await _customerService.GetAllCustomersAsync()).Customers.Where(x => x.PhoneNumber.Contains(searchString)).ToList(),
-                _ => model.Customers,
+                "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
+                "FirstName" => baseQuery.Where(x => x.FirstName.Contains(searchString)),
+                "Email" => baseQuery.Where(x => x.Email.Contains(searchString)),
+                "LastName" => baseQuery.Where(x => x.LastName.Contains(searchString)),
+                "City" => baseQuery.Where(x => x.City.Contains(searchString)),
+                "PostalCode" => baseQuery.Where(x => x.PostalCode.Contains(searchString)),
+                "Address" => baseQuery.Where(x => x.Address.Contains(searchString)),
+                "PhoneNumber" => baseQuery.Where(x => x.PhoneNumber.Contains(searchString)),
+                _ => emptyQuery,
             };
-            var paginatedVM = await _paginationCustomerService.CreateAsync(model.Customers.AsQueryable(),pageNumber,pageSize);
-            model.Customers = paginatedVM.Items;
-            model.CurrentPage = paginatedVM.CurrentPage;
-            model.TotalPages = paginatedVM.TotalPages;
-            return model;
+            var paginatedVM = await _customerPaginationService.CreateAsync(query, pageNumber, pageSize);
+            return new ListCustomerVM
+            {
+                Customers = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage,
+            };
+        }
+
+        public async Task<ListOrderForListVM> SearchSelectedOrdersAsync(string selectedValue, string searchString, int pageSize, int pageNumber)
+        {
+            var idParse = int.TryParse(searchString, out int id);
+            var priceParse = decimal.TryParse(searchString, out decimal price);
+            var emptyQuery = Enumerable.Empty<OrderForListVM>().AsQueryable();
+            var baseQuery = _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider);
+
+            IQueryable<OrderForListVM> query = selectedValue switch
+            {
+                "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
+                "CustomerId" => idParse ? baseQuery.Where(x => x.CustomerId == id) : emptyQuery,
+                "Price" => priceParse ? baseQuery.Where(x => x.Price == price) : emptyQuery,
+                "FirstName" => baseQuery.Where(x => x.ShipFirstName.Contains(searchString)),
+                "Email" => baseQuery.Where(x => x.ShipContactEmail.Contains(searchString)),
+                "LastName" => baseQuery.Where(x => x.ShipLastName.Contains(searchString)),
+                "City" => baseQuery.Where(x => x.ShipCity.Contains(searchString)),
+                "PostalCode" => baseQuery.Where(x => x.ShipPostalCode.Contains(searchString)),
+                "Address" => baseQuery.Where(x => x.ShipAddress.Contains(searchString)),
+                "PhoneNumber" => baseQuery.Where(x => x.ShipContactPhone.Contains(searchString)),
+                _ => emptyQuery,
+            };
+            var paginatedVM = await _orderPaginationService.CreateAsync(query, pageNumber, pageSize);
+            return new ListOrderForListVM
+            {
+                Orders = paginatedVM.Items,
+                TotalPages = paginatedVM.TotalPages,
+                CurrentPage = paginatedVM.CurrentPage,
+            };
         }
     }
 }
