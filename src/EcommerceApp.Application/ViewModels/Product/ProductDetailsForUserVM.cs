@@ -12,6 +12,7 @@ namespace EcommerceApp.Application.ViewModels.Product
         public string Description { get; set; }
 
         [Display(Name = "Unit Price")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal UnitPrice { get; set; }
 
         [Display(Name = "Image")]
