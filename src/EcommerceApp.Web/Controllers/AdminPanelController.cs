@@ -50,7 +50,7 @@ namespace EcommerceApp.Web.Controllers
 
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedEmployeeAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedEmployeesAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
             return View(await _employeeService.GetAllPaginatedEmployeesAsync(intPageSize, pageNumber.Value));
         }
@@ -68,7 +68,7 @@ namespace EcommerceApp.Web.Controllers
 
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCustomerAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedCustomersAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
             return View(await _customerService.GetAllPaginatedCustomersAsync(intPageSize, pageNumber.Value));
         }
