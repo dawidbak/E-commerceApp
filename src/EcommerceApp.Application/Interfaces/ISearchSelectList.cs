@@ -6,10 +6,11 @@ namespace EcommerceApp.Application.Interfaces
 {
     public interface ISearchSelectList
     {
-        List<SelectListItem> CategorySelectList{get;}
-        List<SelectListItem> ProductSelectList{get;}
-        List<SelectListItem> EmployeeSelectList{get;}
-        List<SelectListItem> CustomerSelectList{get;}
+        List<SelectListItem> CategorySelectList { get; }
+        List<SelectListItem> ProductSelectList { get; }
+        List<SelectListItem> EmployeeSelectList { get; }
+        List<SelectListItem> CustomerSelectList { get; }
+        List<SelectListItem> OrderSelectList { get; }
         List<SelectListItem> PageSizeSelectList { get; }
     }
 }
