@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
@@ -16,18 +13,20 @@ namespace EcommerceApp.Web.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IOrderService _orderService;
         private readonly ILogger<EmployeePanelController> _logger;
         private readonly ISearchService _searchService;
         private readonly IConfiguration _configuration;
 
         public EmployeePanelController(IProductService productService, ICategoryService categoryService, ILogger<EmployeePanelController> logger, ISearchService SearchService,
-        IConfiguration configuration)
+        IConfiguration configuration, IOrderService orderService)
         {
             _productService = productService;
             _categoryService = categoryService;
             _logger = logger;
             _searchService = SearchService;
             _configuration = configuration;
+            _orderService = orderService;
         }
         public IActionResult Index()
         {
@@ -47,7 +46,7 @@ namespace EcommerceApp.Web.Controllers
 
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedCategoryAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedCategoriesAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
             return View(await _categoryService.GetAllPaginatedCategoriesAsync(intPageSize, pageNumber.Value));
         }
@@ -65,9 +64,36 @@ namespace EcommerceApp.Web.Controllers
 
             if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
             {
-                return View(await _searchService.SearchSelectedProductAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
+                return View(await _searchService.SearchSelectedProductsAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
             }
             return View(await _productService.GetAllPaginatedProductsAsync(intPageSize, pageNumber.Value));
+        }
+
+        public async Task<IActionResult> Orders(string selectedValue, string searchString, string pageSize, int? pageNumber)
+        {
+            if (!pageNumber.HasValue)
+            {
+                pageNumber = 1;
+            }
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+
+            if (!string.IsNullOrEmpty(selectedValue) && !string.IsNullOrEmpty(searchString))
+            {
+                return View(await _searchService.SearchSelectedOrdersAsync(selectedValue, searchString, intPageSize, pageNumber.Value));
+            }
+            return View(await _orderService.GetAllPaginatedOrdersAsync(intPageSize, pageNumber.Value));
+        }
+
+        public async Task<IActionResult> OrderDetails(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return NotFound("You must pass a valid Order ID in the route, for example, /EmployeePanel/OrderDetails/21");
+            }
+            return View(await _orderService.GetOrderDetailsAsync(id.Value));
         }
 
         [HttpGet]
