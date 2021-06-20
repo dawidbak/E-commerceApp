@@ -39,7 +39,7 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
 
         [Display(Name = "Address")]
         public string ShipAddress { get; set; }
-        public List<OrderItemsForListVM> OrderItems { get; set; }
+        public List<OrderItemsForDetailsVM> OrderItems { get; set; }
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Order, OrderDetailsVM>();
     }
