@@ -5,7 +5,7 @@ using EcommerceApp.Application.Mapping;
 
 namespace EcommerceApp.Application.ViewModels.Cart
 {
-    public class CartItemForListVM
+    public class CartItemForListVM : IMapFrom<Domain.Models.CartItem>
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
@@ -21,5 +21,10 @@ namespace EcommerceApp.Application.ViewModels.Cart
         {
             get => Quantity * UnitPrice;
         }
+
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.CartItem, CartItemForListVM>()
+        .ForMember(x => x.Name, y => y.MapFrom(src => src.Product.Name))
+        .ForMember(x => x.ImageUrl, y => y.MapFrom(src => string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(src.Product.Image))))
+        .ForMember(x => x.UnitPrice, y => y.MapFrom(src => src.Product.UnitPrice));
     }
 }

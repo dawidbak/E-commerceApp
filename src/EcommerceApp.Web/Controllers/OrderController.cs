@@ -18,13 +18,13 @@ namespace EcommerceApp.Web.Controllers
 
         [HttpGet]
         [TypeFilter(typeof(CheckCheckoutGetPermission))]
-        public async Task<IActionResult> Checkout(int? cartId)
+        public async Task<IActionResult> Checkout(int? customerId)
         {
-            if (!cartId.HasValue)
+            if (!customerId.HasValue)
             {
                 return NotFound("Can't redirect to checkout process");
             }
-            return View(await _orderService.GetDataForOrderCheckoutAsync(cartId.Value));
+            return View(await _orderService.GetDataForOrderCheckoutAsync(customerId.Value));
         }
 
         [HttpPost]

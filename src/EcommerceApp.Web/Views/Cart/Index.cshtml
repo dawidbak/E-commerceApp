@@ -49,5 +49,5 @@
         <td class="text-right"><strong>Total price:@Html.DisplayFor(x => x.TotalPrice)</strong></td>
     </tbody>
 </table>
-<a class="btn btn-primary" asp-controller="Order" asp-Action="Checkout" asp-route-cartId="@Model.CartId">Checkout</a>
+<a class="btn btn-primary" asp-controller="Order" asp-Action="Checkout" asp-route-customerId="@Model.CustomerId">Checkout</a>
 </center>

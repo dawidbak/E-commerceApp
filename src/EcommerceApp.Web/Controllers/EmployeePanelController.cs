@@ -193,5 +193,15 @@ namespace EcommerceApp.Web.Controllers
             await _categoryService.DeleteCategoryAsync(id.Value);
             return RedirectToAction(nameof(Categories));
         }
+
+        public async Task<IActionResult> DeleteOrder(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return NotFound("You must pass a valid Order ID in the route, for example, /EmployeePanel/DeleteOrder/21");
+            }
+            await _orderService.DeleteOrderAsync(id.Value);
+            return RedirectToAction(nameof(Orders));
+        }
     }
 }

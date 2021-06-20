@@ -68,42 +68,10 @@ namespace EcommerceApp.Application.Services
             await _cartItemRepository.DeleteAllCartItemsByCartIdAsync(orderCheckoutVM.CartId);
         }
 
-        public async Task<OrderCheckoutVM> GetDataForOrderCheckoutAsync(int cartId)
+        public async Task<OrderCheckoutVM> GetDataForOrderCheckoutAsync(int customerId)
         {
-            var cart = await _cartRepository.GetCartAsync(cartId);
-            var customer = await _customerRepository.GetCustomerAsync(cart.CustomerId);
-            var appUser = await _userManager.FindByIdAsync(customer.AppUserId);
-            var cartItems = await _cartItemRepository.GetAllCartItemsByCartId(cartId).ToListAsync();
-            var cartItemList = new List<CartItemForListVM>();
-            var totalPrice = 0m;
-            for (int i = 0; i < cartItems.Count; i++)
-            {
-                var product = await _productRepository.GetProductAsync(cartItems[i].ProductId);
-                cartItemList.Add(new CartItemForListVM
-                {
-                    Id = cartItems[i].Id,
-                    ProductId = product.Id,
-                    Name = product.Name,
-                    UnitPrice = product.UnitPrice,
-                    Quantity = cartItems[i].Quantity,
-                    ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image),
-                });
-                totalPrice += product.UnitPrice * cartItems[i].Quantity;
-            }
-            return new OrderCheckoutVM
-            {
-                CartItems = cartItemList,
-                CartId = cartId,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                CustomerId = customer.Id,
-                TotalPrice = totalPrice,
-                Email = appUser.Email,
-                PhoneNumber = appUser.PhoneNumber,
-                City = customer.City,
-                PostalCode = customer.PostalCode,
-                Address = customer.Address,
-            };
+            return await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.AppUser).Include(x => x.Cart)
+            .ThenInclude(y => y.CartItems).ThenInclude(y => y.Product).ProjectTo<OrderCheckoutVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
 
         public async Task<ListOrderForListVM> GetAllOrdersAsync()
@@ -129,11 +97,13 @@ namespace EcommerceApp.Application.Services
 
         public async Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId)
         {
-            var result = await _orderRepository.GetAllOrders().Where(x => x.Id == orderId).Include(x => x.OrderItems).ThenInclude(y => y.Product).FirstOrDefaultAsync();
-            var orderItemsVM = _mapper.Map<List<OrderItemsForDetailsVM>>(result.OrderItems);
-            var orderDetailsVM = _mapper.Map<OrderDetailsVM>(result);
-            orderDetailsVM.OrderItems = orderItemsVM;
-            return orderDetailsVM;
+            return await _orderRepository.GetAllOrders().Where(x => x.Id == orderId).Include(x => x.OrderItems).ThenInclude(y => y.Product)
+            .ProjectTo<OrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteOrderAsync(int orderId)
+        {
+            await _orderRepository.DeleteOrderAsync(orderId);
         }
     }
 }

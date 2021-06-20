@@ -61,6 +61,7 @@ namespace EcommerceApp.Application.Services
             {
                 CartItems = cartItemList,
                 CartId = cartId,
+                CustomerId = customerId
             };
         }
 

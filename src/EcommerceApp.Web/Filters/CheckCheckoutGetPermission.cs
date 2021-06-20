@@ -9,25 +9,25 @@ namespace EcommerceApp.Web.Filters
 {
     public class CheckCheckoutGetPermission : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly ICartService _cartService;
+        private readonly ICustomerService _customerService;
 
-        public CheckCheckoutGetPermission(ICartService cartService)
+        public CheckCheckoutGetPermission(ICustomerService customerService)
         {
-            _cartService = cartService;
+            _customerService = customerService;
         }
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var appUserId = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var cartId = context.HttpContext.Request.Query["cartId"].ToString();
+            var customerId = context.HttpContext.Request.Query["customerId"].ToString();
 
-            bool intParse = int.TryParse(cartId, out int parsedCartId);
-            var getCartId = await _cartService.GetCartIdAsync(appUserId);
+            bool intParse = int.TryParse(customerId, out int parsedCartId);
+            var getCustomerId = await _customerService.GetCustomerIdByAppUserIdAsync(appUserId);
 
-            if(!intParse)
+            if (!intParse)
             {
                 context.Result = new BadRequestResult();
             }
-            if (intParse && getCartId != parsedCartId)
+            if (intParse && getCustomerId != parsedCartId)
             {
                 context.Result = new UnauthorizedResult();
             }
