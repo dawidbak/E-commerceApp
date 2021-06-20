@@ -131,5 +131,14 @@ namespace EcommerceApp.Web.Controllers
             }
             return BadRequest();
         }
+
+        public async Task<IActionResult> CustomerDetails(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return NotFound("You must pass a valid Customer ID in the route, for example, /AdminPanel/CustomerDetails/21");
+            }
+            return View(await _customerService.GetCustomerDetailsAsync(id.Value));
+        }
     }
 }

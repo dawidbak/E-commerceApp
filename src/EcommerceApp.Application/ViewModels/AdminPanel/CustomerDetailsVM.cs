@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using EcommerceApp.Application.Mapping;
-using EcommerceApp.Application.ViewModels.Cart;
 
-namespace EcommerceApp.Application.ViewModels.Order
+namespace EcommerceApp.Application.ViewModels.AdminPanel
 {
-    public class OrderCheckoutVM : IMapFrom<Domain.Models.Customer>
+    public class CustomerDetailsVM : IMapFrom<Domain.Models.Customer>
     {
-        public List<CartItemForListVM> CartItems { get; set; }
-        public int CartId { get; set; }
-        public int CustomerId { get; set; }
+        [Display(Name = "Id")]
+        public int Id { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        public decimal TotalPrice { get; set; }
-        public string Email { get; set; }
 
         [Display(Name = "City")]
         public string City { get; set; }
@@ -32,15 +26,17 @@ namespace EcommerceApp.Application.ViewModels.Order
         [Display(Name = "Address")]
         public string Address { get; set; }
 
-        [Phone(ErrorMessage = "Invalid Phone Number")]
-        [Required]
-        [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Customer, OrderCheckoutVM>()
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
+        public List<OrderForCustomerDetailsVM> Orders { get; set; }
+        public List<CartItemForCustomerDetailsVM> CartItems { get; set; }
+
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Customer, CustomerDetailsVM>()
         .ForMember(x => x.CartItems, y => y.MapFrom(src => src.Cart.CartItems))
-        .ForMember(x => x.CustomerId, y => y.MapFrom(src => src.Id))
-        .ForMember(x => x.CartId, y => y.MapFrom(src => src.Cart.Id))
+        .ForMember(x => x.Orders, y => y.MapFrom(src => src.Orders))
         .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
         .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.AppUser.PhoneNumber));
     }

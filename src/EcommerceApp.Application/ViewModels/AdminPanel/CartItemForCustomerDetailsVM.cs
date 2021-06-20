@@ -1,16 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.Mapping;
 
-namespace EcommerceApp.Application.ViewModels.Cart
+namespace EcommerceApp.Application.ViewModels.AdminPanel
 {
-    public class CartItemForListVM : IMapFrom<Domain.Models.CartItem>
+    public class CartItemForCustomerDetailsVM : IMapFrom<Domain.Models.CartItem>
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
-        public string Name { get; set; }
+        public string ProductName { get; set; }
         public int Quantity { get; set; }
         public string ImageUrl { get; set; }
         public byte[] Image { get; set; }
@@ -24,8 +22,8 @@ namespace EcommerceApp.Application.ViewModels.Cart
             get => Quantity * UnitPrice;
         }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.CartItem, CartItemForListVM>()
-        .ForMember(x => x.Name, y => y.MapFrom(src => src.Product.Name))
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.CartItem, CartItemForCustomerDetailsVM>()
+        .ForMember(x => x.ProductName, y => y.MapFrom(src => src.Product.Name))
         .ForMember(x => x.UnitPrice, y => y.MapFrom(src => src.Product.UnitPrice))
         .ForMember(x => x.Image, y => y.MapFrom(src => src.Product.Image));
     }

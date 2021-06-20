@@ -56,7 +56,8 @@ namespace EcommerceApp.Application.Services
                 ShipContactEmail = orderCheckoutVM.Email,
                 ShipContactPhone = orderCheckoutVM.PhoneNumber,
                 ShipPostalCode = orderCheckoutVM.PostalCode,
-                Price = orderCheckoutVM.TotalPrice
+                Price = orderCheckoutVM.TotalPrice,
+                OrderDate = DateTime.Now
             };
             await _orderRepository.AddOrderAsync(order);
             for (int i = 0; i < orderCheckoutVM.CartItems.Count; i++)
@@ -70,8 +71,14 @@ namespace EcommerceApp.Application.Services
 
         public async Task<OrderCheckoutVM> GetDataForOrderCheckoutAsync(int customerId)
         {
-            return await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.AppUser).Include(x => x.Cart)
+            var orderCheckoutVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.AppUser).Include(x => x.Cart)
             .ThenInclude(y => y.CartItems).ThenInclude(y => y.Product).ProjectTo<OrderCheckoutVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            for (int i = 0; i < orderCheckoutVM.CartItems.Count; i++)
+            {
+                orderCheckoutVM.TotalPrice += orderCheckoutVM.CartItems[i].TotalCartItemPrice;
+                orderCheckoutVM.CartItems[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(orderCheckoutVM.CartItems[i].Image);
+            }
+            return orderCheckoutVM;
         }
 
         public async Task<ListOrderForListVM> GetAllOrdersAsync()

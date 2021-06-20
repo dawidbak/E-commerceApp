@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.Mapping;
 
 namespace EcommerceApp.Application.ViewModels.Order
@@ -27,7 +28,6 @@ namespace EcommerceApp.Application.ViewModels.Order
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.CartItem, CartItemForOrderCheckoutListVM>()
         .ForMember(x => x.ProductName, y => y.MapFrom(src => src.Product.Name))
-        .ForMember(x => x.Price, y => y.MapFrom(src => src.Product.UnitPrice))
-        .ForMember(x => x.ImageUrl, y => y.MapFrom(src => string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(src.Product.Image))));
+        .ForMember(x => x.Price, y => y.MapFrom(src => src.Product.UnitPrice));
     }
 }

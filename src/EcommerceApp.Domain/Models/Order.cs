@@ -15,11 +15,11 @@ namespace EcommerceApp.Domain.Models
         public decimal Price { get; set; }
 
         [Required]
-        [StringLength(50,MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 2)]
         public string ShipFirstName { get; set; }
 
         [Required]
-        [StringLength(50,MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 2)]
         public string ShipLastName { get; set; }
 
         [Required]
@@ -31,16 +31,19 @@ namespace EcommerceApp.Domain.Models
         public string ShipContactPhone { get; set; }
 
         [Required]
-        [StringLength(50,MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 2)]
         public string ShipCity { get; set; }
 
         [Required]
-        [StringLength(10,MinimumLength = 5)]
+        [StringLength(10, MinimumLength = 5)]
         public string ShipPostalCode { get; set; }
 
         [Required]
-        [StringLength(50,MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 2)]
         public string ShipAddress { get; set; }
+
+        [Required]
+        public DateTime OrderDate { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 

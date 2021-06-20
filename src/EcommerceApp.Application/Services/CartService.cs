@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.Cart;
 using EcommerceApp.Domain.Interfaces;
@@ -42,20 +43,10 @@ namespace EcommerceApp.Application.Services
         {
             var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
             var cartId = await _cartRepository.GetCartIdAsync(customerId);
-            var cartItems = await _cartItemRepository.GetAllCartItemsByCartId(cartId).ToListAsync();
-            var cartItemList = new List<CartItemForListVM>();
-            for (int i = 0; i < cartItems.Count; i++)
+            var cartItemList = await _cartItemRepository.GetAllCartItemsByCartId(cartId).ProjectTo<CartItemForListVM>(_mapper.ConfigurationProvider).ToListAsync();
+            for (int i = 0; i < cartItemList.Count; i++)
             {
-                var product = await _productRepository.GetProductAsync(cartItems[i].ProductId);
-                cartItemList.Add(new CartItemForListVM
-                {
-                    Id = cartItems[i].Id,
-                    ProductId = product.Id,
-                    Name = product.Name,
-                    Quantity = cartItems[i].Quantity,
-                    ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image),
-                    UnitPrice = product.UnitPrice,
-                });
+                cartItemList[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(cartItemList[i].Image);
             }
             return new ListCartItemForListVM()
             {

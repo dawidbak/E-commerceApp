@@ -18,13 +18,16 @@ namespace EcommerceApp.Application.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPaginationService<CustomerVM> _paginationService;
+        private readonly IImageConverterService _imageConverterService;
 
-        public CustomerService(ICustomerRepository customerRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IPaginationService<CustomerVM> paginationService)
+        public CustomerService(ICustomerRepository customerRepository, IMapper mapper, UserManager<ApplicationUser> userManager, IPaginationService<CustomerVM> paginationService,
+        IImageConverterService imageConverterService)
         {
             _customerRepository = customerRepository;
             _mapper = mapper;
             _userManager = userManager;
             _paginationService = paginationService;
+            _imageConverterService = imageConverterService;
         }
 
         public async Task DeleteCustomerAsync(int customerId)
@@ -83,6 +86,17 @@ namespace EcommerceApp.Application.Services
             customerVM.Email = await _userManager.GetEmailAsync(user);
             customerVM.PhoneNumber = await _userManager.GetEmailAsync(user);
             return customerVM;
+        }
+
+        public async Task<CustomerDetailsVM> GetCustomerDetailsAsync(int customerId)
+        {
+            var customerDetailsVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.Orders).Include(x => x.Cart)
+            .ThenInclude(y => y.CartItems).ThenInclude(y => y.Product).ProjectTo<CustomerDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            for (int i = 0; i < customerDetailsVM.CartItems.Count; i++)
+            {
+                customerDetailsVM.CartItems[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(customerDetailsVM.CartItems[i].Image);
+            }
+            return customerDetailsVM;
         }
     }
 }
