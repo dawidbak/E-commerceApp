@@ -129,17 +129,11 @@ namespace EcommerceApp.Application.Services
 
         public async Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId)
         {
-            var order = await _orderRepository.GetOrderAsync(orderId);
-            var orderVM = _mapper.Map<OrderDetailsVM>(order);
-            var orderItems = await _orderItemRepository.GetAllOrderItems().Where(x => x.OrderId == orderVM.Id).ToListAsync();
-            var orderItemsVM = _mapper.Map<List<OrderItemsForListVM>>(orderItems);
-            for(int i =0;i<orderItemsVM.Count;i++)
-            {
-                var product = await _productRepository.GetProductAsync(orderItemsVM[i].ProductId);
-                orderItemsVM[i].Name = product.Name;
-            }
-            orderVM.OrderItems.AddRange(orderItemsVM);
-            return orderVM;
+            var result = await _orderRepository.GetAllOrders().Where(x => x.Id == orderId).Include(x => x.OrderItems).ThenInclude(y => y.Product).FirstOrDefaultAsync();
+            var orderItemsVM = _mapper.Map<List<OrderItemsForDetailsVM>>(result.OrderItems);
+            var orderDetailsVM = _mapper.Map<OrderDetailsVM>(result);
+            orderDetailsVM.OrderItems = orderItemsVM;
+            return orderDetailsVM;
         }
     }
 }
