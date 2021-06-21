@@ -157,7 +157,7 @@ namespace EcommerceApp.Web.Controllers
         {
             if (!id.HasValue)
             {
-                return NotFound("You must pass a valid Product ID in the route, for example, /EmployeePanel/EditCategory/21");
+                return NotFound("You must pass a valid Category ID in the route, for example, /EmployeePanel/EditCategory/21");
             }
             var model = await _categoryService.GetCategoryAsync(id.Value);
             return View(model);
