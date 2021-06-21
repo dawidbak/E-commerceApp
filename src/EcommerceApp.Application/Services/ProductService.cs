@@ -44,15 +44,6 @@ namespace EcommerceApp.Application.Services
             await _productRepository.DeleteProductAsync(id);
         }
 
-        public async Task<ListProductForListVM> GetAllProductsAsync()
-        {
-            var productsVM = await _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider).ToListAsync();
-            return new ListProductForListVM()
-            {
-                Products = productsVM
-            };
-        }
-
         public async Task<ListProductDetailsForUserVM> GetAllProductsWithImagesAsync()
         {
             var products = await _productRepository.GetAllProducts().ToListAsync();
@@ -69,14 +60,9 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductForListVM> GetAllPaginatedProductsAsync(int pageSize, int pageNumber)
         {
-            var products = _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider);
-            var paginatedVM = await _paginationService.CreateAsync(products, pageNumber, pageSize);
-            return new ListProductForListVM()
-            {
-                Products = paginatedVM.Items,
-                TotalPages = paginatedVM.TotalPages,
-                CurrentPage = paginatedVM.CurrentPage
-            };
+            var productsVM = _productRepository.GetAllProducts().ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider);
+            var paginatedVM = await _paginationService.CreateAsync(productsVM, pageNumber, pageSize);
+            return _mapper.Map<ListProductForListVM>(paginatedVM);
         }
 
         public async Task<ProductVM> GetProductAsync(int id)
