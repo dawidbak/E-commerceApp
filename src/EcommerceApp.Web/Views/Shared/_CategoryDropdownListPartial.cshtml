@@ -1,19 +1,19 @@
-@using EcommerceApp.Application.ViewModels.EmployeePanel
-@inject EcommerceApp.Application.Interfaces.ICategoryService _categoryService
+@using EcommerceApp.Application.Interfaces
+@inject ICategoryService _categoryService
 @{
-    var categoriesList = await _categoryService.GetAllCategoriesAsync();
+    var categoriesList = await _categoryService.GetAllCategoriesNames();
 }
 
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown"
         id="navbarDropdown">Categories</a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        @foreach(var category in categoriesList.Categories)
+        @foreach (var category in categoriesList)
         {
 
-        <a class="dropdown-item" asp-controller="Category" asp-action="Products"
-            asp-route-categoryName=@category.Name>@Html.DisplayFor(x => category.Name)
-        </a>
+            <a class="dropdown-item" asp-controller="Category" asp-action="Products"
+            asp-route-categoryName=@category>@Html.DisplayFor(x => category)
+            </a>
         }
     </div>
 </li>

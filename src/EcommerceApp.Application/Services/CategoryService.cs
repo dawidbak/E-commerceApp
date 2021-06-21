@@ -38,25 +38,15 @@ namespace EcommerceApp.Application.Services
             await _categoryRepository.DeleteCategoryAsync(categoryVMId);
         }
 
-        public async Task<ListCategoryForListVM> GetAllCategoriesAsync()
-        {
-            var categoriesVM = await _categoryRepository.GetAllCategories().ProjectTo<CategoryForListVM>(_mapper.ConfigurationProvider).ToListAsync();
-            return new ListCategoryForListVM()
-            {
-                Categories = categoriesVM
-            };
-        }
-
         public async Task<ListCategoryForListVM> GetAllPaginatedCategoriesAsync(int pageSize, int pageNumber)
         {
             var categories = _categoryRepository.GetAllCategories().ProjectTo<CategoryForListVM>(_mapper.ConfigurationProvider);
             var paginatedVM = await _paginationService.CreateAsync(categories, pageNumber, pageSize);
-            return new ListCategoryForListVM()
-            {
-                Categories = paginatedVM.Items,
-                TotalPages = paginatedVM.TotalPages,
-                CurrentPage = paginatedVM.CurrentPage
-            };
+            return _mapper.Map<ListCategoryForListVM>(paginatedVM);
+        }
+        public async Task<List<string>> GetAllCategoriesNamesAsync()
+        {
+            return await _categoryRepository.GetAllCategories().Select(x => x.Name).ToListAsync();
         }
 
         public async Task<CategoryVM> GetCategoryAsync(int categoryVMId)
