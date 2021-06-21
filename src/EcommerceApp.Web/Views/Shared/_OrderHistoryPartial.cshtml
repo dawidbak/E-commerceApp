@@ -1,0 +1,9 @@
+@using Microsoft.AspNetCore.Identity
+@using EcommerceApp.Domain.Models;
+@inject SignInManager<ApplicationUser> SignInManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderHistory">Order History</a>
+    </li>
+}
