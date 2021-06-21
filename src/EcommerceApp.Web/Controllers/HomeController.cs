@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EcommerceApp.Web.Models;
-using Microsoft.AspNetCore.Authorization;
 using EcommerceApp.Application.Interfaces;
 
 namespace EcommerceApp.Web.Controllers

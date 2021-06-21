@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.AdminPanel;
-using EcommerceApp.Infrastructure.Repositories;
-using EcommerceApp.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
