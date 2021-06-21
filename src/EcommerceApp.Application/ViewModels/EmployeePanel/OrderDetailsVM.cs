@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using EcommerceApp.Application.Mapping;
-using EcommerceApp.Domain.Models;
 
 namespace EcommerceApp.Application.ViewModels.EmployeePanel
 {
