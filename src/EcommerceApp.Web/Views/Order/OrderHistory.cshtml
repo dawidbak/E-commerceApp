@@ -1,0 +1,42 @@
+@model EcommerceApp.Application.ViewModels.Order.ListCustomerOrderForListVM
+@{
+    ViewData["Title"] = "Order History";
+}
+<div class="container">
+    <center>
+        <h1>@ViewData["Title"]</h1>
+    </center>
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Order Date</th>
+                <th>Price</th>
+                <th>Order Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Orders)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="OrderDetails"
+                        asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <partial name="_PaginationPartialView"></partial>
+</div>

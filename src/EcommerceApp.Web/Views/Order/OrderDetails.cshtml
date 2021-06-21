@@ -1,0 +1,62 @@
+@model EcommerceApp.Application.ViewModels.Order.CustomerOrderDetailsVM
+@{
+    ViewData["Title"] = "Order details";
+}
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
+<hr />
+<div>
+    <span style="float:right">
+        <h4 class="text-center">Order items</h4>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Product Id</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => item.ProductId)</td>
+                        <td><img src="@item.ImageToDisplay" width="128" height="128" /></td>
+                        <td>@Html.DisplayFor(x => item.ProductName)</td>
+                        <td>@Html.DisplayFor(x => item.Quantity)</td>
+                        <td>@Html.DisplayFor(x => item.UnitPrice)</td>
+                        <td>@Html.DisplayFor(x => item.TotalPrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </span>
+</div>
+<div>
+    <span style="float:left">
+        <dl class="dl-horizontal">
+            <dt><label asp-for="@Model.Id"></label></dt>
+            <dd>@Model.Id</dd>
+            <dt><label asp-for="@Model.OrderDate"></label></dt>
+            <dd>@Html.DisplayFor(x => Model.OrderDate)</dd>
+            <dt><label asp-for="@Model.Price"></label></dt>
+            <dd>@Html.DisplayFor(x => Model.Price)</dd>
+            <dt><label asp-for="@Model.ShipFirstName"></label></dt>
+            <dd>@Model.ShipFirstName</dd>
+            <dt><label asp-for="@Model.ShipContactEmail"></label></dt>
+            <dd>@Model.ShipContactEmail</dd>
+            <dt><label asp-for="@Model.ShipContactPhone"></label></dt>
+            <dd>@Model.ShipContactPhone</dd>
+            <dt><label asp-for="@Model.ShipCity"></label></dt>
+            <dd>@Model.ShipCity</dd>
+            <dt><label asp-for="@Model.ShipPostalCode"></label></dt>
+            <dd>@Model.ShipPostalCode</dd>
+            <dt><label asp-for="@Model.ShipAddress"></label></dt>
+            <dd>@Model.ShipAddress</dd>
+        </dl>
+    </span>
+</div>

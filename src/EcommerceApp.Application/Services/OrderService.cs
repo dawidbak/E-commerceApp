@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Application.ViewModels.Cart;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
 using EcommerceApp.Application.ViewModels.Order;
 using EcommerceApp.Domain.Interfaces;
@@ -26,11 +24,13 @@ namespace EcommerceApp.Application.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IImageConverterService _imageConverterService;
         private readonly IMapper _mapper;
-        private readonly IPaginationService<OrderForListVM> _paginationService;
+        private readonly IPaginationService<OrderForListVM> _orderPaginationService;
+        private readonly IPaginationService<CustomerOrderForListVM> _customerOrderPaginationService;
 
         public OrderService(ICartRepository cartRepository, ICartItemRepository cartItemRepository, ICustomerRepository customerRepository,
         IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, UserManager<ApplicationUser> userManager,
-        IProductRepository productRepository, IImageConverterService imageConverterService, IMapper mapper, IPaginationService<OrderForListVM> paginationService)
+        IProductRepository productRepository, IImageConverterService imageConverterService, IMapper mapper, IPaginationService<OrderForListVM> orderPaginationService,
+        IPaginationService<CustomerOrderForListVM> customerOrderPaginationService)
         {
             _cartRepository = cartRepository;
             _cartItemRepository = cartItemRepository;
@@ -41,7 +41,8 @@ namespace EcommerceApp.Application.Services
             _productRepository = productRepository;
             _imageConverterService = imageConverterService;
             _mapper = mapper;
-            _paginationService = paginationService;
+            _orderPaginationService = orderPaginationService;
+            _customerOrderPaginationService = customerOrderPaginationService;
         }
 
         public async Task AddOrderAsync(OrderCheckoutVM orderCheckoutVM)
@@ -93,7 +94,7 @@ namespace EcommerceApp.Application.Services
         public async Task<ListOrderForListVM> GetAllPaginatedOrdersAsync(int pageSize, int pageNumber)
         {
             var ordersVM = _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider);
-            var paginatedVM = await _paginationService.CreateAsync(ordersVM, pageNumber, pageSize);
+            var paginatedVM = await _orderPaginationService.CreateAsync(ordersVM, pageNumber, pageSize);
             return new ListOrderForListVM
             {
                 Orders = paginatedVM.Items,
@@ -102,10 +103,28 @@ namespace EcommerceApp.Application.Services
             };
         }
 
+        public async Task<ListCustomerOrderForListVM> GetAllPaginatedCustomerOrdersAsync(int pageSize, int pageNumber, string appUserId)
+        {
+            var ordersVM = _orderRepository.GetAllOrders().Where(x => x.Customer.AppUserId == appUserId).ProjectTo<CustomerOrderForListVM>(_mapper.ConfigurationProvider);
+            var paginatedVM = await _customerOrderPaginationService.CreateAsync(ordersVM, pageNumber, pageSize);
+            return _mapper.Map<ListCustomerOrderForListVM>(paginatedVM);
+        }
+
         public async Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId)
         {
             return await _orderRepository.GetAllOrders().Where(x => x.Id == orderId).Include(x => x.OrderItems).ThenInclude(y => y.Product)
             .ProjectTo<OrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
+        public async Task<CustomerOrderDetailsVM> GetCustomerOrderDetailsAsync(int orderId, string appUserId)
+        {
+            var customerOrderDetailsVM = await _orderRepository.GetAllOrders().Where(x => x.Id == orderId && x.Customer.AppUserId == appUserId).Include(x => x.OrderItems)
+            .ThenInclude(y => y.Product).ProjectTo<CustomerOrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            for (int i = 0; i < customerOrderDetailsVM.OrderItems.Count; i++)
+            {
+                customerOrderDetailsVM.OrderItems[i].ImageToDisplay = _imageConverterService.GetImageUrlFromByteArray(customerOrderDetailsVM.OrderItems[i].Image);
+            }
+            return customerOrderDetailsVM;
         }
 
         public async Task DeleteOrderAsync(int orderId)
