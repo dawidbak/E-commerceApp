@@ -82,25 +82,11 @@ namespace EcommerceApp.Application.Services
             return orderCheckoutVM;
         }
 
-        public async Task<ListOrderForListVM> GetAllOrdersAsync()
-        {
-            var ordersVM = await _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider).ToListAsync();
-            return new ListOrderForListVM
-            {
-                Orders = ordersVM
-            };
-        }
-
         public async Task<ListOrderForListVM> GetAllPaginatedOrdersAsync(int pageSize, int pageNumber)
         {
             var ordersVM = _orderRepository.GetAllOrders().ProjectTo<OrderForListVM>(_mapper.ConfigurationProvider);
             var paginatedVM = await _orderPaginationService.CreateAsync(ordersVM, pageNumber, pageSize);
-            return new ListOrderForListVM
-            {
-                Orders = paginatedVM.Items,
-                TotalPages = paginatedVM.TotalPages,
-                CurrentPage = paginatedVM.CurrentPage
-            };
+            return _mapper.Map<ListOrderForListVM>(paginatedVM);
         }
 
         public async Task<ListCustomerOrderForListVM> GetAllPaginatedCustomerOrdersAsync(int pageSize, int pageNumber, string appUserId)

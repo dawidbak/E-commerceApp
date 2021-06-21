@@ -9,7 +9,6 @@ namespace EcommerceApp.Application.Interfaces
     {
         Task<OrderCheckoutVM> GetDataForOrderCheckoutAsync(int customerId);
         Task AddOrderAsync(OrderCheckoutVM orderCheckoutVM);
-        Task<ListOrderForListVM> GetAllOrdersAsync();
         Task<ListOrderForListVM> GetAllPaginatedOrdersAsync(int pageSize, int pageNumber);
         Task<ListCustomerOrderForListVM> GetAllPaginatedCustomerOrdersAsync(int pageSize, int pageNumber,string appUserId);
         Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId);
