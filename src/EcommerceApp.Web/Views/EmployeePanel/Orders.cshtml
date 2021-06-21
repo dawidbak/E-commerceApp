@@ -69,10 +69,10 @@
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="OrderDetails"
-                        asp-route-id="@item.Id">Details</a>
+                        asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
 
                         <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteOrder"
-                        asp-route-id="@item.Id">Delete</a>
+                        asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
             }
