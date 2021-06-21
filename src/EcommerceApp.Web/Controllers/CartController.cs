@@ -2,10 +2,12 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Web.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
