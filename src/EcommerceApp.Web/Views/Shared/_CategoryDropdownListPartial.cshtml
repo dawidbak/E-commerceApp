@@ -1,7 +1,7 @@
 @using EcommerceApp.Application.Interfaces
 @inject ICategoryService _categoryService
 @{
-    var categoriesList = await _categoryService.GetAllCategoriesNames();
+    var categoriesList = await _categoryService.GetAllCategoriesNamesAsync();
 }
 
 <li class="nav-item dropdown">

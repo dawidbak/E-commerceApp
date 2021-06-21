@@ -31,6 +31,8 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
         [Display(Name = "Phone")]
         public string PhoneNumber { get; set; }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Customer,CustomerVM>().ReverseMap();
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Customer,CustomerVM>()
+        .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
+        .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.AppUser.PhoneNumber));
     }
 }
