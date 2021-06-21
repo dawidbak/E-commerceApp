@@ -35,8 +35,6 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
         public List<CartItemForCustomerDetailsVM> CartItems { get; set; }
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Customer, CustomerDetailsVM>()
-        .ForMember(x => x.CartItems, y => y.MapFrom(src => src.Cart.CartItems))
-        .ForMember(x => x.Orders, y => y.MapFrom(src => src.Orders))
         .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
         .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.AppUser.PhoneNumber));
     }

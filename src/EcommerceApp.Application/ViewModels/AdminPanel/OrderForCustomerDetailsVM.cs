@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using EcommerceApp.Application.Mapping;
 
 namespace EcommerceApp.Application.ViewModels.AdminPanel
@@ -14,5 +15,7 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
         [Display(Name = "Order date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime OrderDate { get; set; }
+
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Order,OrderForCustomerDetailsVM>();
     }
 }
