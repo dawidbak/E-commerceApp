@@ -41,25 +41,14 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId)
         {
-            var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-            var cartId = await _cartRepository.GetCartIdAsync(customerId);
-            var cartItemList = await _cartItemRepository.GetAllCartItemsByCartId(cartId).ProjectTo<CartItemForListVM>(_mapper.ConfigurationProvider).ToListAsync();
-            for (int i = 0; i < cartItemList.Count; i++)
+            var cartItemListVM = await _cartRepository.GetAllCarts().Where(x => x.Customer.AppUserId == appUserId).Include(x => x.CartItems)
+            .ThenInclude(y => y.Product).ProjectTo<ListCartItemForListVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            for (int i = 0; i < cartItemListVM.CartItems.Count; i++)
             {
-                cartItemList[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(cartItemList[i].Image);
+                cartItemListVM.CartItems[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(cartItemListVM.CartItems[i].Image);
+                cartItemListVM.TotalPrice += cartItemListVM.CartItems[i].TotalCartItemPrice;
             }
-            return new ListCartItemForListVM()
-            {
-                CartItems = cartItemList,
-                CartId = cartId,
-                CustomerId = customerId
-            };
-        }
-
-        public async Task<int> GetCartIdAsync(string appUserId)
-        {
-            var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-            return await _cartRepository.GetCartIdAsync(customerId);
+            return cartItemListVM;
         }
 
         public async Task IncreaseQuantityCartItemByOneAsync(int cartItemId)

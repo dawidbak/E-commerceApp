@@ -26,6 +26,11 @@ namespace EcommerceApp.Infrastructure.Repositories
             return await _appDbContext.Carts.FindAsync(cartId);
         }
 
+        public IQueryable<Cart> GetAllCarts()
+        {
+            return _appDbContext.Carts.AsQueryable();
+        }
+
         public async Task<int> GetCartIdAsync(int customerId)
         {
             var cart = await _appDbContext.Carts.FirstOrDefaultAsync(x => x.CustomerId == customerId);
