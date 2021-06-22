@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.Order;
-using EcommerceApp.Web.Filters;
+using EcommerceApp.Application.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -60,7 +60,7 @@ namespace EcommerceApp.Web.Controllers
         {
             if (!id.HasValue)
             {
-                return NotFound();
+                return NotFound("You must pass a valid Customer ID in the route, for example, /Order/OrderDetails/21");
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(await _orderService.GetCustomerOrderDetailsAsync(id.Value,userId));

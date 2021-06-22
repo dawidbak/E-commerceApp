@@ -137,8 +137,7 @@ namespace EcommerceApp.Web.Controllers
             {
                 return NotFound("You must pass a valid Product ID in the route, for example, /EmployeePanel/EditProduct/21");
             }
-            var model = await _productService.GetProductAsync(id.Value);
-            return View(model);
+            return View(await _productService.GetProductAsync(id.Value));
         }
 
         [HttpPost]
@@ -159,8 +158,7 @@ namespace EcommerceApp.Web.Controllers
             {
                 return NotFound("You must pass a valid Category ID in the route, for example, /EmployeePanel/EditCategory/21");
             }
-            var model = await _categoryService.GetCategoryAsync(id.Value);
-            return View(model);
+            return View(await _categoryService.GetCategoryAsync(id.Value));
         }
 
         [HttpPost]
@@ -188,7 +186,7 @@ namespace EcommerceApp.Web.Controllers
         {
             if (!id.HasValue)
             {
-                return NotFound("You must pass a valid Product ID in the route, for example, /EmployeePanel/DeleteCategory/21");
+                return NotFound("You must pass a valid Category ID in the route, for example, /EmployeePanel/DeleteCategory/21");
             }
             await _categoryService.DeleteCategoryAsync(id.Value);
             return RedirectToAction(nameof(Categories));

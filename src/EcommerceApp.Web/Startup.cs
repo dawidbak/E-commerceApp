@@ -1,23 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using EcommerceApp.Infrastructure;
 using EcommerceApp.Application;
 using EcommerceApp.Domain.Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using EcommerceApp.Web.Filters;
 
 namespace EcommerceApp.Web
 {
@@ -41,8 +33,6 @@ namespace EcommerceApp.Web
                 options.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim("Admin","True"));
                 options.AddPolicy("Employee", policyBuilder => policyBuilder.RequireClaim("isEmployee","True"));
             });
-            services.AddScoped<CheckCheckoutGetPermission>();
-            services.AddScoped<CheckCheckoutPostPermission>();
             services.AddApplication();
             services.AddInfrastructure();
         }

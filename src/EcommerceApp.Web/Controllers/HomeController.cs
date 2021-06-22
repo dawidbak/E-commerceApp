@@ -20,8 +20,7 @@ namespace EcommerceApp.Web.Controllers
 
         public async Task<IActionResult>Index()
         {
-            var model = await  _homeService.GetHomeVMForIndexAsync();
-            return View(model);
+            return View(await _homeService.GetHomeVMForIndexAsync());
         }
 
         public IActionResult Privacy()

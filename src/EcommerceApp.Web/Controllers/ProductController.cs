@@ -13,17 +13,13 @@ namespace EcommerceApp.Web.Controllers
         {
             _productService = productService;
         }
-        public IActionResult Index()
-        {
 
-            return View();
-        }
-
+        [Route("/Product/{id}")]
         public async Task<IActionResult> Product(int? id)
         {
             if (!id.HasValue)
             {
-                return NotFound("You must pass a valid Employee ID in the route, for example, /Product/21");
+                return NotFound("You must pass a valid Product ID in the route, for example, /Product/21");
             }
             return View(await _productService.GetProductDetailsForUser(id.Value));
         }

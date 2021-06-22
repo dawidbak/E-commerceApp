@@ -1,17 +1,18 @@
 using System.Reflection;
+using EcommerceApp.Application.Filters;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.Policies.CanAccessEmployeePanel;
+using EcommerceApp.Application.Resources;
 using EcommerceApp.Application.Services;
+using EcommerceApp.Application.Validations;
 using EcommerceApp.Application.ViewModels.AdminPanel;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
+using EcommerceApp.Application.ViewModels.Order;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using EcommerceApp.Application.Validations;
 using Microsoft.AspNetCore.Http;
-using EcommerceApp.Application.Resources;
-using EcommerceApp.Application.ViewModels.Order;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EcommerceApp.Application
 {
@@ -28,17 +29,19 @@ namespace EcommerceApp.Application
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
-            services.AddScoped<IOrderService,OrderService>();
-            services.AddScoped(typeof(IPaginationService<>),typeof(PaginationService<>));
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped(typeof(IPaginationService<>), typeof(PaginationService<>));
+            services.AddScoped<CheckCheckoutGetPermission>();
+            services.AddScoped<CheckCheckoutPostPermission>();
             services.AddMvc().AddFluentValidation();
             services.AddTransient<IValidator<EmployeeVM>, EmployeeVMValidator>();
             services.AddTransient<IValidator<CategoryVM>, CategoryVMValidator>();
             services.AddTransient<IValidator<ProductVM>, ProductVMValidator>();
-            services.AddTransient<IValidator<IFormFile>,FileValidator>();
-            services.AddTransient<IValidator<OrderCheckoutVM>,OrderCheckoutVMValidator>();
+            services.AddTransient<IValidator<IFormFile>, FileValidator>();
+            services.AddTransient<IValidator<OrderCheckoutVM>, OrderCheckoutVMValidator>();
             services.AddSingleton<IAuthorizationHandler, HasAdminClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, HasIsEmployeeClaimHandler>();
-            services.AddSingleton<ISearchSelectList,SearchSelectList>();
+            services.AddSingleton<ISearchSelectList, SearchSelectList>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("EmployeePanelEntry", policyBuilder => policyBuilder.Requirements.Add(new CanAccessEmployeePanelRequirement()));

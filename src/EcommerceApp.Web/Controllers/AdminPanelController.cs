@@ -111,8 +111,7 @@ namespace EcommerceApp.Web.Controllers
             {
                 return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/EditEmployee/21");
             }
-            var model = await _employeeService.GetEmployeeAsync(id.Value);
-            return View(model);
+            return View(await _employeeService.GetEmployeeAsync(id.Value));
         }
 
         [HttpPost]
