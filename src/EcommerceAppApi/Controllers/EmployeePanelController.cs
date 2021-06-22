@@ -98,7 +98,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductVM productVM)
+        public async Task<IActionResult> AddProduct([FromBody] ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("AddCategory")]
-        public async Task<IActionResult> AddCategory(CategoryVM categoryVM)
+        public async Task<IActionResult> AddCategory([FromBody] CategoryVM categoryVM)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +130,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("EditProduct")]
-        public async Task<IActionResult> EditProduct(ProductVM productVM)
+        public async Task<IActionResult> EditProduct([FromBody] ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
@@ -151,7 +151,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("EditCategory")]
-        public async Task<IActionResult> EditCategory(CategoryVM categoryVM)
+        public async Task<IActionResult> EditCategory([FromBody] CategoryVM categoryVM)
         {
             if (ModelState.IsValid)
             {

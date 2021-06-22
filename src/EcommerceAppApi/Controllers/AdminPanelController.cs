@@ -65,7 +65,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("AddEmployee")]
-        public async Task<IActionResult> AddEmployee(EmployeeVM employeeVM)
+        public async Task<IActionResult> AddEmployee([FromBody]EmployeeVM employeeVM)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +109,7 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("EditEmployee")]
-        public async Task<IActionResult> EditEmployee(EmployeeVM employeeVM)
+        public async Task<IActionResult> EditEmployee([FromBody]EmployeeVM employeeVM)
         {
             if (ModelState.IsValid)
             {

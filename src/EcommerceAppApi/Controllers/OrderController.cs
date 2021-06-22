@@ -37,7 +37,7 @@ namespace EcommerceAppApi.Controllers
 
         [HttpPost("Checkout")]
         [TypeFilter(typeof(CheckCheckoutPostPermission))]
-        public async Task<IActionResult> Checkout(OrderCheckoutVM orderCheckoutVM)
+        public async Task<IActionResult> Checkout([FromBody] OrderCheckoutVM orderCheckoutVM)
         {
             if (ModelState.IsValid)
             {

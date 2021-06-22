@@ -41,7 +41,7 @@ namespace EcommerceAppApi.Controllers
             return result;
         }
 
-        private async Task<string> GenetareJSONWebToken(UserModel userInfo)
+        private async Task<string> GenetareJSONWebToken([FromBody] UserModel userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
