@@ -44,13 +44,20 @@ namespace EcommerceApp.Application.Services
             await _productRepository.DeleteProductAsync(id);
         }
 
-        public async Task<ListProductDetailsForUserVM> GetAllProductsWithImagesAsync()
+        public async Task<ListProductDetailsForUserVM> GetRandomProductsWithImagesAsync(int number)
         {
-            var products = await _productRepository.GetAllProducts().ToListAsync();
-            var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
+            var products = _productRepository.GetAllProducts();
+            int count = await products.CountAsync();
+            if (count > number)
+            {
+                var random = new Random();
+                products = products.Skip(random.Next(count - number)).Take(number);
+            }
+            var randomProducts = await products.ToListAsync();
+            var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(randomProducts);
             for (int i = 0; i < productsVM.Count; i++)
             {
-                productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(products[i].Image);
+                productsVM[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(randomProducts[i].Image);
             }
             return new ListProductDetailsForUserVM()
             {

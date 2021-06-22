@@ -9,6 +9,5 @@ namespace EcommerceApp.Application.Interfaces
     public interface IHomeService
     {
         Task<HomeVM> GetHomeVMForIndexAsync();
-        ListProductDetailsForUserVM GetRandomProductVMList(ListProductDetailsForUserVM products);
     }
 }
