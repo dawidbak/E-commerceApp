@@ -13,7 +13,7 @@ namespace EcommerceApp.Application.Services
         public async Task<PaginatedVM<T>> CreateAsync(IQueryable<T> source, int currentPage, int pageSize)
         {
             var count = await source.ToAsyncEnumerable().CountAsync();
-            source = source.Skip((currentPage - 1) * pageSize).Take(pageSize);
+            source = source.OrderBy(x => "Id").Skip((currentPage - 1) * pageSize).Take(pageSize);
             List<T> items;
             int totalPages = 1;
             if (count == 0)

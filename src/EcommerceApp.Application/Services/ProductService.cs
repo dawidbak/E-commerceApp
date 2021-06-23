@@ -51,7 +51,7 @@ namespace EcommerceApp.Application.Services
             if (count > number)
             {
                 var random = new Random();
-                products = products.Skip(random.Next(count + 1 - number)).Take(number);
+                products = products.OrderBy(x => x.Id).Skip(random.Next(count + 1 - number)).Take(number);
             }
             var randomProducts = await products.ToListAsync();
             var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(randomProducts);
