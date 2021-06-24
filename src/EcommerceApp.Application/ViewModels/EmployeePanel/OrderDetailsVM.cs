@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
@@ -12,6 +13,10 @@ namespace EcommerceApp.Application.ViewModels.EmployeePanel
 
         [Display(Name = "Customer Id")]
         public int CustomerId { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        [Display(Name = "Order Date")]
+        public DateTime OrderDate { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Price")]

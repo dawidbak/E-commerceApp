@@ -1,20 +1,22 @@
 @model EcommerceApp.Application.ViewModels.Product.ListProductDetailsForUserVM
-    @{
+@{
     ViewData["Title"] = "Products";
-    }
-    <div class="row">
-        @foreach(var item in Model.Products)
-        {
+}
+<div class="row">
+    @foreach (var item in Model.Products)
+    {
         <div class="col-md-3">
             <p>
-                <div class="card">
+            <div class="card text-center">
+                <span class="border border-primary">
+                    <dd><img src=@item.ImageUrl width="251" height="256" /></dd>
                     <h2>@item.Name</h2>
-                    <dd><img src=@item.ImageUrl width="253" height="256" /></dd>
-                    <p>@item.Description</p>
-                    <p>@item.UnitPrice</p>
+                    <p class="h3 text-white"><span class="badge badge-danger">@Html.DisplayFor(x => item.UnitPrice)
+                    </span></p>
                     <a asp-controller="Product" asp-Action="Product" asp-route-id="@item.Id" class="stretched-link"></a>
-                </div>
+                </span>
+            </div>
             </p>
         </div>
-        }
-    </div>
+    }
+</div>

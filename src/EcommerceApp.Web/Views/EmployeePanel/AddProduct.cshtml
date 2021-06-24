@@ -1,14 +1,20 @@
 @{
-ViewData["Title"] = "Add Product";
+    ViewData["Title"] = "Add Product";
 }
 <center>
-    <h1>@ViewData["Title"]</h1>
     <div class="col-md-6">
-        <p>Fill in the fields and create a new product</p>
-        <form asp-action="AddProduct" enctype="multipart/form-data">
-            <partial name="_ProductFormPartial" />
-            <button type="submit" class="btn btn-primary">Add Product</button>
-        </form>
+        <div class="card rounded">
+            <div class="card-header bg-dark text-white">
+                <h1>@ViewData["Title"]</h1>
+                <p>Fill in the fields and create a new product</p>
+            </div>
+            <div class="card-body bg-light">
+                <form asp-action="AddProduct" enctype="multipart/form-data">
+                    <partial name="_ProductFormPartial" />
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </form>
+            </div>
+        </div>
     </div>
 </center>
 

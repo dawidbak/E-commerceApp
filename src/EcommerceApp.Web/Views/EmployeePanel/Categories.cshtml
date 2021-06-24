@@ -13,12 +13,13 @@
             <input text="text" name="SearchString" />
             <input type="submit" value="Filter" />
         </Form></p>
-        <table class="table">
-            <thead>
+        <div class="table-responsive rounded">
+        <table class="table table-bordered table-hover table-striped text-center">
+            <thead class="thead-dark">
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>Actions</th>
+                    <th style="width:20%">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,5 +46,6 @@
                 }
             </tbody>
         </table>
+        </div>
         <partial name="_PaginationPartialView"></partial>
     </div>

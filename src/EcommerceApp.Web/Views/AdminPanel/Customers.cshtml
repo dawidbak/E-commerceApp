@@ -16,8 +16,9 @@
         </Form>
         </p>
     </center>
-    <table class="table">
-        <thead>
+    <div class="table-responsive rounded">
+    <table class="table table-bordered table-hover table-striped text-center">
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Email</th>
@@ -25,8 +26,9 @@
                 <th>Last Name</th>
                 <th>Phone</th>
                 <th>City</th>
-                <th>PostalCode</th>
+                <th>Postal Code</th>
                 <th>Address</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -68,5 +70,6 @@
             }
         </tbody>
     </table>
+    </div>
     <partial name="_PaginationPartialView">
 </div>

@@ -2,15 +2,13 @@
 @{
     ViewData["Title"] = "Order details";
 }
-<center>
-    <h2>@ViewData["Title"]</h2>
-</center>
-<hr />
-<div>
-    <span style="float:right">
-        <h4 class="text-center">Order items</h4>
-        <table class="table text-center">
-            <thead>
+<span style="float:right">
+    <div clas="card">
+        <div class="card-header bg-dark text-white">
+            <h2 class="text-center">Order items</h2>
+        </div>
+        <table class="table table-bordered table-striped text-center">
+            <thead class="thead-dark">
                 <tr>
                     <th>Product Id</th>
                     <th>Name</th>
@@ -28,29 +26,39 @@
                 }
             </tbody>
         </table>
-    </span>
-</div>
+    </div>
+</span>
 <div>
-    <span style="float:left">
-        <dl class="dl-horizontal">
-            <dt><label asp-for="@Model.Id"></label></dt>
-            <dd>@Model.Id</dd>
-            <dt><label asp-for="@Model.CustomerId"></label></dt>
-            <dd>@Model.CustomerId</dd>
-            <dt><label asp-for="@Model.Price"></label></dt>
-            <dd>@Model.Price</dd>
-            <dt><label asp-for="@Model.ShipFirstName"></label></dt>
-            <dd>@Model.ShipFirstName</dd>
-            <dt><label asp-for="@Model.ShipContactEmail"></label></dt>
-            <dd>@Model.ShipContactEmail</dd>
-            <dt><label asp-for="@Model.ShipContactPhone"></label></dt>
-            <dd>@Model.ShipContactPhone</dd>
-            <dt><label asp-for="@Model.ShipCity"></label></dt>
-            <dd>@Model.ShipCity</dd>
-            <dt><label asp-for="@Model.ShipPostalCode"></label></dt>
-            <dd>@Model.ShipPostalCode</dd>
-            <dt><label asp-for="@Model.ShipAddress"></label></dt>
-            <dd>@Model.ShipAddress</dd>
-        </dl>
+    <span style="float:center">
+        <div class="col-md-6">
+            <div class="card rounded text-center">
+                <div class="card-header bg-dark text-white">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+                <div class="card-body bg-light text-center">
+                    <dl class="dl-horizontal">
+                        <dt><label asp-for="@Model.Id"></label></dt>
+                        <dd>@Model.Id</dd>
+                        <dt><label asp-for="@Model.OrderDate"></label></dt>
+                        <dd>@Html.DisplayFor(x => Model.OrderDate)</dd>
+                        <dt><label asp-for="@Model.CustomerId"></label></dt>
+                        <dd>@Model.CustomerId</dd>
+                        <dt><label asp-for="@Model.Price"></label></dt>
+                        <dd>@Html.DisplayFor(x => Model.Price)</dd>
+                        <dt><label asp-for="@Model.ShipFirstName"></label></dt>
+                        <dd>@Model.ShipFirstName</dd>
+                        <dt><label asp-for="@Model.ShipContactEmail"></label></dt>
+                        <dd>@Model.ShipContactEmail</dd>
+                        <dt><label asp-for="@Model.ShipContactPhone"></label></dt>
+                        <dd>@Model.ShipContactPhone</dd>
+                        <dt><label asp-for="@Model.ShipCity"></label></dt>
+                        <dd>@Model.ShipCity</dd>
+                        <dt><label asp-for="@Model.ShipPostalCode"></label></dt>
+                        <dd>@Model.ShipPostalCode</dd>
+                        <dt><label asp-for="@Model.ShipAddress"></label></dt>
+                        <dd>@Model.ShipAddress</dd>
+                    </dl>
+                </div>
+            </div>
     </span>
 </div>

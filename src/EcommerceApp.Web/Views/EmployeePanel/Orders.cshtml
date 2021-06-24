@@ -16,11 +16,12 @@
         </Form>
         </p>
     </center>
-    <div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
+    <div class="table-responsive-xl rounded">
+    <table class="table table-bordered table-hover table-striped text-center" width="100%">
+        <thead class="thead-dark">
+            <tr class="text-nowrap">
                 <th>Id</th>
+                <th>Order Date</th>
                 <th>Customer Id</th>
                 <th>Price</th>
                 <th>First Name</th>
@@ -41,6 +42,9 @@
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.CustomerId)
                     </td>
                     <td>
@@ -55,7 +59,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ShipContactEmail)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.ShipContactPhone)
                     </td>
                     <td>
@@ -67,7 +71,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ShipAddress)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="OrderDetails"
                         asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
 
