@@ -4,16 +4,18 @@
 @{
     ViewData["Title"] = "Category management";
 }
-    <div class="text-center">
-        <h1>@ViewData["Title"]</h1>
-        <p><a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a></p>
-        <p><Form method="get" asp-action="Categories">
-            Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
-            <select asp-items="searchSelectList.CategorySelectList" name="SelectedValue"></select>
-            <input text="text" name="SearchString" />
-            <input type="submit" value="Filter" />
-        </Form></p>
-        <div class="table-responsive rounded">
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+    <p><a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddCategory">Add Category</a></p>
+    <p>
+    <Form method="get" asp-action="Categories">
+        Records: <select asp-items="searchSelectList.PageSizeSelectList" name="PageSize"></select>
+        <select asp-items="searchSelectList.CategorySelectList" name="SelectedValue"></select>
+        <input text="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </Form>
+    </p>
+    <div class="table-responsive rounded">
         <table class="table table-bordered table-hover table-striped text-center">
             <thead class="thead-dark">
                 <tr>
@@ -25,27 +27,27 @@
             <tbody>
                 @foreach (var item in Model.Categories)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
+                    <tr>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="text-nowrap">
 
 
-                        <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
+                            <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditCategory"
                             asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
 
-                        <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
+                            <a class="btn btn-danger" asp-controller="EmployeePanel" asp-action="DeleteCategory"
                             asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
-        </div>
-        <partial name="_PaginationPartialView"></partial>
     </div>
+    <partial name="_PaginationPartialView"></partial>
+</div>

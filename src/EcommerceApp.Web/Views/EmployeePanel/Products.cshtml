@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Product management";
 }
-<div>
+<div class="justify-content-center">
     <center>
         <h1>@ViewData["Title"]</h1>
         <a class="btn btn-success" asp-controller="EmployeePanel" asp-action="AddProduct">Add Product</a>
@@ -33,22 +33,22 @@
             @foreach (var item in Model.Products)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.CategoryName)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.UnitPrice)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.UnitsInStock)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="EditProduct"
                         asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
 

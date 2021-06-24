@@ -6,9 +6,9 @@
     <center>
         <h1>@ViewData["Title"]</h1>
     </center>
-    <div class="table-responsive">
-    <table class="table">
-        <thead>
+    <div class="table-responsive rounded">
+    <table class="table table-bordered table-hover table-striped text-center">
+        <thead class="thead-dark">
             <tr>
                 <th>Order Id</th>
                 <th>Order Date</th>
@@ -20,16 +20,16 @@
             @foreach (var item in Model.Orders)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.OrderDate)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
-                    <td style="vertical-align:middle;">
+                    <td class="text-nowrap" style="width: 20%;">
                         <a class="btn btn-primary" asp-action="OrderDetails"
                         asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
                     </td>

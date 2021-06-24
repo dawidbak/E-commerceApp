@@ -2,70 +2,67 @@
 @{
   ViewData["Title"] = "Edit Employee Details";
 }
-<span style="float:left">
-  <div class="card rounded">
-    <div class="card-header bg-dark text-white">
-      <h2>Current data</h2>
-    </div>
-    <div class="card-body bg-light text-center">
-      <dl class="dl-horizontal">
-        <dt>Email:</dt>
-        <dd>@Model.Email</dd>
-        <dt>First Name:</dt>
-        <dd>@Model.FirstName</dd>
-        <dt>Last Name:</dt>
-        <dd>@Model.LastName</dd>
-        <dt>Position:</dt>
-        <dd>@Model.Position</dd>
-      </dl>
-    </div>
-  </div>
-</span>
-
-<span style="float:center">
-  <center>
-    <div class="col-md-6">
-      <div class="card rounded">
-        <div class="card-header bg-dark text-white">
-          <h2>@ViewData["Title"]</h2>
-          <p>Fill in the fields and edit employee details</p>
-        </div>
-        <div class="card-body bg-light">
-          <form asp-action="EditEmployee">
-            <div class="form-group">
-              <label asp-for="@Model.Email"></label>
-              <p><input asp-for="@Model.Email" /></p>
-              <span asp-validation-for="@Model.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <label asp-for="@Model.Password"></label>
-              <p><input asp-for="@Model.Password" /></p>
-              (Leave blank if you don't want to change)
-              <span asp-validation-for="@Model.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <label asp-for="@Model.FirstName"></label>
-              <p><input asp-for="@Model.FirstName" /></p>
-              <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <label asp-for="@Model.LastName"></label>
-              <p><input asp-for="@Model.LastName" /></p>
-              <span asp-validation-for="@Model.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-              <label asp-for="@Model.Position"></label>
-              <p><input asp-for="@Model.Position" /></p>
-              <span asp-validation-for="@Model.Position" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </form>
-        </div>
+<div class="row">
+  <div class="col text-center">
+    <div class="card rounded">
+      <div class="card-header bg-dark text-white">
+        <h2>Current data</h2>
+      </div>
+      <div class="card-body bg-light text-center">
+        <dl class="dl-horizontal">
+          <dt>Email:</dt>
+          <dd>@Model.Email</dd>
+          <dt>First Name:</dt>
+          <dd>@Model.FirstName</dd>
+          <dt>Last Name:</dt>
+          <dd>@Model.LastName</dd>
+          <dt>Position:</dt>
+          <dd>@Model.Position</dd>
+        </dl>
       </div>
     </div>
-  </center>
-</span>
+  </div>
 
+  <div class="col-md-8 text-center">
+    <div class="card rounded">
+      <div class="card-header bg-dark text-white">
+        <h2>@ViewData["Title"]</h2>
+        <p>Fill in the fields and edit employee details</p>
+      </div>
+      <div class="card-body bg-light">
+        <form asp-action="EditEmployee">
+          <div class="form-group">
+            <label asp-for="@Model.Email"></label>
+            <p><input asp-for="@Model.Email" /></p>
+            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label asp-for="@Model.Password"></label>
+            <p><input asp-for="@Model.Password" /></p>
+            (Leave blank if you don't want to change)
+            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label asp-for="@Model.FirstName"></label>
+            <p><input asp-for="@Model.FirstName" /></p>
+            <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label asp-for="@Model.LastName"></label>
+            <p><input asp-for="@Model.LastName" /></p>
+            <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label asp-for="@Model.Position"></label>
+            <p><input asp-for="@Model.Position" /></p>
+            <span asp-validation-for="@Model.Position" class="text-danger"></span>
+          </div>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @section Scripts
 {
 <partial name="_ValidationScriptsPartial" />

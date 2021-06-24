@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Customer details";
 }
-<div>
-    <span style="float:right">
+<div class="row">
+    <div class="col-md-8 text-center">
         <h4 class="text-center">Cart items</h4>
         <div class="table-responsive rounded">
             <table class="table table-bordered table-striped text-center">
@@ -32,6 +32,7 @@
                 </tbody>
             </table>
         </div>
+
         <h4 class="text-center">Last 5 Orders</h4>
         <div class="table-responsive rounded">
             <table class="table table-bordered table-striped text-center">
@@ -56,39 +57,35 @@
                     }
                 </tbody>
             </table>
+            <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="Orders"
+                asp-route-selectedValue="CustomerId" asp-route-searchString="@Model.Id">More orders</a>
         </div>
-        <a class="btn btn-primary" asp-controller="EmployeePanel" asp-action="Orders"
-            asp-route-selectedValue="CustomerId" asp-route-searchString="@Model.Id">More orders</a>
-    </span>
-</div>
-<div>
-    <span style="float:left">
-        <div class="col-md-12">
-            <div class="card rounded text-center">
-                <div class="card-header bg-dark text-white">
-                    <h2>@ViewData["Title"]</h2>
-                </div>
-                <div class="card-body bg-light text-center">
-                    <dl class="dl-horizontal">
-                        <dt><label asp-for="@Model.Id"></label></dt>
-                        <dd>@Model.Id</dd>
-                        <dt><label asp-for="@Model.FirstName"></label></dt>
-                        <dd>@Model.FirstName</dd>
-                        <dt><label asp-for="@Model.LastName"></label></dt>
-                        <dd>@Model.LastName</dd>
-                        <dt><label asp-for="@Model.City"></label></dt>
-                        <dd>@Model.City</dd>
-                        <dt><label asp-for="@Model.PostalCode"></label></dt>
-                        <dd>@Model.PostalCode</dd>
-                        <dt><label asp-for="@Model.Address"></label></dt>
-                        <dd>@Model.Address</dd>
-                        <dt><label asp-for="@Model.Email"></label></dt>
-                        <dd>@Model.Email</dd>
-                        <dt><label asp-for="@Model.PhoneNumber"></label></dt>
-                        <dd>@Model.PhoneNumber</dd>
-                    </dl>
-                </div>
+    </div>
+    <div class="col my-4">
+        <div class="card rounded text-center">
+            <div class="card-header bg-dark text-white">
+                <h2>@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body bg-light text-center">
+                <dl class="dl-horizontal">
+                    <dt><label asp-for="@Model.Id"></label></dt>
+                    <dd>@Model.Id</dd>
+                    <dt><label asp-for="@Model.FirstName"></label></dt>
+                    <dd>@Model.FirstName</dd>
+                    <dt><label asp-for="@Model.LastName"></label></dt>
+                    <dd>@Model.LastName</dd>
+                    <dt><label asp-for="@Model.City"></label></dt>
+                    <dd>@Model.City</dd>
+                    <dt><label asp-for="@Model.PostalCode"></label></dt>
+                    <dd>@Model.PostalCode</dd>
+                    <dt><label asp-for="@Model.Address"></label></dt>
+                    <dd>@Model.Address</dd>
+                    <dt><label asp-for="@Model.Email"></label></dt>
+                    <dd>@Model.Email</dd>
+                    <dt><label asp-for="@Model.PhoneNumber"></label></dt>
+                    <dd>@Model.PhoneNumber</dd>
+                </dl>
             </div>
         </div>
-    </span>
+    </div>
 </div>

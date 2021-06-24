@@ -33,22 +33,22 @@
             @foreach (var item in Model.Employees)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.FirstName)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.LastName)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Position)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" asp-controller="AdminPanel" asp-action="EditEmployee"
                         asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
 

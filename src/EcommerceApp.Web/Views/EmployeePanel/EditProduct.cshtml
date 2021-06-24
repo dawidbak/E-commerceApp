@@ -2,55 +2,53 @@
 @{
     ViewData["Title"] = "Edit Product Details";
 }
-<hr />
-<span style="float:left">
-    <div class="card rounded text-center">
-        <div class="card-header bg-dark text-white">
-            <h2>Current data</h2>
-        </div>
-        <div class="card-body bg-light text-center">
-            <dl class="dl-horizontal">
-                <dt><label asp-for="@Model.Name"></label></dt>
-                <dd>@Model.Name</dd>
-                <dt><label asp-for="@Model.Description"></label></dt>
-                <dd>@Model.Description</dd>
-                <dt><label asp-for="@Model.UnitPrice"></label></dt>
-                <dd>@Model.UnitPrice</dd>
-                <dt><label asp-for="@Model.UnitsInStock"></label></dt>
-                <dd>@Model.UnitsInStock</dd>
-                <dt><label asp-for="@Model.CategoryName"></label></dt>
-                <dd>@Model.CategoryName</dd>
-                <dt><label asp-for="@Model.ImageUrl"></label></dt>
-                @if (Model.ImageUrl == "No photo available")
-                {
-                    <dd>@Model.ImageUrl</dd>
-                }
-                else
-                {
-                    <dd><img src="@Model.ImageUrl" width="232" height="232" /></dd>
-                }
-            </dl>
+<div class="row">
+    <div class="col">
+        <div class="card rounded text-center">
+            <div class="card-header bg-dark text-white">
+                <h2>Current data</h2>
+            </div>
+            <div class="card-body bg-light text-center">
+                <dl class="dl-horizontal">
+                    <dt><label asp-for="@Model.Name"></label></dt>
+                    <dd>@Model.Name</dd>
+                    <dt><label asp-for="@Model.Description"></label></dt>
+                    <dd>@Model.Description</dd>
+                    <dt><label asp-for="@Model.UnitPrice"></label></dt>
+                    <dd>@Model.UnitPrice</dd>
+                    <dt><label asp-for="@Model.UnitsInStock"></label></dt>
+                    <dd>@Model.UnitsInStock</dd>
+                    <dt><label asp-for="@Model.CategoryName"></label></dt>
+                    <dd>@Model.CategoryName</dd>
+                    <dt><label asp-for="@Model.ImageUrl"></label></dt>
+                    @if (Model.ImageUrl == "No photo available")
+                    {
+                        <dd>@Model.ImageUrl</dd>
+                    }
+                    else
+                    {
+                        <dd><img src="@Model.ImageUrl" width="232" height="232" /></dd>
+                    }
+                </dl>
+            </div>
         </div>
     </div>
-</span>
-<span style="float:center">
-    <center>
-        <div class="col-md-6">
-            <div class="card rounded text-center">
-                <div class="card-header bg-dark text-white">
-                    <h2>@ViewData["Title"]</h2>
-                    <p>Fill in the fields and edit product details</p>
-                </div>
-                <div class="card-body bg-light text-center">
-                    <form asp-action="EditProduct" enctype="multipart/form-data">
-                        <partial name="_ProductFormPartial" />
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </form>
-                </div>
-            </div>
-    </center>
-</span>
 
+    <div class="col-md-8 text-center">
+        <div class="card rounded text-center">
+            <div class="card-header bg-dark text-white">
+                <h2>@ViewData["Title"]</h2>
+                <p>Fill in the fields and edit product details</p>
+            </div>
+            <div class="card-body bg-light text-center">
+                <form asp-action="EditProduct" enctype="multipart/form-data">
+                    <partial name="_ProductFormPartial" />
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts
 {
 <partial name="_ValidationScriptsPartial" />
