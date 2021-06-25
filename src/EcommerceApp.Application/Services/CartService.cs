@@ -34,9 +34,12 @@ namespace EcommerceApp.Application.Services
         public async Task AddCartItemAsync(int productId, int quantity, string appUserId)
         {
             var product = await _productRepository.GetProductAsync(productId);
-            var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-            var cartId = await _cartRepository.GetCartIdAsync(customerId);
-            await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cartId });
+            if (product.UnitsInStock > 0)
+            {
+                var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
+                var cartId = await _cartRepository.GetCartIdAsync(customerId);
+                await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cartId });
+            }
         }
 
         public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId)
@@ -53,17 +56,28 @@ namespace EcommerceApp.Application.Services
 
         public async Task IncreaseQuantityCartItemByOneAsync(int cartItemId)
         {
-            var cartItem = await _cartItemRepository.GetCartItemAsync(cartItemId);
-            cartItem.Quantity += 1;
+            var cartItem = await _cartItemRepository.GetAllCartItems().Where(x => x.Id == cartItemId).Include(p => p.Product).FirstOrDefaultAsync();
+            if (cartItem.Quantity >= cartItem.Product.UnitsInStock)
+            {
+                cartItem.Quantity = cartItem.Product.UnitsInStock;
+            }
+            else
+            {
+                cartItem.Quantity++;
+            }
             await _cartItemRepository.UpdateCartItemAsync(cartItem);
         }
 
         public async Task DecreaseQuantityCartItemByOneAsync(int cartItemId)
         {
             var cartItem = await _cartItemRepository.GetCartItemAsync(cartItemId);
-            if (cartItem.Quantity > 1)
+            if (cartItem.Quantity <= 1)
             {
-                cartItem.Quantity -= 1;
+                cartItem.Quantity = 1;
+            }
+            else
+            {
+                cartItem.Quantity--;
             }
             await _cartItemRepository.UpdateCartItemAsync(cartItem);
         }
