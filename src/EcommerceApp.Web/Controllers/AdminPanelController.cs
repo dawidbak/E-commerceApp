@@ -79,7 +79,7 @@ namespace EcommerceApp.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _employeeService.AddEmployeeAsync(employeeVM);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Employees));
             }
             return BadRequest();
         }
@@ -91,7 +91,7 @@ namespace EcommerceApp.Web.Controllers
                 return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/DeleteEmployee/21");
             }
             await _employeeService.DeleteEmployeeAsync(id.Value);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Employees));
         }
 
         public async Task<IActionResult> DeleteCustomer(int? id)
@@ -120,7 +120,7 @@ namespace EcommerceApp.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _employeeService.UpdateEmployeeAsync(employeeVM);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Employees));
             }
             return BadRequest();
         }
