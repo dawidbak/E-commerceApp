@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Domain.Models;
@@ -11,6 +12,7 @@ namespace EcommerceApp.Domain.Interfaces
         Task<Product> GetProductAsync(int productId);
         IQueryable<Product> GetAllProducts();
         Task UpdateProductAsync(Product product);
+        Task UpdateProductsAsync(List<Product> products);
         Task DeleteProductAsync(int productId);
     }
 }

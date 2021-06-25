@@ -50,5 +50,11 @@ namespace EcommerceApp.Infrastructure.Repositories
             }
             await _appDbContext.SaveChangesAsync();
         }
+
+        public async Task UpdateProductsAsync(List<Product> products)
+        {
+            _appDbContext.UpdateRange(products);
+            await _appDbContext.SaveChangesAsync();
+        }
     }
 }
