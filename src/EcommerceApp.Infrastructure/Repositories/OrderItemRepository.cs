@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Domain.Interfaces;
@@ -15,9 +16,9 @@ namespace EcommerceApp.Infrastructure.Repositories
         {
             _appDbContext = appDbContext;
         }
-        public async Task AddOrderItemAsync(OrderItem orderItem)
+        public async Task AddOrderItemsAsync(List<OrderItem> orderItems)
         {
-            await _appDbContext.OrderItems.AddAsync(orderItem);
+            await _appDbContext.OrderItems.AddRangeAsync(orderItems);
             await _appDbContext.SaveChangesAsync();
         }
 
