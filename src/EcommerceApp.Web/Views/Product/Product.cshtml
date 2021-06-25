@@ -5,21 +5,32 @@
 <div class="row">
     <div class="col text-center my-2">
         <img src="@Model.ImageUrl" width="384" height="384" />
-        </div>
-        <div class="col text-center my-2">
-            <div class="card text-center md-4">
+    </div>
+    <div class="col text-center my-2">
+        <div class="card text-center md-4 rounded">
+            <div class="card-header bg-dark text-white">
                 <h2>@Model.Name</h2>
+            </div>
+            <div class="card-body bg-light text-center">
                 <h4 class="text-danger">Price: @Model.UnitPrice.ToString("C")</h4>
-                <form class="d-lg-inline">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label>Quantity: </label>
-                        <input type="number" value="1" min="1" name="quantity">
-                        <button type="submit" class="btn btn-primary mb-2" asp-controller="Cart" asp-action="AddToCart"
+                @if (Model.UnitsInStock <= 0)
+                {
+                    <h4 class="text-warning">Product out of stock, check it out later</h4>
+                }
+                else
+                {
+                    <form class="d-lg-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label>Quantity: </label>
+                            <input type="number" value="1" min="1" max="@Model.UnitsInStock" name="quantity" step="1">
+                            <button type="submit" class="btn btn-primary mb-2" asp-controller="Cart" asp-action="AddToCart"
                             asp-route-id="@Model.Id"><i class="fas fa-cart-plus"></i></button>
-                    </div>
-                </form>
+                            <p>There are @Model.UnitsInStock units left</p>
+                        </div>
+                    </form>
+                }
                 <h2><label>Product Description</label></h2>
                 <p>@Model.Description</p>
-            </div>
+            </div </div>
         </div>
-</div>
+    </div>

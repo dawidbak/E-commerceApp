@@ -5,49 +5,102 @@
 <center>
     <h1>@ViewData["Title"]</h1>
 </center>
-<center>
-<table class="table-striped table-dark table-sm text-center">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Total Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.CartItems)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <img src="@item.ImageUrl" width="128" height="128" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalCartItemPrice)
-                </td>
-                <td>
-                    <a class="btn btn-primary" asp-action="IncreaseQuantityCartItemByOne"
-                    asp-route-cartItemId="@item.Id">+</a>
-                    <a class="btn btn-danger" asp-action="DecreaseQuantityCartItemByOne"
-                    asp-route-cartItemId="@item.Id">-</a>
-                    <a class="btn btn-warning" asp-action="DeleteCartItem"
-                    asp-route-cartItemId="@item.Id">Delete</a>
+<div class="row">
+    <div class="col text-center">
+        <div class="table-responsive-md">
+            @if (Model.CartItems.Count == 0)
+            {
+                <h2 class="text-center my-5">We did not find any products in your shopping cart</h2>
+                <p class="h4">Back to <a asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i>homepage</a> to
+                    continue shopping</p>
+            }
+            else
+            {
+                <table class="table table-hover table-bordered table-striped text-center rounded">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Product Id</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.ProductId)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td class="align-middle">
+                                    <img src="@item.ImageUrl" width="128" height="128" />
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                                </td>
+                                @if (item.UnitsInStock == 0)
+                                {
+                                    <td class="align-middle" colspan="2">
+                                        This item is currently out of stock
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="align-middle">
+                                        @if (item.Quantity <= 1)
+                                        {
+                                            <a class="btn btn-danger disabled" asp-action="DecreaseQuantityCartItemByOne"
+                                asp-route-cartItemId="@item.Id"><i class="fas fa-minus"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-danger" asp-action="DecreaseQuantityCartItemByOne"
+                                asp-route-cartItemId="@item.Id"><i class="fas fa-minus"></i></a>
+                                        }
+                                        @Html.DisplayFor(modelItem => item.Quantity)
+                                        @if (item.Quantity >= item.UnitsInStock)
+                                        {
+                                            <a class="btn btn-primary disabled" asp-action="IncreaseQuantityCartItemByOne"
+                                asp-route-cartItemId="@item.Id"><i class="fas fa-plus"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-primary" asp-action="IncreaseQuantityCartItemByOne"
+                                asp-route-cartItemId="@item.Id"><i class="fas fa-plus"></i></a>
+                                        }
+                                    </td>
 
-                </td>
-            </tr>
-        }
-        <td class="text-right"><strong>Total price:@Html.DisplayFor(x => x.TotalPrice)</strong></td>
-    </tbody>
-</table>
-<a class="btn btn-primary" asp-controller="Order" asp-Action="Checkout" asp-route-customerId="@Model.CustomerId">Checkout</a>
-</center>
+                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.TotalCartItemPrice)</td>
+                                }
+                                <td class="align-middle">
+                                    <a class="btn btn-danger" asp-action="DeleteCartItem" asp-route-cartItemId="@item.Id"><i
+                                    class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col text-center"><span class="badge badge-pill badge-light">
+                            <strong>
+                                <h4>Final price:@Html.DisplayFor(x => x.TotalPrice)</h4>
+                            </strong>
+                        </span></div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <a class="btn btn-primary my-3" asp-controller="Order" asp-Action="Checkout"
+                        asp-route-customerId="@Model.CustomerId">Checkout</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

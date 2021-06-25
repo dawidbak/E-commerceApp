@@ -1,98 +1,112 @@
 @model EcommerceApp.Application.ViewModels.Order.OrderCheckoutVM
 @{
-ViewData["Title"] = "Checkout";
+    ViewData["Title"] = "Checkout";
 }
-<span style="float:left">
-    <form asp-action="Checkout" method="POST">
-        <h3>Delivery Address</h3>
-        <div class="form-group">
-            <label asp-for="@Model.Email"></label>
-            <p><input asp-for="@Model.Email" class="form-control" /></p>
-            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+<div class="row">
+    <div class="col text-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col my-4 text-center">
+        <div class="card rounded text-center">
+            <div class="card-header bg-dark text-white">
+                <h3>Delivery Address</h3>
+            </div>
+            <div class="card-body bg-light text-center">
+                <form asp-action="Checkout" method="POST">
+                    <div class="form-group">
+                        <label asp-for="@Model.Email"></label>
+                        <p><input asp-for="@Model.Email" class="form-control" /></p>
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.FirstName"></label>
+                        <p><input asp-for="@Model.FirstName" class="form-control" /></p>
+                        <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.LastName"></label>
+                        <p><input asp-for="@Model.LastName" class="form-control" /></p>
+                        <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.City"></label>
+                        <p><input asp-for="@Model.City" class="form-control" /></p>
+                        <span asp-validation-for="@Model.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.PostalCode"></label>
+                        <p><input asp-for="@Model.PostalCode" class="form-control" /></p>
+                        <span asp-validation-for="@Model.PostalCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Address"></label>
+                        <p><input asp-for="@Model.Address" class="form-control" /></p>
+                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.PhoneNumber"></label>
+                        <p><input asp-for="@Model.PhoneNumber" class="form-control" /></p>
+                        <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input asp-for="@Model.CartId" type="hidden" />
+                        <input asp-for="@Model.TotalPrice" type="hidden" />
+                        <input asp-for="@Model.CustomerId" type="hidden" />
+                        @for (int i = 0; i < Model.CartItems.Count; i++)
+                        {
+                            <input asp-for="@Model.CartItems[i].ProductId" type="hidden" />
+                            <input asp-for="@Model.CartItems[i].Quantity" type="hidden" />
+                        }
+                    </div>
+                    <button class="btn btn-primary" type="submit">Confirm & Order</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="@Model.FirstName"></label>
-            <p><input asp-for="@Model.FirstName" class="form-control" /></p>
-            <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="@Model.LastName"></label>
-            <p><input asp-for="@Model.LastName" class="form-control" /></p>
-            <span asp-validation-for="@Model.LastName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="@Model.City"></label>
-            <p><input asp-for="@Model.City" class="form-control" /></p>
-            <span asp-validation-for="@Model.City" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="@Model.PostalCode"></label>
-            <p><input asp-for="@Model.PostalCode" class="form-control" /></p>
-            <span asp-validation-for="@Model.PostalCode" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="@Model.Address"></label>
-            <p><input asp-for="@Model.Address" class="form-control" /></p>
-            <span asp-validation-for="@Model.Address" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="@Model.PhoneNumber"></label>
-            <p><input asp-for="@Model.PhoneNumber" class="form-control" /></p>
-            <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
-        </div>
-        <div>
-            <input asp-for="@Model.CartId" type="hidden"/>
-            <input asp-for="@Model.TotalPrice" type="hidden"/>
-            <input asp-for="@Model.CustomerId" type="hidden"/>
-            @for(int i=0;i < Model.CartItems.Count;i++)
-            {
-                <input asp-for="@Model.CartItems[i].ProductId" type="hidden"/>
-                <input asp-for="@Model.CartItems[i].Quantity" type="hidden"/>
-            }
-        </div>
-        <button class="btn btn-primary" type="submit">Confirm & Order</button>
-    </form>
-</span>
-<span style="float:right">
-    <center>
+    </div>
+    <div class="col-md-8 text-center">
         <h3>Order details</h3>
-    </center>
-    <table class="table-striped table-sm text-center table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CartItems)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <img src="@item.ImageUrl" width="96" height="96" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnitPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalCartItemPrice)
-                </td>
-            </tr>
-            }
-            <td class="text-right"><strong>Total price:@Html.DisplayFor(x => Model.TotalPrice)</strong></td>
-        </tbody>
-    </table>
-</span>
-
+        <div class="table-responsive rounded">
+            <table class="table table-bordered table-striped text-center rounded">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="align-middle">
+                                <img src="@item.ImageUrl" width="96" height="96" />
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.TotalCartItemPrice)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col text-center"><span class="badge badge-pill badge-light">
+                <strong><h4>Total price:@Html.DisplayFor(x => Model.TotalPrice)</strong></h4></span>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
 <partial name="_ValidationScriptsPartial" />
 }
