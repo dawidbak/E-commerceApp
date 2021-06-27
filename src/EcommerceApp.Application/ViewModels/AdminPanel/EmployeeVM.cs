@@ -26,7 +26,10 @@ namespace EcommerceApp.Application.ViewModels.AdminPanel
         [Display(Name = "Position")]
         public string Position { get; set; }
 
-        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Employee, EmployeeVM>().ReverseMap();
+        public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Employee, EmployeeVM>()
+        .ForMember(x => x.Email, y => y.MapFrom(src => src.AppUser.Email))
+        .ReverseMap()
+        .ForPath(x => x.AppUser.Email, y => y.Ignore());
 
     }
 }

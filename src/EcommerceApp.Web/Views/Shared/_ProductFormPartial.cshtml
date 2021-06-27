@@ -27,7 +27,7 @@
 </div>
 <div class="form-group">
     <label asp-for="@Model.CategoryName"></label>
-    @Html.DropDownListFor(x => Model.CategoryName, new SelectList(list),"Select Category", new { @class = "form-control"})
+    @Html.DropDownListFor(x => Model.CategoryId, new SelectList(list,"Key","Value"),"Select Category", new { @class = "form-control"})
 </div>
 <div class="form-group">
     <label asp-for="@Model.ImageFormFile"></label>

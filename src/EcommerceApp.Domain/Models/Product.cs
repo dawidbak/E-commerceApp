@@ -26,11 +26,8 @@ namespace EcommerceApp.Domain.Models
 
         public byte[] Image { get; set; }
 
-        public int CategoryId { get; set; }
-
         [Required]
-        [StringLength(50)]
-        public string CategoryName { get; set; }
+        public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Products")]

@@ -33,8 +33,6 @@ namespace EcommerceApp.Application.Services
         public async Task AddProductAsync(ProductVM productVM)
         {
             var product = _mapper.Map<Product>(productVM);
-            var category = await _categoryRepository.GetCategoryAsync(productVM.CategoryName);
-            product.CategoryId = category.Id;
             product.Image = await _imageConverterService.GetByteArrayFromImageAsync(productVM.ImageFormFile);
             await _productRepository.AddProductAsync(product);
         }
@@ -90,7 +88,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListProductDetailsForUserVM> GetProductsByCategoryNameAsync(string categoryName)
         {
-            var products = await _productRepository.GetAllProducts().Where(p => p.CategoryName == categoryName).ToListAsync();
+            var products = await _productRepository.GetAllProducts().Where(p => p.Category.Name == categoryName).ToListAsync();
             var productsVM = _mapper.Map<List<ProductDetailsForUserVM>>(products);
             for (int i = 0; i < productsVM.Count; i++)
             {
@@ -105,8 +103,6 @@ namespace EcommerceApp.Application.Services
         public async Task UpdateProductAsync(ProductVM productVM)
         {
             var product = _mapper.Map<Product>(productVM);
-            var category = await _categoryRepository.GetCategoryAsync(product.CategoryName);
-            product.CategoryId = category.Id;
             product.Image = await _imageConverterService.GetByteArrayFromImageAsync(productVM.ImageFormFile);
             await _productRepository.UpdateProductAsync(product);
         }

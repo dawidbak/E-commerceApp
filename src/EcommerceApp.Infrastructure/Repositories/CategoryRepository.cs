@@ -42,11 +42,6 @@ namespace EcommerceApp.Infrastructure.Repositories
             return await _appDbContext.Categories.FindAsync(categoryId);
         }
 
-        public async Task<Category> GetCategoryAsync(string categoryName)
-        {
-            return await _appDbContext.Categories.FirstOrDefaultAsync(x => x.Name == categoryName);
-        }
-
         public async Task UpdateCategoryAsync(Category category)
         {
             _appDbContext.Categories.Update(category);

@@ -35,9 +35,8 @@ namespace EcommerceApp.Application.Services
 
         public async Task DeleteCustomerAsync(int customerId)
         {
-            var customer = await _customerRepository.GetCustomerAsync(customerId);
-            var user = await _userManager.FindByIdAsync(customer.AppUserId);
-            await _userManager.DeleteAsync(user);
+            var customer = await _customerRepository.GetAllCustomers().Include(x => x.AppUser).FirstOrDefaultAsync(x => x.Id == customerId);
+            await _userManager.DeleteAsync(customer.AppUser);
         }
 
         public async Task<int> GetCustomerIdByAppUserIdAsync(string appUserId)

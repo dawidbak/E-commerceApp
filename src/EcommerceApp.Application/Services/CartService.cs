@@ -17,28 +17,25 @@ namespace EcommerceApp.Application.Services
         private readonly ICartItemRepository _cartItemRepository;
         private readonly IProductRepository _productRepository;
         private readonly ICartRepository _cartRepository;
-        private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly IImageConverterService _imageConverterService;
 
         public CartService(ICartItemRepository cartItemRepository, IProductRepository productRepository, ICartRepository cartRepository,
-        ICustomerRepository customerRepository, IMapper mapper, IImageConverterService imageConverterService)
+        IMapper mapper, IImageConverterService imageConverterService)
         {
             _cartItemRepository = cartItemRepository;
             _productRepository = productRepository;
             _cartRepository = cartRepository;
-            _customerRepository = customerRepository;
             _mapper = mapper;
             _imageConverterService = imageConverterService;
         }
         public async Task AddCartItemAsync(int productId, int quantity, string appUserId)
         {
             var product = await _productRepository.GetProductAsync(productId);
-            if (product.UnitsInStock > 0)
+            if (product.UnitsInStock > 0 && product.UnitsInStock >= quantity)
             {
-                var customerId = await _customerRepository.GetCustomerIdAsync(appUserId);
-                var cartId = await _cartRepository.GetCartIdAsync(customerId);
-                await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cartId });
+                var cart = await _cartRepository.GetAllCarts().FirstOrDefaultAsync(x => x.Customer.AppUserId == appUserId);
+                await _cartItemRepository.AddCartItemAsync(new CartItem { Product = product, Quantity = quantity, CartId = cart.Id });
             }
         }
 

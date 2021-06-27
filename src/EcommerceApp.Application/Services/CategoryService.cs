@@ -44,9 +44,9 @@ namespace EcommerceApp.Application.Services
             var paginatedVM = await _paginationService.CreateAsync(categories, pageNumber, pageSize);
             return _mapper.Map<ListCategoryForListVM>(paginatedVM);
         }
-        public async Task<List<string>> GetAllCategoriesNamesAsync()
+        public async Task<Dictionary<int,string>> GetAllCategoriesNamesAsync()
         {
-            return await _categoryRepository.GetAllCategories().Select(x => x.Name).ToListAsync();
+            return await _categoryRepository.GetAllCategories().Select(x => new{ x.Id, x.Name}).ToDictionaryAsync(x => x.Id, x => x.Name);
         }
 
         public async Task<CategoryVM> GetCategoryAsync(int categoryVMId)
