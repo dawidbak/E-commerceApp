@@ -14,7 +14,7 @@
     @if (SignInManager.IsSignedIn(User) && authorizationResult.Succeeded)
     {
         <li class="nav-item">
-            <a class="nav-link" asp-area="" asp-controller="EmployeePanel" asp-action="Index">Employee Panel</a>
+            <a class="nav-link" asp-area="" asp-controller="EmployeePanel" asp-action="Index"><i class="fas fa-bars fa-lg"></i> Employee Panel</a>
         </li>
     }
 </ul>

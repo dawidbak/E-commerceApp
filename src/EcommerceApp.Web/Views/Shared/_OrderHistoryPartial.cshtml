@@ -1,9 +1,11 @@
 @using Microsoft.AspNetCore.Identity
 @using EcommerceApp.Domain.Models;
+@using Microsoft.AspNetCore.Authorization
 @inject SignInManager<ApplicationUser> SignInManager
-@if (SignInManager.IsSignedIn(User))
+@inject IAuthorizationService AuthorizationService
+@if (SignInManager.IsSignedIn(User) && !AuthorizationService.AuthorizeAsync(User, "EmployeePanelEntry").Result.Succeeded)
 {
     <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderHistory">Order History</a>
+        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderHistory"><i class="far fa-list-alt fa-lg"></i> OrderHistory</a>
     </li>
 }

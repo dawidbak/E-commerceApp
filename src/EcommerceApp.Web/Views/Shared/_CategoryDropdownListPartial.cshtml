@@ -12,7 +12,7 @@
         {
 
             <a class="dropdown-item" asp-controller="Category" asp-action="Products"
-            asp-route-categoryName=@category>@Html.DisplayFor(x => category)
+            asp-route-categoryName=@category.Value>@Html.DisplayFor(x => category.Value)
             </a>
         }
     </div>

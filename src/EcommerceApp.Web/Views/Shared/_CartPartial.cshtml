@@ -1,0 +1,16 @@
+@using Microsoft.AspNetCore.Identity
+@using EcommerceApp.Domain.Models;
+@using Microsoft.AspNetCore.Authorization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IAuthorizationService AuthorizationService
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User) && !AuthorizationService.AuthorizeAsync(User,
+    "EmployeePanelEntry").Result.Succeeded)
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index"><i
+                class="fas fa-shopping-cart fa-lg"></i> Cart</a>
+        </li>
+    }
+</ul>
