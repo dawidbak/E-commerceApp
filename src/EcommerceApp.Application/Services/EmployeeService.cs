@@ -43,19 +43,14 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListEmployeeForListVM> GetAllPaginatedEmployeesAsync(int pageSize, int pageNumber)
         {
-            var employeesVM = _employeeRepository.GetAllEmployees().Include(x => x.AppUser).ProjectTo<EmployeeForListVM>(_mapper.ConfigurationProvider);
+            var employeesVM = _employeeRepository.GetAllEmployees().ProjectTo<EmployeeForListVM>(_mapper.ConfigurationProvider);
             var paginatedVM = await _paginationService.CreateAsync(employeesVM, pageNumber, pageSize);
             return _mapper.Map<ListEmployeeForListVM>(paginatedVM);
         }
 
         public async Task<EmployeeVM> GetEmployeeAsync(int id)
         {
-            /*var employee = await _employeeRepository.GetEmployeeAsync(id);
-            var employeeVM = _mapper.Map<EmployeeVM>(employee);
-            var user = await _userManager.FindByIdAsync(employee.AppUserId);
-            employeeVM.Email = user.Email;
-            return employeeVM; */
-            return await _employeeRepository.GetAllEmployees().Where(x => x.Id == id).Include(a => a.AppUser)
+            return await _employeeRepository.GetAllEmployees().Where(x => x.Id == id)
             .ProjectTo<EmployeeVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
         public async Task UpdateEmployeeAsync(EmployeeVM employeeVM)
@@ -73,31 +68,11 @@ namespace EcommerceApp.Application.Services
                 employee.AppUser.PasswordHash = _passwordHasher.HashPassword(employee.AppUser, employeeVM.Password);
             }
             await _employeeRepository.UpdateEmployeeAsync(employee);
-            /*var employeeToEdit = await _employeeRepository.GetEmployeeAsync(employeeVM.Id);
-            var user = await _userManager.FindByIdAsync(employeeToEdit.AppUserId);
-
-            if (employeeVM.Password != null)
-            {
-                var tokenPassword = await _userManager.GeneratePasswordResetTokenAsync(user);
-                await _userManager.ResetPasswordAsync(user, tokenPassword, employeeVM.Password);
-            }
-
-            await _userManager.SetEmailAsync(user, employeeVM.Email);
-            await _userManager.UpdateNormalizedEmailAsync(user);
-
-            await _userManager.SetUserNameAsync(user, employeeVM.Email);
-            await _userManager.UpdateNormalizedUserNameAsync(user);
-
-            var employee = _mapper.Map<Employee>(employeeVM);
-            employee.AppUserId = employeeToEdit.AppUserId;
-            await _employeeRepository.UpdateEmployeeAsync(employee); */
         }
         public async Task DeleteEmployeeAsync(int id)
         {
-            var employee = await _employeeRepository.GetEmployeeAsync(id);
-            var user = await _userManager.FindByIdAsync(employee.AppUserId);
-            await _employeeRepository.DeleteEmployeeAsync(id);
-            await _userManager.DeleteAsync(user);
+            var employee = await _employeeRepository.GetAllEmployees().Include(x => x.AppUser).FirstOrDefaultAsync(x => x.Id == id);
+            await _userManager.DeleteAsync(employee.AppUser);
         }
     }
 }

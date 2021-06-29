@@ -46,16 +46,16 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCustomerVM> GetAllPaginatedCustomersAsync(int pageSize, int pageNumber)
         {
-            var customersVM = _customerRepository.GetAllCustomers().Include(x => x.AppUser).ProjectTo<CustomerVM>(_mapper.ConfigurationProvider);
+            var customersVM = _customerRepository.GetAllCustomers().ProjectTo<CustomerVM>(_mapper.ConfigurationProvider);
             var paginatedVM = await _paginationService.CreateAsync(customersVM, pageNumber, pageSize);
             return _mapper.Map<ListCustomerVM>(paginatedVM);
         }
 
         public async Task<CustomerDetailsVM> GetCustomerDetailsAsync(int customerId)
         {
-            var customerDetailsVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.AppUser).ProjectTo<CustomerDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            var customerDetailsVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).ProjectTo<CustomerDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             var ordersVM = await _orderRepository.GetAllOrders().Where(x => x.CustomerId == customerId).OrderByDescending(x => x.Id).Take(2).ProjectTo<OrderForCustomerDetailsVM>(_mapper.ConfigurationProvider).ToListAsync();
-            var cartItemsVM = await _cartItemRepository.GetAllCartItems().Where(x => x.Cart.CustomerId == customerId).Include(x => x.Product).ProjectTo<CartItemForCustomerDetailsVM>(_mapper.ConfigurationProvider).ToListAsync();
+            var cartItemsVM = await _cartItemRepository.GetAllCartItems().Where(x => x.Cart.CustomerId == customerId).ProjectTo<CartItemForCustomerDetailsVM>(_mapper.ConfigurationProvider).ToListAsync();
             customerDetailsVM.Orders = ordersVM;
             customerDetailsVM.CartItems = cartItemsVM;
             for (int i = 0; i < customerDetailsVM.CartItems.Count; i++)

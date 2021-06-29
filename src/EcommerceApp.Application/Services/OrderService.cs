@@ -62,34 +62,27 @@ namespace EcommerceApp.Application.Services
                 Price = orderCheckoutVM.TotalPrice,
                 OrderDate = DateTime.Now
             };
-            await _orderRepository.AddOrderAsync(order);
+            var productIdList = orderCheckoutVM.CartItems.ConvertAll(x => x.ProductId);
             var orderItemList = new List<OrderItem>();
+            var productList = await _productRepository.GetAllProducts().Where(x => productIdList.Contains(x.Id)).ToListAsync();
             for (int i = 0; i < orderCheckoutVM.CartItems.Count; i++)
             {
-                var orderItem = new OrderItem { ProductId = orderCheckoutVM.CartItems[i].ProductId, Quantity = orderCheckoutVM.CartItems[i].Quantity, OrderId = order.Id };
-                orderItemList.Add(orderItem);
-            }
-            var idProductList = new List<int>();
-
-            foreach (var item in orderItemList)
-            {
-                idProductList.Add(item.ProductId);
-            }
-            var productList = await _productRepository.GetAllProducts().Where(x => idProductList.Contains(x.Id)).AsNoTracking().ToListAsync();
-            productList = productList.OrderBy(x => x.Id).ToList();
-            for (int i = 0; i < orderItemList.Count; i++)
-            {
+                orderItemList.Add(new OrderItem
+                {
+                    ProductId = orderCheckoutVM.CartItems[i].ProductId,
+                    Quantity = orderCheckoutVM.CartItems[i].Quantity,
+                });
                 productList[i].UnitsInStock -= orderCheckoutVM.CartItems[i].Quantity;
             }
-            await _orderItemRepository.AddOrderItemsAsync(orderItemList);
+            order.OrderItems = orderItemList;
+            await _orderRepository.AddOrderAsync(order);
             await _productRepository.UpdateProductsAsync(productList);
             await _cartItemRepository.DeleteAllCartItemsByCartIdAsync(orderCheckoutVM.CartId);
         }
 
         public async Task<OrderCheckoutVM> GetDataForOrderCheckoutAsync(int customerId)
         {
-            var orderCheckoutVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId).Include(x => x.AppUser).Include(x => x.Cart)
-            .ThenInclude(y => y.CartItems).ThenInclude(y => y.Product)
+            var orderCheckoutVM = await _customerRepository.GetAllCustomers().Where(x => x.Id == customerId)
             .ProjectTo<OrderCheckoutVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             for (int i = orderCheckoutVM.CartItems.Count - 1; i >= 0; i--)
             {
@@ -128,14 +121,14 @@ namespace EcommerceApp.Application.Services
 
         public async Task<OrderDetailsVM> GetOrderDetailsAsync(int orderId)
         {
-            return await _orderRepository.GetAllOrders().Where(x => x.Id == orderId).Include(x => x.OrderItems).ThenInclude(y => y.Product)
+            return await _orderRepository.GetAllOrders().Where(x => x.Id == orderId)
             .ProjectTo<OrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
 
         public async Task<CustomerOrderDetailsVM> GetCustomerOrderDetailsAsync(int orderId, string appUserId)
         {
-            var customerOrderDetailsVM = await _orderRepository.GetAllOrders().Where(x => x.Id == orderId && x.Customer.AppUserId == appUserId).Include(x => x.OrderItems)
-            .ThenInclude(y => y.Product).ProjectTo<CustomerOrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            var customerOrderDetailsVM = await _orderRepository.GetAllOrders().Where(x => x.Id == orderId && x.Customer.AppUserId == appUserId)
+            .ProjectTo<CustomerOrderDetailsVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             for (int i = 0; i < customerOrderDetailsVM.OrderItems.Count; i++)
             {
                 customerOrderDetailsVM.OrderItems[i].ImageToDisplay = _imageConverterService.GetImageUrlFromByteArray(customerOrderDetailsVM.OrderItems[i].Image);

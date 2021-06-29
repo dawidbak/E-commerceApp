@@ -41,8 +41,8 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ListCartItemForListVM> GetAllCartItemsForCurrentUserAsync(string appUserId)
         {
-            var cartItemListVM = await _cartRepository.GetAllCarts().Where(x => x.Customer.AppUserId == appUserId).Include(x => x.CartItems)
-            .ThenInclude(y => y.Product).ProjectTo<ListCartItemForListVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            var cartItemListVM = await _cartRepository.GetAllCarts().Where(x => x.Customer.AppUserId == appUserId)
+                .ProjectTo<ListCartItemForListVM>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             for (int i = 0; i < cartItemListVM.CartItems.Count; i++)
             {
                 cartItemListVM.CartItems[i].ImageUrl = _imageConverterService.GetImageUrlFromByteArray(cartItemListVM.CartItems[i].Image);
@@ -53,7 +53,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task IncreaseQuantityCartItemByOneAsync(int cartItemId)
         {
-            var cartItem = await _cartItemRepository.GetAllCartItems().Where(x => x.Id == cartItemId).Include(p => p.Product).FirstOrDefaultAsync();
+            var cartItem = await _cartItemRepository.GetAllCartItems().Include(p => p.Product).FirstOrDefaultAsync(x => x.Id == cartItemId);
             if (cartItem.Quantity >= cartItem.Product.UnitsInStock)
             {
                 cartItem.Quantity = cartItem.Product.UnitsInStock;
