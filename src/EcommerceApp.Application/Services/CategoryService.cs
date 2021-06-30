@@ -46,7 +46,7 @@ namespace EcommerceApp.Application.Services
         }
         public async Task<Dictionary<int,string>> GetAllCategoriesNamesAsync()
         {
-            return await _categoryRepository.GetAllCategories().Select(x => new{ x.Id, x.Name}).ToDictionaryAsync(x => x.Id, x => x.Name);
+            return await _categoryRepository.GetAllCategories().ToDictionaryAsync(x => x.Id, x => x.Name);
         }
 
         public async Task<CategoryVM> GetCategoryAsync(int categoryVMId)

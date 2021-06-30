@@ -363,3 +363,8 @@ zTemp
 *.cs-template
 .vscode/solution-explorer/template-list.json
 .vscode/solution-explorer/template-parameters.js
+.idea/.idea.EcommerceApp/.idea/projectSettingsUpdater.xml
+.idea/.idea.EcommerceApp/.idea/encodings.xml
+.idea/.idea.EcommerceApp/.idea/indexLayout.xml
+.idea/.idea.EcommerceApp/.idea/vcs.xml
+.idea/.idea.EcommerceApp/.idea/workspace.xml

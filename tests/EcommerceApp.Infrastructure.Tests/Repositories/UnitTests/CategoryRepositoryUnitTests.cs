@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Xunit;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using EcommerceApp.Domain.Models;
-using EcommerceApp.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore.InMemory;
 using EcommerceApp.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
 {
@@ -20,11 +16,12 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         {
             _options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
         }
+
         [Fact]
         public async Task AddCategoryAsync_CheckCategoryExistsAfterAdd()
         {
             //Arrange
-            var category = new Category(){Id = 10, Name ="GoodCategory", Description = "test"};
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
 
             using (var context = new AppDbContext(_options))
             {
@@ -43,14 +40,14 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         public async Task GetCategoryAsync_GetCategoryAndCheckIfEqualToModel()
         {
             //Arrange
-            var category = new Category(){Id = 10, Name ="GoodCategory", Description = "test"};
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
 
             using (var context = new AppDbContext(_options))
             {
                 //Act
                 await context.Database.EnsureCreatedAsync();
-                context.Add(category);
-                context.SaveChanges();
+                await context.AddAsync(category);
+                await context.SaveChangesAsync();
                 var sut = new CategoryRepository(context);
                 var getCategory = await sut.GetCategoryAsync(category.Id);
 
@@ -65,8 +62,8 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         public async Task GetAllCategoriesAsync_GetListOfCategoriesAndCheckAreEqualLikeModels()
         {
             //Arrange
-            var category1 = new Category(){Id = 10, Name ="GoodCategory", Description = "test"};
-            var category2 = new Category(){Id = 11, Name ="BadCategory", Description = "testx"};
+            var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var category2 = new Category() { Id = 11, Name = "BadCategory", Description = "testx" };
             List<Category> categories = new() { category1, category2 };
 
             using (var context = new AppDbContext(_options))
@@ -76,7 +73,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 await context.AddRangeAsync(categories);
                 await context.SaveChangesAsync();
                 var sut = new CategoryRepository(context);
-                var getCategories = await sut.GetAllCategoriesAsync();
+                var getCategories = await sut.GetAllCategories().ToListAsync();
 
                 //Assert
                 Assert.Equal(categories, getCategories);
@@ -87,8 +84,8 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         public async Task UpdateCategoryAsync_ShouldUpdateCategoryNameAndDescription()
         {
             //Arrange
-            var category = new Category(){Id = 10, Name ="GoodCategory", Description = "test"};
-            var updatedCategory = new Category(){Id = 10, Name ="BadCategory", Description = "testx"};
+            var category = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var updatedCategory = new Category() { Id = 10, Name = "BadCategory", Description = "testx", Image = new byte[]{2,3,4} };
 
             using (var context = new AppDbContext(_options))
             {
@@ -103,6 +100,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 await context.Database.EnsureCreatedAsync();
                 var sut = new CategoryRepository(context);
                 await sut.UpdateCategoryAsync(updatedCategory);
+                await context.SaveChangesAsync();
                 var categoryAfterUpdate = await context.Categories.FindAsync(category.Id);
 
                 //Assert
@@ -110,15 +108,14 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 Assert.Equal(updatedCategory.Name, categoryAfterUpdate.Name);
                 Assert.Equal(updatedCategory.Description, categoryAfterUpdate.Description);
             }
-
         }
 
         [Fact]
         public async Task DeleteCategoryAsync_CheckCategoryExistsAfterDelete()
         {
             //Assert
-            var category1 = new Category(){Id = 10, Name ="GoodCategory", Description = "test"};
-            var category2 = new Category(){Id = 11, Name ="BadCategory", Description = "testx"};
+            var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
+            var category2 = new Category() { Id = 11, Name = "BadCategory", Description = "testx" };
 
             using (var context = new AppDbContext(_options))
             {
