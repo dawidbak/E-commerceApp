@@ -59,7 +59,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllCategoriesAsync_GetListOfCategoriesAndCheckAreEqualLikeModels()
+        public async Task GetAllCategories_GetListOfCategoriesAndCheckAreEqualLikeModels()
         {
             //Arrange
             var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
@@ -111,7 +111,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task DeleteCategoryAsync_CheckCategoryExistsAfterDelete()
+        public async Task DeleteCategoryAsync_CategoryShouldNotExistsAfterDelete()
         {
             //Assert
             var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };

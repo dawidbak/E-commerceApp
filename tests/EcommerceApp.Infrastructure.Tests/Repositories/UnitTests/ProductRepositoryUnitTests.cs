@@ -57,7 +57,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllProductsAsync_FetchListOfProductsAndVerifyIfAreEqualToModels()
+        public async Task GetAllProducts_FetchListOfProductsAndVerifyIfAreEqualToModels()
         {
             //Arrange
             var product1 = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
@@ -71,7 +71,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 await context.AddRangeAsync(products);
                 await context.SaveChangesAsync();
                 var sut = new ProductRepository(context);
-                var results = await sut.GetAllProductsAsync();
+                var results = sut.GetAllProducts();
 
                 //Assert
                 Assert.Equal(products, results);
@@ -83,7 +83,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         {
             //Arrange
             var product1 = new Product() { Id = 1, Name = "Item", Description = "test", UnitPrice = 1.29M, UnitsInStock = 5 };
-            var product2 = new Product() { Id = 1, Name = "ItemX", Description = "testX", UnitPrice = 5.49M, UnitsInStock = 20 };
+            var updatedProduct = new Product() { Id = 1, Name = "ItemX", Description = "testX", UnitPrice = 5.49M, UnitsInStock = 20, Image = new byte[] { 1, 2 } };
 
             using (var context = new AppDbContext(_options))
             {
@@ -97,15 +97,15 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 //Act
                 await context.Database.EnsureCreatedAsync();
                 var sut = new ProductRepository(context);
-                await sut.UpdateProductAsync(product2);
+                await sut.UpdateProductAsync(updatedProduct);
                 var result = await context.Products.FindAsync(product1.Id);
 
                 //Assert
-                Assert.Equal(product2.Id, result.Id);
-                Assert.Equal(product2.Name, result.Name);
-                Assert.Equal(product2.Description, result.Description);
-                Assert.Equal(product2.UnitPrice, result.UnitPrice);
-                Assert.Equal(product2.UnitsInStock, result.UnitsInStock);
+                Assert.Equal(updatedProduct.Id, result.Id);
+                Assert.Equal(updatedProduct.Name, result.Name);
+                Assert.Equal(updatedProduct.Description, result.Description);
+                Assert.Equal(updatedProduct.UnitPrice, result.UnitPrice);
+                Assert.Equal(updatedProduct.UnitsInStock, result.UnitsInStock);
             }
         }
 

@@ -1,13 +1,13 @@
 using System;
-using Xunit;
-using EcommerceApp.Infrastructure.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using EcommerceApp.Domain.Models;
-using Microsoft.EntityFrameworkCore.Sqlite;
+using EcommerceApp.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using Xunit;
 
 namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
 {
@@ -20,7 +20,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task AddEmployeAsync_CheckEmployeeAfterAdd()
+        public async Task AddEmployeeAsync_CheckEmployeeExistsAfterAdd()
         {
             //Arrange
             Employee employee = new Employee()
@@ -29,7 +29,6 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 FirstName = "Andrew",
                 LastName = "Golavsky",
                 Position = "Product Management Specialist",
-                Email = "test@test.com"
             };
 
             using (var context = new AppDbContext(_options))
@@ -55,15 +54,14 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 FirstName = "unit",
                 LastName = "test",
                 Position = "xunit",
-                Email = "test@test.com"
             };
 
             using (var context = new AppDbContext(_options))
             {
                 //Act
                 await context.Database.EnsureCreatedAsync();
-                context.Add(employee);
-                context.SaveChanges();
+                await context.AddAsync(employee);
+                await context.SaveChangesAsync();
                 var sut = new EmployeeRepository(context);
                 var getEmployee = await sut.GetEmployeeAsync(employee.Id);
 
@@ -76,11 +74,11 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllEmployeesAsync_GetListOfEmployeesAndCheckAreEqualLikeModels()
+        public async Task GetAllEmployees_GetListOfEmployeesAndCheckAreEqualLikeModels()
         {
             //Arrange
-            Employee employee1 = new Employee() { Id = 3, FirstName = "unit", LastName = "test", Position = "xunit", Email = "test@test.com" };
-            Employee employee2 = new Employee() { Id = 2, FirstName = "test", LastName = "unit", Position = "xunit xunit", Email = "test2@test.com" };
+            Employee employee1 = new Employee() { Id = 3, FirstName = "unit", LastName = "test", Position = "xunit" };
+            Employee employee2 = new Employee() { Id = 2, FirstName = "test", LastName = "unit", Position = "xunit xunit" };
             List<Employee> employees = new() { employee1, employee2 };
 
             using (var context = new AppDbContext(_options))
@@ -90,7 +88,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
                 await context.AddRangeAsync(employees);
                 await context.SaveChangesAsync();
                 var sut = new EmployeeRepository(context);
-                var getEmployees = await sut.GetAllEmployeesAsync();
+                var getEmployees = sut.GetAllEmployees();
 
                 //Assert
                 Assert.Equal(employees, getEmployees);
@@ -101,8 +99,8 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         public async Task UpdateEmployeeAsync_ShouldUpdateEmployeeFirstNameAndLastNameAndPosition()
         {
             //Arrange
-            Employee employee = new Employee() { Id = 1, FirstName = "first", LastName = "last", Position = "empty", Email = "test@test.com" };
-            Employee updatedEmployee = new Employee() { Id = 1, FirstName = "Jan", LastName = "Kowalski", Position = "Junior", Email = "test2@test.com" };
+            Employee employee = new Employee() { Id = 1, FirstName = "first", LastName = "last", Position = "empty" };
+            Employee updatedEmployee = new Employee() { Id = 1, FirstName = "Jan", LastName = "Kowalski", Position = "Junior" };
 
             using (var context = new AppDbContext(_options))
             {
@@ -128,11 +126,11 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task DeleteEmployeeAsync_CheckEmployeeExistsAfterDelete()
+        public async Task DeleteEmployeeAsync_EmployeeShouldNotExistsAfterDelete()
         {
             //Assert
-            Employee employee1 = new Employee() { Id = 98, FirstName = "unit", LastName = "test", Position = "xunit", Email = "test@test.com" };
-            Employee employee2 = new Employee() { Id = 99, FirstName = "test", LastName = "unit", Position = "xunit xunit", Email = "test2@test.com" };
+            Employee employee1 = new Employee() { Id = 98, FirstName = "unit", LastName = "test", Position = "xunit" };
+            Employee employee2 = new Employee() { Id = 99, FirstName = "test", LastName = "unit", Position = "xunit xunit" };
 
             using (var context = new AppDbContext(_options))
             {
