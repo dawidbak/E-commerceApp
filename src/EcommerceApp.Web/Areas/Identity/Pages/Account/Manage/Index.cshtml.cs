@@ -8,6 +8,7 @@ using EcommerceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -64,12 +65,9 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var customerId = await _customerRepository.GetCustomerIdAsync(user.Id);
-            var customer = await _customerRepository.GetCustomerAsync(customerId);
+            var customer = await _customerRepository.GetAllCustomers().FirstOrDefaultAsync(x => x.AppUserId == user.Id);
 
-            Username = userName;
+            Username = user.UserName;
 
             Input = new InputModel
             {
@@ -78,7 +76,7 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account.Manage
                 City = customer.City,
                 PostalCode = customer.PostalCode,
                 Address = customer.Address,
-                PhoneNumber = phoneNumber
+                PhoneNumber = user.PhoneNumber
             };
         }
 
@@ -97,7 +95,7 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");

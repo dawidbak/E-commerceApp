@@ -72,33 +72,33 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [StringLength(50, MinimumLength = 2,ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            [Display(Name ="First Name")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(50, MinimumLength = 2,ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            [Display(Name ="Last Name")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
             [Required]
-            [StringLength(50, MinimumLength = 2,ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            [Display(Name ="City")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "City")]
             public string City { get; set; }
 
             [Required]
-            [StringLength(10, MinimumLength = 5,ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            [Display(Name ="Postal Code")]
+            [StringLength(10, MinimumLength = 5, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "Postal Code")]
             public string PostalCode { get; set; }
 
             [Required]
-            [StringLength(50, MinimumLength = 2,ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-            [Display(Name ="Address")]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "Address")]
             public string Address { get; set; }
 
             [Required]
             [Phone]
-            [Display(Name ="Phone")]
+            [Display(Name = "Phone")]
             public string PhoneNumber { get; set; }
 
             [Display(Name = "isAdmin")]
@@ -117,18 +117,25 @@ namespace EcommerceApp.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    PhoneNumber = Input.PhoneNumber,
+                    Customer = new Customer
+                    {
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        City = Input.City,
+                        PostalCode = Input.PostalCode,
+                        Address = Input.Address,
+                        Cart = new Cart()
+                    }
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
-                    var customer = new Customer{FirstName = Input.FirstName, LastName = Input.LastName, City = Input.City, PostalCode = Input.PostalCode,
-                    Address = Input.Address, AppUserId = user.Id};
-
-                    await _customerRepository.AddCustomerAsync(customer);
-
-                    var cart = new Cart{CustomerId = customer.Id};
-                    await _cartRepository.AddCartAsync(cart);
-
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
