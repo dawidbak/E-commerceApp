@@ -78,7 +78,7 @@ namespace EcommerceApp.Application.Services
             return productVM;
         }
 
-        public async Task<ProductDetailsForUserVM> GetProductDetailsForUser(int id)
+        public async Task<ProductDetailsForUserVM> GetProductDetailsForUserAsync(int id)
         {
             var product = await _productRepository.GetProductAsync(id);
             var productVM = _mapper.Map<ProductDetailsForUserVM>(product);

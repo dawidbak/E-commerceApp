@@ -10,7 +10,7 @@ namespace EcommerceApp.Application.Interfaces
     {
         Task AddProductAsync(ProductVM productVM);
         Task<ProductVM> GetProductAsync(int id);
-        Task<ProductDetailsForUserVM> GetProductDetailsForUser(int id);
+        Task<ProductDetailsForUserVM> GetProductDetailsForUserAsync(int id);
         Task<ListProductDetailsForUserVM> GetRandomProductsWithImagesAsync(int number);
         Task<ListProductDetailsForUserVM> GetProductsByCategoryNameAsync(string categoryName);
         Task<ListProductForListVM> GetAllPaginatedProductsAsync(int pageSize, int pageNumber);

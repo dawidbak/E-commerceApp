@@ -21,7 +21,7 @@ namespace EcommerceApp.Web.Controllers
             {
                 return NotFound("You must pass a valid Product ID in the route, for example, /Product/21");
             }
-            return View(await _productService.GetProductDetailsForUser(id.Value));
+            return View(await _productService.GetProductDetailsForUserAsync(id.Value));
         }
     }
 }
