@@ -74,7 +74,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllEmployees_GetListOfEmployeesAndCheckAreEqualLikeModels()
+        public async Task GetAllEmployees_GetListOfEmployeesAndCheckIfEqualLikeModels()
         {
             //Arrange
             Employee employee1 = new Employee() { Id = 3, FirstName = "unit", LastName = "test", Position = "xunit" };

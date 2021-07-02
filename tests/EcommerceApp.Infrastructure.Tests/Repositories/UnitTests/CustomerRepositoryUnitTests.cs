@@ -18,25 +18,6 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task AddCustomerAsync_CheckCustomerExistsAfterAdd()
-        {
-            //Arrange
-            var customer = new Customer { Id = 10, FirstName = "unit", LastName = "test", City = "UnitTest", PostalCode = "00-111", Address = "st.Unit" };
-
-            using (var context = new AppDbContext(_options))
-            {
-                //Act
-                await context.Database.EnsureCreatedAsync();
-                var sut = new CustomerRepository(context);
-                await sut.AddCustomerAsync(customer);
-                var result = await context.Customers.FindAsync(customer.Id);
-
-                //Assert
-                Assert.Equal(customer, result);
-            }
-        }
-
-        [Fact]
         public async Task GetAllCustomers_GetListOfCustomersAndCheckIfEqualLikeModel()
         {
             //Arrange
@@ -56,26 +37,6 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
 
                 //Assert
                 Assert.Equal(customerList, result);
-            }
-        }
-
-        [Fact]
-        public async Task GetCustomerAsync_FetchCustomerAndCheckIfEqualLikeModel()
-        {
-            //Arrange
-            var customer = new Customer { Id = 10, FirstName = "unit", LastName = "test", City = "UnitTest", PostalCode = "00-111", Address = "st.Unit" };
-
-            using (var context = new AppDbContext(_options))
-            {
-                //Act
-                await context.Database.EnsureCreatedAsync();
-                var sut = new CustomerRepository(context);
-                await context.Customers.AddRangeAsync(customer);
-                await context.SaveChangesAsync();
-                var result = await sut.GetCustomerAsync(customer.Id);
-
-                //Assert
-                Assert.Equal(customer, result);
             }
         }
 

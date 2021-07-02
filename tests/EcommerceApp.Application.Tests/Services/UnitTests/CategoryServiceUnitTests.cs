@@ -1,12 +1,8 @@
-using System.Security.AccessControl;
-using System.Reflection.PortableExecutable;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Application.Mapping;
 using EcommerceApp.Application.Services;
 using EcommerceApp.Application.ViewModels;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
@@ -71,7 +67,7 @@ namespace EcommerceApp.Application.Tests.Services.UnitTests
         }
 
         [Fact]
-        public async Task GetAllPaginatedCategoriesAsync_ReturnsListCategoryForListVMAndCheckAreEqualLikeModel()
+        public async Task GetAllPaginatedCategoriesAsync_ReturnsListCategoryForListVMAndCheckIfEqualLikeModel()
         {
             //Arrange
             var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
