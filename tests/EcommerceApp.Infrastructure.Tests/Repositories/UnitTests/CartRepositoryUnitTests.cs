@@ -18,25 +18,6 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task AddCartAsync_CheckCartExistsAfterAdd()
-        {
-            //Arrange
-            var cart = new Cart { Id = 1, CustomerId = 2 };
-
-            using (var context = new AppDbContext(_options))
-            {
-                //Act
-                await context.Database.EnsureCreatedAsync();
-                var sut = new CartRepository(context);
-                await sut.AddCartAsync(cart);
-                var result = await context.Carts.FindAsync(cart.Id);
-
-                //Assert
-                Assert.Equal(cart, result);
-            }
-        }
-
-        [Fact]
         public async Task GetAllCarts_GetListOfCartsAndCheckIfEqualLikeModel()
         {
             //Arrange

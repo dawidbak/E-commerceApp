@@ -59,7 +59,7 @@ namespace EcommerceApp.Infrastructure.Tests.Repositories.UnitTests
         }
 
         [Fact]
-        public async Task GetAllCategories_GetListOfCategoriesAndCheckAreEqualLikeModels()
+        public async Task GetAllCategories_GetListOfCategoriesAndCheckIfEqualLikeModels()
         {
             //Arrange
             var category1 = new Category() { Id = 10, Name = "GoodCategory", Description = "test" };
