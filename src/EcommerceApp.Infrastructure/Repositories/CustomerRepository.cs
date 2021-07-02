@@ -16,20 +16,9 @@ namespace EcommerceApp.Infrastructure.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task AddCustomerAsync(Customer customer)
-        {
-            await _appDbContext.AddAsync(customer);
-            await _appDbContext.SaveChangesAsync();
-        }
-
         public IQueryable<Customer> GetAllCustomers()
         {
             return _appDbContext.Customers.AsQueryable();
-        }
-
-        public async Task<Customer> GetCustomerAsync(int customerId)
-        {
-            return await _appDbContext.Customers.FindAsync(customerId);
         }
 
         public async Task<int> GetCustomerIdAsync(string AppUserId)
@@ -41,16 +30,6 @@ namespace EcommerceApp.Infrastructure.Repositories
         {
             _appDbContext.Update(customer);
             await _appDbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteCustomerAsync(int customerId)
-        {
-            var customer = await _appDbContext.Customers.FindAsync(customerId);
-            if (customer != null)
-            {
-                _appDbContext.Customers.Remove(customer);
-                await _appDbContext.SaveChangesAsync();
-            }
         }
     }
 }

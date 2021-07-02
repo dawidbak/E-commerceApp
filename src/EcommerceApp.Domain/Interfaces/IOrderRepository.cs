@@ -10,7 +10,5 @@ namespace EcommerceApp.Domain.Interfaces
         Task AddOrderAsync(Order order);
         Task DeleteOrderAsync(int orderId);
         IQueryable<Order> GetAllOrders();
-        Task<Order> GetOrderAsync(int orderId);
-        Task UpdateOrderAsync(Order order);
     }
 }

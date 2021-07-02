@@ -37,11 +37,6 @@ namespace EcommerceApp.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public IQueryable<CartItem> GetAllCartItemsByCartId(int cartId)
-        {
-            return _appDbContext.CartItems.Where(x => x.CartId == cartId).AsQueryable();
-        }
-
         public IQueryable<CartItem> GetAllCartItems()
         {
             return _appDbContext.CartItems.AsQueryable();

@@ -10,7 +10,7 @@ namespace EcommerceApp.Domain.Models
         [Key]
         public int Id { get; set; }
 
-        public virtual ICollection<CartItem> CartItems { get;}
+        public virtual ICollection<CartItem> CartItems { get; set;}
 
         public int CustomerId { get; set; }
 
