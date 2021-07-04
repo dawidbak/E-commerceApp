@@ -16,29 +16,22 @@ namespace EcommerceApp.Application.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly ICartRepository _cartRepository;
         private readonly ICartItemRepository _cartItemRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IOrderItemRepository _orderItemRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IImageConverterService _imageConverterService;
         private readonly IMapper _mapper;
         private readonly IPaginationService<OrderForListVM> _orderPaginationService;
         private readonly IPaginationService<CustomerOrderForListVM> _customerOrderPaginationService;
 
-        public OrderService(ICartRepository cartRepository, ICartItemRepository cartItemRepository, ICustomerRepository customerRepository,
-        IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, UserManager<ApplicationUser> userManager,
-        IProductRepository productRepository, IImageConverterService imageConverterService, IMapper mapper, IPaginationService<OrderForListVM> orderPaginationService,
-        IPaginationService<CustomerOrderForListVM> customerOrderPaginationService)
+        public OrderService(ICartItemRepository cartItemRepository, ICustomerRepository customerRepository, IOrderRepository orderRepository,
+        IProductRepository productRepository, IImageConverterService imageConverterService, IMapper mapper,
+        IPaginationService<OrderForListVM> orderPaginationService, IPaginationService<CustomerOrderForListVM> customerOrderPaginationService)
         {
-            _cartRepository = cartRepository;
             _cartItemRepository = cartItemRepository;
             _customerRepository = customerRepository;
             _orderRepository = orderRepository;
-            _orderItemRepository = orderItemRepository;
-            _userManager = userManager;
             _productRepository = productRepository;
             _imageConverterService = imageConverterService;
             _mapper = mapper;
