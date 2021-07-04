@@ -20,6 +20,10 @@ namespace EcommerceApp.Web.Controllers
 
         public async Task<IActionResult> Products(string categoryName)
         {
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                return NotFound("You must pass correct category name");
+            }
             return View(await _productService.GetProductsByCategoryNameAsync(categoryName));
         }
     }
