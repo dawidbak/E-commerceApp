@@ -75,7 +75,7 @@ namespace EcommerceAppApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("DeleteEmployee")]
+        [HttpDelete("DeleteEmployee")]
         public async Task<IActionResult> DeleteEmployee(int? id)
         {
             if (!id.HasValue)
@@ -86,7 +86,7 @@ namespace EcommerceAppApi.Controllers
             return Ok();
         }
 
-        [HttpPost("DeleteCustomer")]
+        [HttpDelete("DeleteCustomer")]
         public async Task<IActionResult> DeleteCustomer(int? id)
         {
             if (!id.HasValue)
@@ -108,7 +108,7 @@ namespace EcommerceAppApi.Controllers
             return Ok(model);
         }
 
-        [HttpPost("EditEmployee")]
+        [HttpPut("EditEmployee")]
         public async Task<IActionResult> EditEmployee([FromBody]EmployeeVM employeeVM)
         {
             if (ModelState.IsValid)

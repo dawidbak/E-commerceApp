@@ -35,7 +35,7 @@ namespace EcommerceAppApi.Controllers
             return Ok("Added to Cart");
         }
 
-        [HttpPost("IncreaseQuantityCartItemByOne")]
+        [HttpPut("IncreaseQuantityCartItemByOne")]
         public async Task<IActionResult> IncreaseQuantityCartItemByOne(int? cartItemId)
         {
             if (!cartItemId.HasValue)
@@ -46,7 +46,7 @@ namespace EcommerceAppApi.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost("DecreaseQuantityCartItemByOne")]
+        [HttpPut("DecreaseQuantityCartItemByOne")]
         public async Task<IActionResult> DecreaseQuantityCartItemByOne(int? cartItemId)
         {
             if (!cartItemId.HasValue)
@@ -57,7 +57,7 @@ namespace EcommerceAppApi.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost("DeleteCartItem")]
+        [HttpDelete("DeleteCartItem")]
         public async Task<IActionResult> DeleteCartItem(int? cartItemId)
         {
             if (!cartItemId.HasValue)

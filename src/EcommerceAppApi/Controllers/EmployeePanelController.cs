@@ -129,7 +129,7 @@ namespace EcommerceAppApi.Controllers
             return Ok(await _productService.GetProductAsync(id.Value));
         }
 
-        [HttpPost("EditProduct")]
+        [HttpPut("EditProduct")]
         public async Task<IActionResult> EditProduct([FromBody] ProductVM productVM)
         {
             if (ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace EcommerceAppApi.Controllers
             return Ok(await _categoryService.GetCategoryAsync(id.Value));
         }
 
-        [HttpPost("EditCategory")]
+        [HttpPut("EditCategory")]
         public async Task<IActionResult> EditCategory([FromBody] CategoryVM categoryVM)
         {
             if (ModelState.IsValid)
@@ -161,7 +161,7 @@ namespace EcommerceAppApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("DeleteProduct")]
+        [HttpDelete("DeleteProduct")]
         public async Task<IActionResult> DeleteProduct(int? id)
         {
             if (!id.HasValue)
@@ -172,7 +172,7 @@ namespace EcommerceAppApi.Controllers
             return Ok();
         }
 
-        [HttpPost("DeleteCategory")]
+        [HttpDelete("DeleteCategory")]
         public async Task<IActionResult> DeleteCategory(int? id)
         {
             if (!id.HasValue)
@@ -183,7 +183,7 @@ namespace EcommerceAppApi.Controllers
             return Ok();
         }
 
-        [HttpPost("DeleteOrder")]
+        [HttpDelete("DeleteOrder")]
         public async Task<IActionResult> DeleteOrder(int? id)
         {
             if (!id.HasValue)
