@@ -101,7 +101,7 @@ namespace EcommerceApp.Web.Controllers
                 return NotFound("You must pass a valid Customer ID in the route, for example, /AdminPanel/DeleteCustomer/21");
             }
             await _customerService.DeleteCustomerAsync(id.Value);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Customers));
         }
 
         [HttpGet]
