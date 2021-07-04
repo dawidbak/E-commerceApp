@@ -6,6 +6,6 @@
 @if (SignInManager.IsSignedIn(User) && !AuthorizationService.AuthorizeAsync(User, "EmployeePanelEntry").Result.Succeeded)
 {
     <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderHistory"><i class="far fa-list-alt fa-lg"></i> OrderHistory</a>
+        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderHistory"><i class="far fa-list-alt fa-lg"></i> Order History</a>
     </li>
 }
