@@ -1,4 +1,6 @@
 @model EcommerceApp.Application.ViewModels.Order.ListCustomerOrderForListVM
+@using EcommerceApp.Application.Interfaces
+@inject ISearchSelectList searchSelectList
 @{
     ViewData["Title"] = "Order History";
 }
@@ -7,36 +9,40 @@
         <h1>@ViewData["Title"]</h1>
     </center>
     <div class="table-responsive rounded">
-    <table class="table table-bordered table-hover table-striped text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th>Order Id</th>
-                <th>Order Date</th>
-                <th>Price</th>
-                <th>Order Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Orders)
-            {
+        <form method="get" asp-action="OrderHistory">
+            <select asp-items="searchSelectList.PageSizeSelectList" name="pageSize"></select>
+            <input type="submit" value="Filter" />
+        </form>
+        <table class="table table-bordered table-hover table-striped text-center">
+            <thead class="thead-dark">
                 <tr>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.OrderDate)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td class="text-nowrap" style="width: 20%;">
-                        <a class="btn btn-primary" asp-action="OrderDetails"
-                        asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
-                    </td>
+                    <th>Order Id</th>
+                    <th>Order Date</th>
+                    <th>Price</th>
+                    <th>Order Details</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td class="text-nowrap" style="width: 20%;">
+                            <a class="btn btn-primary" asp-action="OrderDetails" asp-route-id="@item.Id"><i
+                                class="fas fa-info-circle"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <partial name="_PaginationPartialView"></partial>
 </div>

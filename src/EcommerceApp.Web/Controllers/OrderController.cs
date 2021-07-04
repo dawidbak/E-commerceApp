@@ -1,9 +1,9 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EcommerceApp.Application.Filters;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.Order;
-using EcommerceApp.Application.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -45,15 +45,18 @@ namespace EcommerceApp.Web.Controllers
             return BadRequest();
         }
 
-        public async Task<IActionResult> OrderHistory(int? pageNumber)
+        public async Task<IActionResult> OrderHistory(int? pageNumber,string pageSize)
         {
             if (!pageNumber.HasValue)
             {
                 pageNumber = 1;
             }
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int pageSize = _configuration.GetValue("DefaultPageSize", 10);
-            return View(await _orderService.GetAllPaginatedCustomerOrdersAsync(pageSize, pageNumber.Value, userId));
+            return View(await _orderService.GetAllPaginatedCustomerOrdersAsync(intPageSize, pageNumber.Value, userId));
         }
 
         public async Task<IActionResult> OrderDetails(int? id)
@@ -63,7 +66,7 @@ namespace EcommerceApp.Web.Controllers
                 return NotFound("You must pass a valid Customer ID in the route, for example, /Order/OrderDetails/21");
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(await _orderService.GetCustomerOrderDetailsAsync(id.Value,userId));
+            return View(await _orderService.GetCustomerOrderDetailsAsync(id.Value, userId));
         }
 
         public ActionResult CheckoutSuccessful()
