@@ -18,13 +18,13 @@ namespace EcommerceApp.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Products(string categoryName)
+        public async Task<IActionResult> Products(string category)
         {
-            if (string.IsNullOrEmpty(categoryName))
+            if (string.IsNullOrEmpty(category))
             {
                 return NotFound("You must pass correct category name");
             }
-            return View(await _productService.GetProductsByCategoryNameAsync(categoryName));
+            return View(await _productService.GetProductsByCategoryNameAsync(category));
         }
     }
 }
