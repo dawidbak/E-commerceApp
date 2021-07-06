@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using EcommerceApp.Domain.Models;
 using EcommerceApp.Infrastructure;
@@ -95,8 +96,8 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
         }
         #endregion
 
-        #region EmployeePanelHttpClient
-        public static HttpClient GetEmployeePanelHttpClient(this WebApplicationFactory<Startup> webApplicationFactory)
+        #region EmployeeHttpClient
+        public static HttpClient GetEmployeeHttpClient(this WebApplicationFactory<Startup> webApplicationFactory)
         {
             return webApplicationFactory.WithWebHostBuilder(builder =>
            {
@@ -128,36 +129,28 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
                            try
                            {
                                context.Database.EnsureCreated();
-                               context.Employees.Add(
-                               new Employee
-                               {
-                                   Id = 1,
-                                   FirstName = "Test",
-                                   LastName = "Last",
-                                   Position = "Position",
-                                   AppUserId = "123test",
-                               });
-                               context.Users.Add(new ApplicationUser
-                               {
-                                   Id = "123test",
-                                   Email = "test@example.com",
-                                   Customer = new Customer
+                               context.Orders.Add(
+                                   new Order
                                    {
                                        Id = 1,
-                                       FirstName = "test",
-                                       LastName = "integration",
-                                       Cart = new Cart
+                                       OrderItems = new List<OrderItem>
                                        {
-                                           CartItems = new List<CartItem>
+                                           new OrderItem
                                            {
-                                               new CartItem
-                                               {
-                                                   Quantity = 5
-                                               }
+                                                Product = new Product
+                                                {
+                                                    Id = 1,
+                                                    Image = new byte[] { 23, 4 },
+                                                    Category = new Category
+                                                    {
+                                                        Id = 1,
+                                                        Image = new byte[] { 2, 2, 3 }
+                                                    }
+                                                }
                                            }
                                        }
                                    }
-                               });
+                               );
                                context.SaveChanges();
                            }
                            catch (Exception ex)
@@ -213,6 +206,7 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
                                    Email = "test@example.com",
                                    Customer = new Customer
                                    {
+                                       Id = 1,
                                        AppUserId = "customer",
                                        FirstName = "test",
                                        LastName = "integration",
@@ -223,6 +217,7 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
                                            {
                                                new CartItem
                                                {
+                                                   Id = 1,
                                                    Quantity = 5,
                                                    Product = new Product
                                                    {
@@ -233,6 +228,13 @@ namespace EcommerceApp.Web.Tests.Controllers.IntegrationTests
                                                        UnitsInStock = 10,
                                                    }
                                                }
+                                           }
+                                       },
+                                       Orders = new List<Order>
+                                       {
+                                           new Order
+                                           {
+                                               ShipFirstName = "test"
                                            }
                                        }
                                    }
