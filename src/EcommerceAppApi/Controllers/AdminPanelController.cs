@@ -65,68 +65,43 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("AddEmployee")]
-        public async Task<IActionResult> AddEmployee([FromBody]EmployeeVM employeeVM)
+        public async Task<IActionResult> AddEmployee([FromBody] EmployeeVM employeeVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _employeeService.AddEmployeeAsync(employeeVM);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("DeleteEmployee")]
-        public async Task<IActionResult> DeleteEmployee(int? id)
-        {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/DeleteEmployee/21");
-            }
-            await _employeeService.DeleteEmployeeAsync(id.Value);
+            await _employeeService.AddEmployeeAsync(employeeVM);
             return Ok();
         }
 
-        [HttpDelete("DeleteCustomer")]
-        public async Task<IActionResult> DeleteCustomer(int? id)
+        [HttpDelete("DeleteEmployee/{id}")]
+        public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Customer ID in the route, for example, /AdminPanel/DeleteCustomer/21");
-            }
-            await _customerService.DeleteCustomerAsync(id.Value);
+            await _employeeService.DeleteEmployeeAsync(id);
             return Ok();
         }
 
-        [HttpGet("EditEmployee")]
-        public async Task<IActionResult> EditEmployee(int? id)
+        [HttpDelete("DeleteCustomer/{id}")]
+        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Employee ID in the route, for example, /AdminPanel/EditEmployee/21");
-            }
-            var model = await _employeeService.GetEmployeeAsync(id.Value);
-            return Ok(model);
+            await _customerService.DeleteCustomerAsync(id);
+            return Ok();
+        }
+
+        [HttpGet("EditEmployee/{id}")]
+        public async Task<IActionResult> EditEmployee([FromRoute] int id)
+        {
+            return Ok(await _employeeService.GetEmployeeAsync(id));
         }
 
         [HttpPut("EditEmployee")]
-        public async Task<IActionResult> EditEmployee([FromBody]EmployeeVM employeeVM)
+        public async Task<IActionResult> EditEmployee([FromBody] EmployeeVM employeeVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _employeeService.UpdateEmployeeAsync(employeeVM);
-                return Ok();
-            }
-            return BadRequest();
+            await _employeeService.UpdateEmployeeAsync(employeeVM);
+            return Ok();
         }
 
-        [HttpGet("CustomerDetails")]
-        public async Task<IActionResult> CustomerDetails(int? id)
+        [HttpGet("CustomerDetails/{id}")]
+        public async Task<IActionResult> CustomerDetails([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Customer ID in the route, for example, /AdminPanel/CustomerDetails/21");
-            }
-            return Ok(await _customerService.GetCustomerDetailsAsync(id.Value));
+            return Ok(await _customerService.GetCustomerDetailsAsync(id));
         }
 
     }

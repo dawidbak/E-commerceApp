@@ -1,5 +1,3 @@
-using System;
-using System.Net;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
 using EcommerceApp.Application.ViewModels.EmployeePanel;
@@ -87,112 +85,71 @@ namespace EcommerceAppApi.Controllers
             return Ok(await _orderService.GetAllPaginatedOrdersAsync(intPageSize, pageNumber.Value));
         }
 
-        [HttpGet("OrderDetails")]
-        public async Task<IActionResult> OrderDetails(int? id)
+        [HttpGet("OrderDetails/{id}")]
+        public async Task<IActionResult> OrderDetails([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Order ID in the route, for example, /EmployeePanel/OrderDetails/21");
-            }
-            return Ok(await _orderService.GetOrderDetailsAsync(id.Value));
+            return Ok(await _orderService.GetOrderDetailsAsync(id));
         }
 
         [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] ProductVM productVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _productService.AddProductAsync(productVM);
-                return Ok();
-            }
-            return BadRequest();
+            await _productService.AddProductAsync(productVM);
+            return Ok();
         }
 
         [HttpPost("AddCategory")]
         public async Task<IActionResult> AddCategory([FromBody] CategoryVM categoryVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _categoryService.AddCategoryAsync(categoryVM);
-                return Ok();
-            }
-            return BadRequest();
+            await _categoryService.AddCategoryAsync(categoryVM);
+            return Ok();
         }
 
-        [HttpGet("EditProduct")]
-        public async Task<IActionResult> EditProduct(int? id)
+        [HttpGet("EditProduct/{id}")]
+        public async Task<IActionResult> EditProduct([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Product ID in the route, for example, /EmployeePanel/EditProduct/21");
-            }
-            return Ok(await _productService.GetProductAsync(id.Value));
+            return Ok(await _productService.GetProductAsync(id));
         }
 
         [HttpPut("EditProduct")]
         public async Task<IActionResult> EditProduct([FromBody] ProductVM productVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _productService.UpdateProductAsync(productVM);
-                return Ok();
-            }
-            return BadRequest();
+            await _productService.UpdateProductAsync(productVM);
+            return Ok();
         }
 
-        [HttpGet("EditCategory")]
-        public async Task<IActionResult> EditCategory(int? id)
+        [HttpGet("EditCategory/{id}")]
+        public async Task<IActionResult> EditCategory([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Category ID in the route, for example, /EmployeePanel/EditCategory/21");
-            }
-            return Ok(await _categoryService.GetCategoryAsync(id.Value));
+            return Ok(await _categoryService.GetCategoryAsync(id));
         }
 
         [HttpPut("EditCategory")]
         public async Task<IActionResult> EditCategory([FromBody] CategoryVM categoryVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _categoryService.UpdateCategoryAsync(categoryVM);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("DeleteProduct")]
-        public async Task<IActionResult> DeleteProduct(int? id)
-        {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Product ID in the route, for example, /EmployeePanel/DeleteProduct/21");
-            }
-            await _productService.DeleteProductAsync(id.Value);
+            await _categoryService.UpdateCategoryAsync(categoryVM);
             return Ok();
         }
 
-        [HttpDelete("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory(int? id)
+        [HttpDelete("DeleteProduct/{id}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Category ID in the route, for example, /EmployeePanel/DeleteCategory/21");
-            }
-            await _categoryService.DeleteCategoryAsync(id.Value);
+            await _productService.DeleteProductAsync(id);
             return Ok();
         }
 
-        [HttpDelete("DeleteOrder")]
-        public async Task<IActionResult> DeleteOrder(int? id)
+        [HttpDelete("DeleteCategory/{id}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Order ID in the route, for example, /EmployeePanel/DeleteOrder/21");
-            }
-            await _orderService.DeleteOrderAsync(id.Value);
+            await _categoryService.DeleteCategoryAsync(id);
+            return Ok();
+        }
+
+        [HttpDelete("DeleteOrder/{id}")]
+        public async Task<IActionResult> DeleteOrder([FromRoute] int id)
+        {
+            await _orderService.DeleteOrderAsync(id);
             return Ok();
         }
     }
-
 }

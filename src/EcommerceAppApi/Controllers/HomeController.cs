@@ -16,7 +16,7 @@ namespace EcommerceAppApi.Controllers
             _homeService = homeService;
         }
 
-        [HttpGet]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             return Ok(await _homeService.GetHomeVMForIndexAsync());

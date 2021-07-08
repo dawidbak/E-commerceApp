@@ -1,9 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Interfaces;
-using EcommerceApp.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceAppApi.Controllers
@@ -20,7 +18,7 @@ namespace EcommerceAppApi.Controllers
             _cartService = cartService;
         }
 
-        [HttpGet]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var userId = User.Claims.First(x => x.Type == "UserId").Value;
@@ -28,44 +26,36 @@ namespace EcommerceAppApi.Controllers
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(int id, int quantity)
+        public async Task<IActionResult> AddToCart([FromQuery] int? id, [FromQuery] int? quantity)
         {
+            if (!id.HasValue || !quantity.HasValue)
+            {
+                return NotFound("You must pass a valid ID and quantity in the route");
+            }
             var userId = User.Claims.First(x => x.Type == "UserId").Value;
-            await _cartService.AddCartItemAsync(id, quantity, userId);
+            await _cartService.AddCartItemAsync(id.Value, quantity.Value, userId);
             return Ok("Added to Cart");
         }
 
-        [HttpPut("IncreaseQuantityCartItemByOne")]
-        public async Task<IActionResult> IncreaseQuantityCartItemByOne(int? cartItemId)
+        [HttpPut("IncreaseQuantityCartItemByOne/{cartItemId}")]
+        public async Task<IActionResult> IncreaseQuantityCartItemByOne([FromRoute] int? cartItemId)
         {
-            if (!cartItemId.HasValue)
-            {
-                return NotFound();
-            }
             await _cartService.IncreaseQuantityCartItemByOneAsync(cartItemId.Value);
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
-        [HttpPut("DecreaseQuantityCartItemByOne")]
-        public async Task<IActionResult> DecreaseQuantityCartItemByOne(int? cartItemId)
+        [HttpPut("DecreaseQuantityCartItemByOne/{cartItemId}")]
+        public async Task<IActionResult> DecreaseQuantityCartItemByOne([FromRoute] int? cartItemId)
         {
-            if (!cartItemId.HasValue)
-            {
-                return NotFound();
-            }
             await _cartService.DecreaseQuantityCartItemByOneAsync(cartItemId.Value);
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
-        [HttpDelete("DeleteCartItem")]
-        public async Task<IActionResult> DeleteCartItem(int? cartItemId)
+        [HttpDelete("DeleteCartItem/{cartItemId}")]
+        public async Task<IActionResult> DeleteCartItem([FromRoute] int? cartItemId)
         {
-            if (!cartItemId.HasValue)
-            {
-                return NotFound();
-            }
             await _cartService.DeleteCartItemAsync(cartItemId.Value);
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
     }
 }

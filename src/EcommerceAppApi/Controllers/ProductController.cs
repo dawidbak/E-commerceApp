@@ -16,14 +16,10 @@ namespace EcommerceAppApi.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Product(int? id)
+        [HttpGet("Product/{id}")]
+        public async Task<IActionResult> Product([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound("You must pass a valid Product ID in the route, for example, /Product/21");
-            }
-            return Ok(await _productService.GetProductDetailsForUserAsync(id.Value));
+            return Ok(await _productService.GetProductDetailsForUserAsync(id));
         }
     }
 }

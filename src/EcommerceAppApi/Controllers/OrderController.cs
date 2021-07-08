@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EcommerceApp.Application.Filters;
 using EcommerceApp.Application.Interfaces;
@@ -24,50 +25,41 @@ namespace EcommerceAppApi.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("Checkout")]
+        [HttpGet("Checkout/{customerId}")]
         [TypeFilter(typeof(CheckCheckoutGetPermission))]
-        public async Task<IActionResult> Checkout(int? customerId)
+        public async Task<IActionResult> Checkout([FromRoute] int customerId)
         {
-            if (!customerId.HasValue)
-            {
-                return NotFound("Can't redirect to checkout process");
-            }
-            return Ok(await _orderService.GetDataForOrderCheckoutAsync(customerId.Value));
+            return Ok(await _orderService.GetDataForOrderCheckoutAsync(customerId));
         }
 
         [HttpPost("Checkout")]
         [TypeFilter(typeof(CheckCheckoutPostPermission))]
         public async Task<IActionResult> Checkout([FromBody] OrderCheckoutVM orderCheckoutVM)
         {
-            if (ModelState.IsValid)
-            {
-                await _orderService.AddOrderAsync(orderCheckoutVM);
-                return Ok();
-            }
-            return BadRequest();
+            await _orderService.AddOrderAsync(orderCheckoutVM);
+            return Ok();
         }
 
         [HttpGet("OrderHistory")]
-        public async Task<IActionResult> OrderHistory(int? pageNumber)
+        public async Task<IActionResult> OrderHistory(int? pageNumber, string pageSize)
         {
             if (!pageNumber.HasValue)
             {
                 pageNumber = 1;
             }
-            var userId = User.Claims.First(x => x.Type == "UserId").Value;
-            int pageSize = _configuration.GetValue("DefaultPageSize", 10);
-            return Ok(await _orderService.GetAllPaginatedCustomerOrdersAsync(pageSize, pageNumber.Value, userId));
+            if (!int.TryParse(pageSize, out int intPageSize))
+            {
+                intPageSize = _configuration.GetValue("DefaultPageSize", 10);
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(await _orderService.GetAllPaginatedCustomerOrdersAsync(intPageSize, pageNumber.Value, userId));
         }
 
-        [HttpGet("OrderDetails")]
-        public async Task<IActionResult> OrderDetails(int? id)
+        [HttpGet("OrderDetails/{id}")]
+        public async Task<IActionResult> OrderDetails([FromRoute] int id)
         {
-            if (!id.HasValue)
-            {
-                return NotFound();
-            }
             var userId = User.Claims.First(x => x.Type == "UserId").Value;
-            return Ok(await _orderService.GetCustomerOrderDetailsAsync(id.Value, userId));
+            return Ok(await _orderService.GetCustomerOrderDetailsAsync(id, userId));
         }
     }
 }
