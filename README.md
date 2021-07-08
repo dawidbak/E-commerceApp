@@ -20,3 +20,16 @@ The application is designed to manage an online shop. It allows you to manage em
 * HTML, CSS
 * Dependency Injection
 * WebApi
+
+## Features
+### Administration panel:
+* Employee Management - Employee overview, possibility to add, edit data and delete employees.
+* Customer Management - Customer overview, checking of details (recent orders, current items in the shopping cart) and possibility to delete customers.
+### Employee Panel:
+* Category Management - Category overview, possibility to add, edit and delete categories.
+* Product Management - Product overview, allows inventory management including adding, editing and deleting products.
+* Order Management - Order overview, possibility of viewing order details and deleting it.
+### Customer functionalities
+* Browsing products, viewing product details, adding to shopping cart.
+* Shopping Cart - Display of cart contents, increase, decrease quantity of item, deleting items.
+* Order History - The customer can view their previous orders.
