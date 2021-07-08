@@ -72,7 +72,7 @@ namespace EcommerceApp.Application.Services
 
         public async Task<ProductVM> GetProductAsync(int id)
         {
-            var product = await _productRepository.GetProductAsync(id);
+            var product = await _productRepository.GetAllProducts().Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
             var productVM = _mapper.Map<ProductVM>(product);
             productVM.ImageUrl = _imageConverterService.GetImageUrlFromByteArray(product.Image);
             return productVM;
