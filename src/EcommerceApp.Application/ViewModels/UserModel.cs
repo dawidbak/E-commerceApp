@@ -1,6 +1,6 @@
 using System;
 
-namespace EcommerceAppApi
+namespace EcommerceApp.Application.ViewModels
 {
     public class UserModel
     {

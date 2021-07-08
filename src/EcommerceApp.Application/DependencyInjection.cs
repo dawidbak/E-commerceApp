@@ -30,6 +30,7 @@ namespace EcommerceApp.Application
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IApiLoginService, ApiLoginService>();
             services.AddScoped(typeof(IPaginationService<>), typeof(PaginationService<>));
             services.AddScoped<CheckCheckoutGetPermission>();
             services.AddScoped<CheckCheckoutPostPermission>();
