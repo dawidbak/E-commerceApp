@@ -64,10 +64,10 @@ namespace EcommerceApp.Application.Services
             IQueryable<ProductForListVM> query = selectedValue switch
             {
                 "Id" => idParse ? baseQuery.Where(x => x.Id == id) : emptyQuery,
-                "Name" => baseQuery.Where(x => x.CategoryName.Contains(searchString)),
+                "Name" => baseQuery.Where(x => x.Name.Contains(searchString)),
                 "UnitPrice" => unitPriceParse ? baseQuery.Where(x => x.UnitPrice == price) : emptyQuery,
                 "UnitsInStock" => unitsInStock ? baseQuery.Where(x => x.UnitsInStock == units) : emptyQuery,
-                "CategoryName" => baseQuery.Where(x => x.Name.Contains(searchString)),
+                "CategoryName" => baseQuery.Where(x => x.CategoryName.Contains(searchString)),
                 _ => emptyQuery,
             };
             var paginatedVM = await _productPaginationService.CreateAsync(query, pageNumber, pageSize);
