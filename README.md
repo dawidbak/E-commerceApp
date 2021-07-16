@@ -6,6 +6,10 @@ The application is designed to manage an online shop. It allows you to manage em
 
 **The application was developed based on Clean Architecture pattern.**
 
+## Online version (Oracle Cloud + nginx)
+Default administration account -
+Email: admin@admin.com Password: Pa$$w0rd!
+
 ## Technologies
 * .NET 5
 * Entity Framework Core 5
