@@ -7,6 +7,9 @@ The application is designed to manage an online shop. It allows you to manage em
 **The application was developed based on Clean Architecture pattern.**
 
 ## Online version (Oracle Cloud + nginx)
+```sh
+https://ecommerceapp.dawidbak.me/
+```
 Default administration account -
 Email: admin@admin.com Password: Pa$$w0rd!
 
